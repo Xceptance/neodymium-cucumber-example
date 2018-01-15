@@ -53,27 +53,17 @@
                     <!-- <parallel>classesAndMethods</parallel> -->
                     <!-- <threadCount>8</threadCount> -->
                     <testFailureIgnore>true</testFailureIgnore>
-                    <!-- our test case naming does not follow Maven naming conventions -->
                     <includes>
                         <include>posters/cucumber/tests/RunAllFeaturesTest.java</include>
                     </includes>
                     <argLine>
                         -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
                     </argLine>
-                    <systemProperties>
-                        <property>
-                            <name>allure.results.directory</name>
-                            <value>${project.build.directory}/allure-results</value>
-                        </property>
-                        <property>
-                            <name>selenide.reports</name>
-                            <value>${project.build.directory}/selenide-results</value>
-                        </property>
-                        <property>
-                            <name>cucumber.options</name>
-                            <value>--plugin io.qameta.allure.cucumber2jvm.AllureCucumber2Jvm</value>
-                        </property>
-                    </systemProperties>
+                    <systemPropertyVariables>
+	                    <allure.results.directory>${project.build.directory}/allure-results</allure.results.directory>
+	                    <selenide.reports>${project.build.directory}/selenide-results</selenide.reports>
+	                    <cucumber.options>--plugin io.qameta.allure.cucumber2jvm.AllureCucumber2Jvm</cucumber.options>
+                    </systemPropertyVariables>
                 </configuration>
                 
 				<dependencies>
