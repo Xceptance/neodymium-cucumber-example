@@ -1,7 +1,5 @@
 #!/bin/sh
 
-mvn test allure:report
-
 mkdir -p ./allure-results
 mkdir -p ./target/allure-results
 
@@ -12,3 +10,5 @@ if [ -d ./target/site/allure-maven-plugin/history ]; then
   mv ./target/site/allure-maven-plugin/history ./target/allure-results/history
   cp -r ./target/allure-results/history ./allure-results
 fi
+
+mvn test allure:report
