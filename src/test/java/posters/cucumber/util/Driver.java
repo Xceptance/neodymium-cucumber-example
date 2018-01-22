@@ -26,7 +26,7 @@ public class Driver
         // try to find appropriate web driver in cache before create a new instance
         if (MultibrowserConfiguration.getInstance().getWebDriverProperties().reuseWebDriver())
         {
-            driver = WebDriverCache.getIntance().getRemoveWebDriver(browser);
+            driver = WebDriverCache.instance.getRemoveWebDriver(browser);
             if (driver != null)
             {
                 driver.manage().deleteAllCookies();
@@ -54,7 +54,7 @@ public class Driver
         WebDriverProperties webDriverProperties = MultibrowserConfiguration.getInstance().getWebDriverProperties();
         if (webDriverProperties.reuseWebDriver())
         {
-            WebDriverCache.getIntance().putWebDriver(Driver.browser, driver);
+            WebDriverCache.instance.putWebDriver(Driver.browser, driver);
             driver = null;
         }
         else
