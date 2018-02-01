@@ -48,17 +48,18 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>${surefire.version}</version>
 				<configuration>
-                    <!-- parallel test execution does not work reliably -->
                     <forkCount>2</forkCount>
-                    <!-- <parallel>classesAndMethods</parallel> -->
-                    <!-- <threadCount>8</threadCount> -->
-                    <testFailureIgnore>true</testFailureIgnore>
                     <includes>
                         <include>posters/cucumber/tests/RunAllFeaturesTest.java</include>
                     </includes>
-                    <argLine>
-                        -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
-                    </argLine>
+                    <testFailureIgnore>true</testFailureIgnore>
+                    <argLine>-javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"</argLine>
+                    <properties>
+                        <property>
+                            <name>listener</name>
+                            <value>io.qameta.allure.junit4.AllureJunit4</value>
+                        </property>
+                    </properties>
                     <systemPropertyVariables>
 	                    <allure.results.directory>${project.build.directory}/allure-results</allure.results.directory>
 	                    <selenide.reports>${project.build.directory}/selenide-results</selenide.reports>
@@ -72,6 +73,11 @@
 						<artifactId>aspectjweaver</artifactId>
 						<version>${aspectj.version}</version>
 					</dependency>
+                    <dependency>
+                        <groupId>org.apache.maven.surefire</groupId>
+                        <artifactId>surefire-junit47</artifactId>
+                        <version>${surefire.version}</version>
+                    </dependency>
 				</dependencies>
 			</plugin>
 			<plugin>
