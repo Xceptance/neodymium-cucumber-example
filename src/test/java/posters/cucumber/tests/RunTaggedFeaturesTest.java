@@ -2,15 +2,16 @@ package posters.cucumber.tests;
 
 import org.junit.runner.RunWith;
 
-import cucumber.api.CucumberOptions;
-import cucumber.api.junit.Cucumber;
+import com.xceptance.neodymium.NeodymiumCucumberRunner;
 
-@RunWith(Cucumber.class)
+import cucumber.api.CucumberOptions;
+
+@RunWith(NeodymiumCucumberRunner.class)
 @CucumberOptions(features = "src/test/java/posters/cucumber/features", glue = "posters", tags = {"@Smoke","~@Skip"}, plugin =
-{
-  "pretty", // console output
-  "html:target/cucumber-report/", // html report
-})
+    {
+        "pretty", // console output
+        "html:target/cucumber-report/", // html report
+    })
 public class RunTaggedFeaturesTest
 {
 }
