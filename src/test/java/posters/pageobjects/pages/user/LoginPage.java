@@ -13,7 +13,7 @@ import static com.codeborne.selenide.Selenide.page;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import posters.dataObjects.User;
+import posters.dataobjects1.User;
 import posters.pageobjects.pages.browsing.AbstractBrowsingPage;
 import posters.pageobjects.pages.browsing.HomePage;
 

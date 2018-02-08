@@ -9,7 +9,7 @@ import static com.codeborne.selenide.Condition.matchText;
 import static com.codeborne.selenide.Selenide.$;
 
 import cucumber.api.java.en.Then;
-import posters.dataObjects.Product;
+import posters.dataobjects1.Product;
 
 /**
  * @author pfotenhauer

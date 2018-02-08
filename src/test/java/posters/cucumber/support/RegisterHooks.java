@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 import cucumber.api.Scenario;
 import cucumber.api.java.After;
 import posters.cucumber.dataHelper.GlobalStorage;
-import posters.dataObjects.User;
+import posters.dataobjects1.User;
 import posters.flows.DeleteUserFlow;
 
 /**
