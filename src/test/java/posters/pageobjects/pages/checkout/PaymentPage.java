@@ -7,41 +7,37 @@ import static com.codeborne.selenide.Condition.exist;
 import static com.codeborne.selenide.Condition.matchText;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.page;
+
+import com.codeborne.selenide.SelenideElement;
+
+import io.qameta.allure.Step;
 
 /**
  * @author pfotenhauer
  */
 public class PaymentPage extends AbstractCheckoutPage
 {
+    private SelenideElement headline = $("#titlePayment");
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.xceptance.neodymium.scripting.template.selenide.page.PageObject#validateStructure()
-     */
     @Override
+    @Step("ensure this is a payment page")
+    public void isExpectedPage()
+    {
+        headline.should(exist);
+    }
+
+    @Override
+    @Step("validate payment page structure")
     public void validateStructure()
     {
         super.validateStructure();
 
         // Headline
         // Makes sure the headline is there and starts with a capital letter
-        $("#titlePayment").should(matchText("[A-Z].{3,}"));
+        headline.should(matchText("[A-Z].{3,}"));
         // First credit card
         // Makes sure at least one credit card is saved
         $("#payment0").shouldBe(visible);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.xceptance.neodymium.scripting.template.selenide.page.PageObject#isExpectedPage()
-     */
-    @Override
-    public void isExpectedPage()
-    {
-        $("#titlePayment").should(exist);
     }
 
     /**
@@ -49,6 +45,7 @@ public class PaymentPage extends AbstractCheckoutPage
      *            The position of the credit card you want to select
      * @return PPlaceOrder
      */
+    @Step("select a payment")
     public PlaceOrderPlace selectCreditCard(int position)
     {
         final int index = position - 1;
@@ -59,6 +56,6 @@ public class PaymentPage extends AbstractCheckoutPage
         // Clicks the continue button
         $("#btnUsePayment").scrollTo().click();
 
-        return page(PlaceOrderPlace.class);
+        return new PlaceOrderPlace();
     }
 }

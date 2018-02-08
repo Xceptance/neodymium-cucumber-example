@@ -3,11 +3,10 @@
  */
 package posters.flows;
 
-import static com.codeborne.selenide.Selenide.page;
-
+import io.qameta.allure.Step;
 import posters.dataobjects.User;
 import posters.pageobjects.pages.browsing.HomePage;
-import posters.pageobjects.pages.user.AccountOverViewPage;
+import posters.pageobjects.pages.user.AccountOverviewPage;
 import posters.pageobjects.pages.user.DeleteAccountPage;
 import posters.pageobjects.pages.user.LoginPage;
 import posters.pageobjects.pages.user.PersonalDataPage;
@@ -17,45 +16,41 @@ import posters.pageobjects.pages.user.PersonalDataPage;
  */
 public class DeleteUserFlow
 {
-
-    private User user;
-
     /**
      * @param user
      */
-    public DeleteUserFlow(User user)
+    @Step("delete user flow")
+    public static LoginPage flow(User user)
     {
-        this.user = user;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.xceptance.neodymium.scripting.template.selenide.flow.BasicFlow#flow()
-     */
-    public LoginPage flow()
-    {
-        HomePage homePage = page(HomePage.class);
+        HomePage homePage = new HomePage();
+        // ensure that the user is logged in
         LoginPage loginPage;
-        if (!homePage.isLoggedIn())
+        if (!homePage.userMenu.isLoggedIn())
         {
-            loginPage = homePage.userMenu().openLogin();
+            loginPage = homePage.userMenu.openLogin();
             homePage = loginPage.sendLoginform(user);
         }
 
-        AccountOverViewPage accountOverviewPage = homePage.userMenu().openAccountOverview();
+        // goto account page
+        AccountOverviewPage accountOverviewPage = homePage.userMenu.openAccountOverview();
         accountOverviewPage.validateStructure();
-        PersonalDataPage personalDataPage = accountOverviewPage.openPersonalData();
 
+        // goto personal data page
+        PersonalDataPage personalDataPage = accountOverviewPage.openPersonalData();
         personalDataPage.validateStructure();
+
+        // goto account deletion page
         DeleteAccountPage deleteAccountPage = personalDataPage.openDeleteAccount();
+
+        // delete the account
         homePage = deleteAccountPage.deleteAccount(user.getPassword());
         homePage.validateSuccessfulDeletedAccount();
 
-        loginPage = homePage.userMenu().openLogin();
+        // verify that the account is not available anymore
+        loginPage = homePage.userMenu.openLogin();
         loginPage.validateStructure();
         loginPage.sendFalseLoginform(user);
-        loginPage.validateWrongEmail(user.getEMail());
+        loginPage.validateWrongEmail(user.getEmail());
 
         return loginPage;
     }

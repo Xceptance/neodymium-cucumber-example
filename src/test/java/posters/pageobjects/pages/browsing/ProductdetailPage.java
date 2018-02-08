@@ -8,7 +8,10 @@ import static com.codeborne.selenide.Condition.exist;
 import static com.codeborne.selenide.Condition.matchText;
 import static com.codeborne.selenide.Selenide.$;
 
-import cucumber.api.java.en.Then;
+import com.codeborne.selenide.SelenideElement;
+import com.xceptance.neodymium.util.Context;
+
+import io.qameta.allure.Step;
 import posters.dataobjects.Product;
 
 /**
@@ -16,17 +19,22 @@ import posters.dataobjects.Product;
  */
 public class ProductdetailPage extends AbstractBrowsingPage
 {
+    private SelenideElement addToCartButton = $("#btnAddToCart");
 
+    private SelenideElement productName = $("#titleProductName");
+
+    private SelenideElement productPrice = $("#prodPrice");
+
+    private SelenideElement productSize = $("#selectSize");
+
+    @Override
+    @Step("ensure this is a product detail page")
     public void isExpectedPage()
     {
         $("#addToCartForm").should(exist);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.xceptance.scripting.selenide.page.AbstractPage()
-     */
+    @Step("validate product detail page structure")
     public void validateStructure()
     {
         super.validateStructure();
@@ -34,24 +42,26 @@ public class ProductdetailPage extends AbstractBrowsingPage
         // Title
         // Make sure we have the proper headline and it is not empty, at least 4 characters, starting with uppercase
         // letter,
-        $("h2#titleProductName").shouldBe(matchText("[A-Z].{3,}"));
+        productName.shouldBe(matchText("[A-Z].{3,}"));
         // Price
         // Check that the price is correct in its form. A dollar symbol, followed by 1-3 digits, optionally more groups
         // of exactly 3 digits separated by a comma as separator, a period and 2 digits for the cents as the end of the
         // String.
-        $("#prodPrice").shouldBe(matchText("\\$(\\d{1,3})(,\\d{3})*\\.\\d{2}$"));
+        productPrice.shouldBe(matchText("\\$(\\d{1,3})(,\\d{3})*\\.\\d{2}$"));
         // Add to cart button
         // Make sure we got an add to cart button and the text matches.
-        $("#btnAddToCart").shouldHave(exactText("Add to cart"));
+        addToCartButton.shouldHave(exactText(Context.localizedText("ProductdetailPage.addToCartButton.text")));
     }
 
+    @Step("validate product name on product detail page")
     public void validateProductName(String name)
     {
         // Verify product name
         // compares the displayed product name to the given parameter.
-        $("#titleProductName").shouldHave(exactText(name));
+        productName.shouldHave(exactText(name));
     }
 
+    @Step("add product with size:\"{size}\" and style:\"{style}\" to cart")
     public void addToCart(String size, String style)
     {
         // Style
@@ -59,36 +69,41 @@ public class ProductdetailPage extends AbstractBrowsingPage
         $(".radio #finish-" + style).selectRadio(style);
         // Size
         // Selects the chosen size.
-        $("#selectSize").selectOptionContainingText(size);
+        productSize.selectOptionContainingText(size);
         // Click the Add to cart button
         // click("css= #btnAddToCart");
-        $("#btnAddToCart").scrollTo().click();
+        addToCartButton.scrollTo().click();
     }
 
+    @Step("get product name from product detail page")
     public String getProductName()
     {
         // Get the product name to enable usage outside this module.
-        return $("#titleProductName").text();
+        return productName.text();
     }
 
+    @Step("get selected product style from product detail page")
     public String getChosenStyle()
     {
         // Get the style to enable usage outside this module.
         return $(".radio input[name='finish']:checked").val();
     }
 
+    @Step("get selected product size from product detail page")
     public String getChosenSize()
     {
         // Get the size to enable usage outside this module.
-        return $("select#selectSize").getSelectedText();
+        return productSize.getSelectedText();
     }
 
+    @Step("get product price from product detail page")
     public String getProductPrice()
     {
         // Get the product price to enable usage outside this module.
-        return $("#prodPrice").text();
+        return productPrice.text();
     }
 
+    @Step("get product details from product detail page")
     public Product getProduct()
     {
         return new Product(getProductName(), getProductPrice(), getProductPrice(), getChosenStyle(), getChosenSize(), 1);
@@ -97,7 +112,7 @@ public class ProductdetailPage extends AbstractBrowsingPage
     /**
      * @param productName
      */
-    @Then("^I want to be on a product detail page and see the \"([^\"]*)\" as headline$")
+    @Step("validate the product detail page of \"{productName}\"")
     public void validate(String productName)
     {
         validateStructure();

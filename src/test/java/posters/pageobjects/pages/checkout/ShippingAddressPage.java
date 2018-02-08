@@ -7,47 +7,45 @@ import static com.codeborne.selenide.Condition.exist;
 import static com.codeborne.selenide.Condition.matchText;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.page;
+
+import com.codeborne.selenide.SelenideElement;
+
+import io.qameta.allure.Step;
 
 /**
  * @author pfotenhauer
  */
 public class ShippingAddressPage extends AbstractCheckoutPage
 {
+    private SelenideElement headline = $("#titleDelAddr");
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.xceptance.neodymium.scripting.template.selenide.page.PageObject#validateStructure()
-     */
     @Override
+    @Step("ensure this is a shipping address page")
+    public void isExpectedPage()
+    {
+        headline.should(exist);
+    }
+
+    @Override
+    @Step("validate shipping address page structure")
     public void validateStructure()
     {
         super.validateStructure();
 
         // Headline
         // Assert the headline is there and starts with a capital letter
-        $("#titleDelAddr").should(matchText("[A-Z].{3,}"));
+        headline.should(matchText("[A-Z].{3,}"));
         // First address
         // Makes sure at least one address is visible
         $("#delAddr0").shouldBe(visible);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.xceptance.neodymium.scripting.template.selenide.page.PageObject#isExpectedPage()
-     */
-    public void isExpectedPage()
-    {
-        $("#titleDelAddr").should(exist);
-    }
-
     /**
      * @param position
      *            position of the shipping address
-     * @return PBillingAddress
+     * @return BillingAddressPage
      */
+    @Step("select a shipping address")
     public BillingAddressPage selectShippingAddress(int position)
     {
         final int index = position - 1;
@@ -58,6 +56,6 @@ public class ShippingAddressPage extends AbstractCheckoutPage
         // Clicks the continue button
         $("#btnUseAddressContinue").scrollTo().click();
 
-        return page(BillingAddressPage.class);
+        return new BillingAddressPage();
     }
 }

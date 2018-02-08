@@ -17,7 +17,6 @@ import posters.flows.DeleteUserFlow;
  */
 public class RegisterHooks
 {
-
     private GlobalStorage storage;
 
     public RegisterHooks(GlobalStorage storage)
@@ -30,7 +29,7 @@ public class RegisterHooks
     public void afterRegisterFromUserMenu(Scenario scenario)
     {
         // use the user coming from dependency injection
-        new DeleteUserFlow(storage.user).flow();
+        DeleteUserFlow.flow(storage.user);
     }
 
     @After("@Register")
@@ -39,6 +38,6 @@ public class RegisterHooks
         Matcher matcher = Pattern.compile("\"([^\"]*)\" and \"([^\"]*)\"").matcher(scenario.getName());
         matcher.find();
         User user = new User("", "", matcher.group(1), matcher.group(2));
-        new DeleteUserFlow(user).flow();
+        DeleteUserFlow.flow(user);
     }
 }

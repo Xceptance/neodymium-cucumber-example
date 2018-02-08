@@ -8,8 +8,11 @@ import static com.codeborne.selenide.Condition.exist;
 import static com.codeborne.selenide.Condition.matchText;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.page;
 
+import com.codeborne.selenide.SelenideElement;
+import com.xceptance.neodymium.util.Context;
+
+import io.qameta.allure.Step;
 import posters.pageobjects.pages.browsing.AbstractBrowsingPage;
 import posters.pageobjects.pages.browsing.HomePage;
 
@@ -18,52 +21,47 @@ import posters.pageobjects.pages.browsing.HomePage;
  */
 public class DeleteAccountPage extends AbstractBrowsingPage
 {
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.xceptance.neodymium.scripting.template.selenide.page.PageObject#isExpectedPage()
-     */
+    private SelenideElement deleteForm = $("#formDeleteAccount");
+
+    private SelenideElement passwordField = $("#password");
+
+    private SelenideElement deleteButton = $("#btnDeleteAccount");
+
     @Override
+    @Step("ensure this is a delete account page")
     public void isExpectedPage()
     {
-        $("#formDeleteAccount").should(exist);
+        deleteForm.should(exist);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.xceptance.neodymium.scripting.template.selenide.page.PageObject#validateStructure()
-     */
     @Override
+    @Step("validate delete account page structure")
     public void validateStructure()
     {
         super.validateStructure();
 
         // Headline
         // Asserts the headline is there and starts with a capital letter
-        $("#formDeleteAccount .h2").should(matchText("[A-Z].{3,}"));
+        deleteForm.find(".h2").should(matchText("[A-Z].{3,}"));
         // Password field
         // Asserts the label belonging to the password field displays the correct text
-        $("label[for=\"password\"]").shouldBe(exactText("Your password*"));
+        $("label[for=\"password\"]").shouldBe(exactText(Context.localizedText("AccountPages.password")));
         // Asserts the field to enter your password is there
-        $("#password").shouldBe(visible);
+        passwordField.shouldBe(visible);
         // Button
         // Asserts the delete button is there
-        $("#btnDeleteAccount").shouldBe(visible);
+        deleteButton.shouldBe(visible);
     }
 
-    /**
-     * 
-     */
+    @Step("delete account")
     public HomePage deleteAccount(String password)
     {
         // Password
         // Type the parameter into the password field
-        $("#password").setValue(password);
+        passwordField.setValue(password);
         // Delete account and open the homepage
         // click the confirmation button
-        $("#btnDeleteAccount").scrollTo().click();
-
-        return page(HomePage.class);
+        deleteButton.scrollTo().click();
+        return new HomePage();
     }
 }

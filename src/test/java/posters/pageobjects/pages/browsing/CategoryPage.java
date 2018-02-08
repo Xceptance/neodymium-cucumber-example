@@ -5,35 +5,31 @@ package posters.pageobjects.pages.browsing;
 
 import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
 import static com.codeborne.selenide.Condition.exactText;
-import static com.codeborne.selenide.Condition.exactValue;
 import static com.codeborne.selenide.Condition.exist;
 import static com.codeborne.selenide.Condition.matchText;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
-import static com.codeborne.selenide.Selenide.page;
 
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
+import com.codeborne.selenide.SelenideElement;
+import com.xceptance.neodymium.util.Context;
+
+import io.qameta.allure.Step;
 
 /**
  * @author pfotenhauer
  */
 public class CategoryPage extends AbstractBrowsingPage
 {
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.xceptance.scripting.selenide.page.AbstractPage()
-     */
     @Override
+    @Step("ensure this is a category page")
     public void isExpectedPage()
     {
         $("#productOverview").should(exist);
     }
 
+    @Step("validate category name \"{categoryName}\" on category page")
     public void validateCategoryName(String categoryName)
     {
         // Category name
@@ -41,12 +37,7 @@ public class CategoryPage extends AbstractBrowsingPage
         $("#titleCategoryName").shouldBe(text(categoryName));
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.xceptance.scripting.selenide.page.AbstractPage()
-     */
-    @Then("^I want to be on a category page$")
+    @Step("validate category page structure")
     public void validateStructure()
     {
         super.validateStructure();
@@ -64,13 +55,14 @@ public class CategoryPage extends AbstractBrowsingPage
      * @param column
      * @return
      */
+    @Step("click on a product by position in grid")
     public ProductdetailPage clickProductByPosition(int row, int column)
     {
         // Open the product detail page
         // Clicks a product by position. Because of the html code, this requires x and y coordinates.
-
-        $("#productOverview > .row:nth-child(" + row + ") li:nth-of-type(" + column + ") h4.pName").scrollTo().click();
-        return page(ProductdetailPage.class);
+        SelenideElement rowContainer = $$("#productOverview > .row").get(row - 1);
+        rowContainer.find(".thumbnail", column - 1).scrollTo().click();
+        return new ProductdetailPage();
     }
 
     /**
@@ -78,16 +70,18 @@ public class CategoryPage extends AbstractBrowsingPage
      * @param column
      * @return
      */
+    @Step("get a product name by position in grid")
     public String getProductNameByPosition(int row, int column)
     {
-        return $("#productOverview > .row:nth-child(" + row + ") li:nth-of-type(" + column + ") h4.pName").text();
+        SelenideElement rowContainer = $$("#productOverview > .row").get(row - 1);
+        return rowContainer.find("h4.pName", column - 1).text();
     }
 
     /**
      * @param position
      * @return
      */
-    @When("^I click on the product number \"([^\"]*)\"$")
+    @Step("click on a product by position")
     public ProductdetailPage clickProductByPosition(int position)
     {
         final int index = position - 1;
@@ -95,27 +89,28 @@ public class CategoryPage extends AbstractBrowsingPage
         // Click on the product's image and open the product overview page
         // Click the product link to open the product detail page
         $("#product" + index + " img").scrollTo().click();
-        return page(ProductdetailPage.class);
+        return new ProductdetailPage();
     }
 
     /**
      * @param position
      * @return
      */
-    @When("^I click on the product \"([^\"]*)\"$")
+    @Step("click on a product by name \"{productName}\"")
     public ProductdetailPage clickProductByName(String productName)
     {
         // Open the product detail page
         // Click on the product's image and open the product overview page
         // Click the product link to open the product detail page
         $("#productOverview .thumbnails .thumbnail a > img.pImage[title='" + productName + "']").scrollTo().click();
-        return page(ProductdetailPage.class);
+        return new ProductdetailPage();
     }
 
     /**
      * @param position
      * @return
      */
+    @Step("get a product name by position")
     public String getProductNameByPosition(int position)
     {
         final int index = position - 1;
@@ -127,20 +122,17 @@ public class CategoryPage extends AbstractBrowsingPage
      * @param searchTerm
      * @param searchTermExpectedCount
      */
-    @Then("^the page should show for the searchterm \"([^\"]*)\" \"([^\"]*)\" products$")
+    @Step("validate search results for \"{searchTerm}\" on category page")
     public void validateSearchHits(String searchTerm, int searchTermExpectedCount)
     {
         $("#titleSearchText").should(exist);
         // Validate the headline contains the search phrase
         // \\(" + searchTermExpectedCount + " *\\)
-        $("#titleSearchText").should(matchText("Your results for your search: '" + searchTerm + "' \\(" + searchTermExpectedCount + ".*\\)"));
+        $("#titleSearchText").should(matchText(Context.localizedText("search.results.text") + ": '" + searchTerm + "' \\(" + searchTermExpectedCount
+                                               + ".*\\)"));
         // Verify that the correct search term is displayed
         // Validate the entered search phrase is still visible in the input
-        this.search().openSearch();
-        // Validate the entered search phrase is still visible in the input
-        $("#searchForm #s").should(visible);
-        // Validate the entered search phrase is still visible in the input
-        $("#searchForm #s").should(exactValue(searchTerm));
+        search.validateSearchTerm(searchTerm);
         // Assert the Headline displays the search term.
         $(".header-container #searchTextValue").shouldHave(exactText(searchTerm));
         // Verify there are search results
@@ -156,7 +148,7 @@ public class CategoryPage extends AbstractBrowsingPage
     /**
      * @param categoryName
      */
-    @Then("^I want to be on a category page and see the \"([^\"]*)\" as headline")
+    @Step("validate category page of category \"{categoryName}\"")
     public void validate(String categoryName)
     {
         validateStructure();

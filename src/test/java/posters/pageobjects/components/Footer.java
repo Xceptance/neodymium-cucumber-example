@@ -4,22 +4,25 @@ import static com.codeborne.selenide.Condition.exactText;
 import static com.codeborne.selenide.Condition.exist;
 import static com.codeborne.selenide.Selenide.$;
 
-import cucumber.api.java.en.Then;
+import com.codeborne.selenide.SelenideElement;
+import com.xceptance.neodymium.util.Context;
+
+import io.qameta.allure.Step;
 
 public class Footer extends AbstractComponent
 {
-    final static String footerText = "Copyright (c) 2016 Xceptance Software Technologies -- This software is for demo purposes only and not meant to be used in production.";
+    private SelenideElement footer = $("#footer");
 
     public void isComponentAvailable()
     {
-        $("body > footer#footer").should(exist);
+        footer.should(exist);
     }
 
-    @Then("^the footer should be visible$")
+    @Step("validate the footer")
     public void validate()
     {
         isComponentAvailable();
         // Asserts the footer contains the correct text.
-        $("body > footer#footer").shouldHave(exactText(footerText));
+        footer.shouldHave(exactText(Context.localizedText("footer.text")));
     }
 }

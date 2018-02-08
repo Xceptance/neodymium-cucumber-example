@@ -1,30 +1,28 @@
 package posters.pageobjects.pages.browsing;
 
-import cucumber.api.java.en.Then;
+import com.xceptance.neodymium.util.Context;
+
+import io.qameta.allure.Step;
 
 public class NoHitsPage extends AbstractBrowsingPage
 {
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.xceptance.scripting.selenide.page.AbstractPage()
-     */
+
+    @Step("validate no hits page structure")
     public void validateStructure()
     {
         super.validateStructure();
     }
 
-    /**
-     * 
-     */
+    @Step("validate that no products are on no hits page")
     public void validateNoProductsFound()
     {
-        errorMessage().validateErrorMessage("Sorry! No results found matching your search. Please try again.");
+        errorMessage.validateErrorMessage(Context.localizedText("NoHitsPage.validation.noProductsFound"));
     }
 
-    @Then("^I want to be on a no hits page$")
+    @Step("validate no hits page")
     public void validate()
     {
+        validateStructure();
         validateNoProductsFound();
     }
 }

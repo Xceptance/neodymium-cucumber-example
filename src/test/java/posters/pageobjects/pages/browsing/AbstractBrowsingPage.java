@@ -13,113 +13,34 @@ import posters.pageobjects.pages.AbstractPageObject;
 public abstract class AbstractBrowsingPage extends AbstractPageObject
 {
 
-    private Header header;
+    public Header header = new Header();
 
-    private Footer footer;
+    public Footer footer = new Footer();
 
-    private MiniCart miniCart;
+    public MiniCart miniCart = new MiniCart();
 
-    private Search search;
+    public Search search = new Search();
 
-    private TopNavigation topNav;
+    public TopNavigation topNav = new TopNavigation();
 
-    private UserMenu userMenu;
+    public UserMenu userMenu = new UserMenu();
 
-    private SuccessMessage successMessage;
+    public SuccessMessage successMessage = new SuccessMessage();
 
-    private ErrorMessage errorMessage;
+    public ErrorMessage errorMessage = new ErrorMessage();
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.xceptance.neodymium.scripting.template.selenide.page.AbstractPageObject#validateStructure()
-     */
     @Override
     public void validateStructure()
     {
         isExpectedPage();
-    }
 
-    public Footer footer()
-    {
-        if (footer == null)
-        {
-            footer = new Footer();
-        }
-        footer.isComponentAvailable();
-        return footer;
-    }
-
-    public Header header()
-    {
-        if (header == null)
-        {
-            header = new Header();
-        }
         header.isComponentAvailable();
-        return header;
-    }
-
-    public MiniCart miniCart()
-    {
-        if (miniCart == null)
-        {
-            miniCart = new MiniCart();
-        }
+        footer.isComponentAvailable();
         miniCart.isComponentAvailable();
-        return miniCart;
-    }
-
-    public Search search()
-    {
-        if (search == null)
-        {
-            search = new Search();
-        }
         search.isComponentAvailable();
-        return search;
-    }
-
-    public TopNavigation topNav()
-    {
-        if (topNav == null)
-        {
-            topNav = new TopNavigation();
-        }
         topNav.isComponentAvailable();
-        return topNav;
-    }
-
-    /**
-     * @return
-     */
-    public UserMenu userMenu()
-    {
-        if (userMenu == null)
-        {
-            userMenu = new UserMenu();
-        }
         userMenu.isComponentAvailable();
-        return userMenu;
-    }
-
-    public SuccessMessage successMessage()
-    {
-        if (successMessage == null)
-        {
-            successMessage = new SuccessMessage();
-        }
         successMessage.isComponentAvailable();
-        return successMessage;
-    }
-
-    public ErrorMessage errorMessage()
-    {
-        if (errorMessage == null)
-        {
-            errorMessage = new ErrorMessage();
-        }
         errorMessage.isComponentAvailable();
-        return errorMessage;
     }
 }

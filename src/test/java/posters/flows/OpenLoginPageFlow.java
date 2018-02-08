@@ -1,17 +1,21 @@
 package posters.flows;
 
-import static com.codeborne.selenide.Selenide.page;
-
+import io.qameta.allure.Step;
 import posters.pageobjects.pages.browsing.HomePage;
 import posters.pageobjects.pages.user.LoginPage;
 
 public class OpenLoginPageFlow
 {
-
-    public LoginPage flow()
+    @Step("open login page flow")
+    public static LoginPage flow()
     {
-        HomePage homePage = new OpenHomePageFlow().flow();
-        homePage.userMenu().openLogin();
-        return page(LoginPage.class);
+        // initialize the session and goto home page
+        HomePage homePage = OpenHomePageFlow.flow();
+
+        // open login page and check for expected page
+        LoginPage loginPage = homePage.userMenu.openLogin();
+        loginPage.isExpectedPage();
+
+        return loginPage;
     };
 }

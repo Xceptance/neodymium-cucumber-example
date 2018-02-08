@@ -3,18 +3,20 @@
  */
 package posters.pageobjects.components;
 
+import static com.codeborne.selenide.Condition.cssClass;
+import static com.codeborne.selenide.Condition.exactText;
 import static com.codeborne.selenide.Condition.exist;
 import static com.codeborne.selenide.Condition.not;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.page;
 
-import cucumber.api.java.en.And;
-import cucumber.api.java.en.When;
-import posters.pageobjects.pages.user.AccountOverViewPage;
+import com.codeborne.selenide.SelenideElement;
+import com.xceptance.neodymium.util.Context;
+
+import io.qameta.allure.Step;
+import posters.pageobjects.pages.user.AccountOverviewPage;
 import posters.pageobjects.pages.user.LoginPage;
 import posters.pageobjects.pages.user.RegisterPage;
-import posters.settings.Settings;
 
 /**
  * @author pfotenhauer
@@ -22,77 +24,85 @@ import posters.settings.Settings;
 public class UserMenu extends AbstractComponent
 {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.xceptance.neodymium.scripting.template.selenide.component.BasicComponent#isComponentAvailable()
-     */
+    private final SelenideElement userMenu = $("#userMenu");
+
+    private final SelenideElement showUserMenu = $("#showUserMenu");
+
     public void isComponentAvailable()
     {
-        $("#showUserMenu").should(exist);
+        showUserMenu.should(exist);
     }
 
-    /**
-     * 
-     */
-    @And("^I am not logged in$")
-    public void validateNotLoggedIn()
-    {
-        $("#userMenu .goToLogin").should(exist);
-    }
-
+    @Step("open user menu")
     public void openUserMenu()
     {
         // Click the mini cart icon
-        $("#showUserMenu").scrollTo().click();
+        showUserMenu.scrollTo().click();
         // Wait for mini cart to appear
         // Wait for the mini cart to show
-        $("#userMenu").waitUntil(visible, Settings.timeout);
+        userMenu.waitUntil(visible, Context.get().configuration.timeout());
     }
 
-    /**
-     * 
-     */
+    @Step("close user menu")
     public void closeUserMenu()
     {
         // Click the mini cart icon again
-        $("#showUserMenu").scrollTo().click();
+        showUserMenu.scrollTo().click();
         // Move the mouse out of the area
-        $("a#brand").hover();
+        $("#brand").hover();
         // Wait for mini cart to disappear
         // Wait for the mini cart to disappear
-        $("#userMenu").waitUntil(not(visible), Settings.timeout);
+        userMenu.waitUntil(not(visible), Context.get().configuration.timeout());
     }
 
-    /**
-     * 
-     */
-    @When("^I click the login button$")
+    @Step("open login page from user menu")
     public LoginPage openLogin()
     {
         openUserMenu();
-        $("#userMenu .goToLogin").scrollTo().click();
-        return page(LoginPage.class);
+        userMenu.find(".goToLogin").scrollTo().click();
+        return new LoginPage();
     }
 
-    /**
-     * 
-     */
-    public AccountOverViewPage openAccountOverview()
+    @Step("open account page from user menu")
+    public AccountOverviewPage openAccountOverview()
     {
         openUserMenu();
-        $("#userMenu .goToAccountOverview").scrollTo().click();
-        return page(AccountOverViewPage.class);
+        userMenu.find(".goToAccountOverview").scrollTo().click();
+        return new AccountOverviewPage();
     }
 
-    /**
-     * @return
-     */
-    @When("^I click the register button in the header$")
+    @Step("open register page from user menu")
     public RegisterPage openRegister()
     {
         openUserMenu();
-        $("#userMenu a.goToRegistration").scrollTo().click();
-        return page(RegisterPage.class);
+        userMenu.find(".goToRegistration").scrollTo().click();
+        return new RegisterPage();
+    }
+
+    /**
+     * @param firstName
+     */
+    @Step("validate that \"{firstName}\" is logged in")
+    public void validateLoggedInName(String firstName)
+    {
+        // Click on the mini user menu symbol
+        openUserMenu();
+        // Asserts the Menu shows your first name.
+        userMenu.find(".firstName").shouldHave(exactText(firstName));
+        closeUserMenu();
+        // Makes sure the mini menu element has the "logged" class active instead of the "not-logged" class.
+        showUserMenu.find("span.glyphicon").shouldHave(cssClass("logged")).shouldHave(exactText(""));
+    }
+
+    @Step("validate that nobody is looged in")
+    public void validateNotLoggedIn()
+    {
+        userMenu.find(".goToLogin").should(exist);
+    }
+
+    @Step("validate that somebody is looged in")
+    public boolean isLoggedIn()
+    {
+        return userMenu.find(".goToAccountOverview").exists();
     }
 }

@@ -10,39 +10,36 @@ import static com.codeborne.selenide.Condition.hidden;
 import static com.codeborne.selenide.Condition.matchText;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.page;
 
 import org.junit.Assert;
 
+import com.codeborne.selenide.SelenideElement;
+import com.xceptance.neodymium.util.Context;
+
+import io.qameta.allure.Step;
 import posters.dataobjects.Product;
 import posters.pageobjects.pages.browsing.AbstractBrowsingPage;
 import posters.pageobjects.pages.browsing.ProductdetailPage;
 import posters.pageobjects.utility.PriceHelper;
-import posters.settings.Settings;
 
 /**
  * @author pfotenhauer
  */
 public class CartPage extends AbstractBrowsingPage
 {
+    private SelenideElement cartTable = $("#cartOverviewTable");
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.xceptance.scripting.selenide.page.BasicPage#isAwaitedPage()
-     */
+    private SelenideElement subTotal = $("#orderSubTotalValue");
+
     @Override
+    @Step("ensure this is a cart page")
     public void isExpectedPage()
     {
-        $("#cartOverviewTable").should(exist);
+        cartTable.should(exist);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.xceptance.scripting.selenide.page.BasicPage#validate()
-     */
     @Override
+    @Step("validate cart page structure")
     public void validateStructure()
     {
         super.validateStructure();
@@ -52,7 +49,7 @@ public class CartPage extends AbstractBrowsingPage
         $("#titleCart").shouldBe(matchText("[A-Z].{3,}"));
         // Assert there is an item list with at least one item present
         // Makes sure the list of cart items is there
-        $("#cartOverviewTable").shouldBe(visible);
+        cartTable.shouldBe(visible);
         // Makes sure there's at least one product in the item list
         $("#product0").shouldBe(visible);
         // Assert the cart summary is visible
@@ -63,6 +60,7 @@ public class CartPage extends AbstractBrowsingPage
         $("#btnStartCheckout").should(exist);
     }
 
+    @Step("validate shipping costs on cart page")
     public void validateShippingCosts(String shippingCosts)
     {
         // Assert the correct shipping price is shown
@@ -72,6 +70,7 @@ public class CartPage extends AbstractBrowsingPage
     /**
      * @param shippingcosts
      */
+    @Step("validate cart page with shipping costs: \"{shippingCosts}\"")
     public void validate(String shippingCosts)
     {
         validateStructure();
@@ -82,6 +81,7 @@ public class CartPage extends AbstractBrowsingPage
      * @param position
      * @param product
      */
+    @Step("validate \"{product}\" in on the cart page")
     public void validateCartItem(int position, Product product)
     {
         validateCartItem(position, product.getName(), product.getStyle(), product.getSize(), product.getAmount(), product.getUnitPrice());
@@ -92,6 +92,7 @@ public class CartPage extends AbstractBrowsingPage
      * @param product
      * @param productAmount
      */
+    @Step("validate \"{product}\" in on the cart page")
     public void validateCartItem(int position, Product product, int productAmount)
     {
         validateCartItem(position, product.getName(), product.getStyle(), product.getSize(), productAmount, product.getUnitPrice());
@@ -99,48 +100,49 @@ public class CartPage extends AbstractBrowsingPage
 
     private void validateCartItem(int position, String productName, String productStyle, String productSize, int productAmount, String productPrice)
     {
-        final int index = position - 1;
+        SelenideElement productContainer = $("#product" + (position - 1));
         // Visibility
         // Makes sure a product at the specified index exists and is visible
-        $("#product" + (index)).shouldBe(visible);
+        productContainer.shouldBe(visible);
         // Name
         // Compares the displayed name with the parameter
-        $("#product" + index + " .productName").shouldHave(exactText(productName));
+        productContainer.find(".productName").shouldHave(exactText(productName));
         // Count
         // Compares the displayed amount with the parameter
         validateProductAmount(position, productAmount);
         // Style
         // Compares the displayed style with the parameter
-        $("#product" + index + " .productStyle").shouldHave(exactText(productStyle));
+        productContainer.find(".productStyle").shouldHave(exactText(productStyle));
         // Size
         // Compares the displayed style with the parameter
-        $("#product" + index + " .productSize").shouldHave(exactText(productSize));
+        productContainer.find(".productSize").shouldHave(exactText(productSize));
         // Price
         // Compares the displayed price with the parameter
-        $("#product" + index + " .productUnitPrice").shouldHave(exactText(productPrice));
+        productContainer.find(".productUnitPrice").shouldHave(exactText(productPrice));
     }
 
+    @Step("validate sub total and line item total after adding on the cart page")
     public void validateSubAndLineItemTotalAfterAdd(int position, String oldSubTotal, String oldLineItemTotal)
     {
-        final int index = position - 1;
+        SelenideElement productContainer = $("#product" + (position - 1));
         // Store unit price (without $ sign)
         // Takes the pricer per 1 unit of the specified item
-        String unitPriceShort_varDynamic = $("#product" + index + " td .unitPriceShort").text();
+        String unitPriceShort_varDynamic = productContainer.find(".unitPriceShort").text();
         // Store product count
         // Takes the amount of the specified item
-        String quantity_varDynamic = $("#productCount" + index).val();
+        String quantity_varDynamic = $("#productCount" + (position - 1)).val();
 
         String subOrderPrice = PriceHelper.computeRowPrice(PriceHelper.addCurrency(unitPriceShort_varDynamic), quantity_varDynamic);
 
         // Verify calculated cost is the shown cost
         // Compare calculated Unit Price to displayed total Unit Price
-        $("#product" + index + " .productTotalUnitPrice").shouldHave(exactText(subOrderPrice));
+        productContainer.find(".productTotalUnitPrice").shouldHave(exactText(subOrderPrice));
 
         // Verify subtotal
         // Stores the subtotal with the new item present
         // Remove "$" symbol from price to be able to use it in a calculation
         // Cuts off the first character from the string, which is the "$" symbol
-        String newSubTotal = $("#orderSubTotalValue").text();
+        String newSubTotal = subTotal.text();
         // New Total - Old Total = Price of item you just added
         String price = PriceHelper.subtractFromPrice(newSubTotal, oldSubTotal);
         String price2 = PriceHelper.subtractFromPrice(subOrderPrice, oldLineItemTotal);
@@ -148,55 +150,56 @@ public class CartPage extends AbstractBrowsingPage
         Assert.assertEquals(price, price2);
     }
 
+    @Step("validate line item amount on the cart page")
     public void validateProductAmount(int position, int amount)
     {
-        final int index = position - 1;
         // Makes sure the amount of the item with index @{index} in the cart equals the parameter
-        $("#product" + index + " .productCount").shouldHave(exactValue(Integer.toString(amount)));
+        $("#product" + (position - 1) + " .productCount").shouldHave(exactValue(Integer.toString(amount)));
     }
 
+    @Step("get product name from line item on the cart page")
     public String getProductName(int position)
     {
-        final int index = position - 1;
         // Get the product name to enable usage outside this module.
-        return $("#product" + index + " .productName").text();
+        return $("#product" + (position - 1) + " .productName").text();
     }
 
+    @Step("get product style from line item on the cart page")
     public String getProductStyle(int position)
     {
-        final int index = position - 1;
         // Get the style to enable usage outside this module.
-        return $("#product" + index + " .productStyle").text();
+        return $("#product" + (position - 1) + " .productStyle").text();
     }
 
+    @Step("get product size from line item on the cart page")
     public String getProductSize(int position)
     {
-        final int index = position - 1;
         // Get the size to enable usage outside this module.
-        return $("#product" + index + " .productSize").text();
+        return $("#product" + (position - 1) + " .productSize").text();
     }
 
+    @Step("get product count from line item on the cart page")
     public String getProductCount(int position)
     {
-        final int index = position - 1;
         // Get the size to enable usage outside this module.
-        return $("#product" + index + " .productCount").val();
+        return $("#product" + (position - 1) + " .productCount").val();
     }
 
+    @Step("get product unit price from line item on the cart page")
     public String getProductUnitPrice(int position)
     {
-        final int index = position - 1;
         // Get the product price to enable usage outside this module.
-        return $("#product" + index + " .productUnitPrice").text();
+        return $("#product" + (position - 1) + " .productUnitPrice").text();
     }
 
+    @Step("get product total price from line item on the cart page")
     public String getProductTotalUnitPrice(int position)
     {
-        final int index = position - 1;
         // Get the product price to enable usage outside this module.
-        return $("#product" + index + " .productTotalUnitPrice").text();
+        return $("#product" + (position - 1) + " .productTotalUnitPrice").text();
     }
 
+    @Step("get product from line item on the cart page")
     public Product getProduct(int position)
     {
         return new Product(getProductName(position), getProductUnitPrice(position), getProductTotalUnitPrice(position), getProductStyle(position), getProductSize(position), Integer.parseInt(getProductCount(position)));
@@ -206,57 +209,59 @@ public class CartPage extends AbstractBrowsingPage
      * @param position
      * @param amount
      */
+    @Step("update product count on the cart page")
     public void updateProductCount(int position, int amount)
     {
-        final int index = position - 1;
+        SelenideElement productContainer = $("#product" + (position - 1));
         // Type in the specified amount
-        $("#product" + index + " .productCount").setValue(Integer.toString(amount));
+        productContainer.find(".productCount").setValue(Integer.toString(amount));
         // Stores the new amount in an outside variable
         // Click the update button
         // Clicks the update button for the product
-        $("#product" + index + " .btnUpdateProduct").scrollTo().click();
+        productContainer.find(".btnUpdateProduct").scrollTo().click();
     }
 
     /**
      * @param position
      */
+    @Step("remove product on the cart page")
     public void removeProduct(int position)
     {
-        final int index = position - 1;
         // Click delete button
         // Click on the delete button for the product
-        $("#btnRemoveProdCount" + index).scrollTo().click();
+        $("#btnRemoveProdCount" + (position - 1)).scrollTo().click();
         // Wait for the second delete button to appear
         // Wait until the confirmation button is visible
-        $("#buttonDelete").waitUntil(visible, Settings.timeout);
+        $("#buttonDelete").waitUntil(visible, Context.get().configuration.timeout());
         // Click delete button
         // Click the confirmation button
         $("#buttonDelete").scrollTo().click();
         // Wait until the confirmation button is gone
-        $("#buttonDelete").waitUntil(hidden, Settings.timeout);
+        $("#buttonDelete").waitUntil(hidden, Context.get().configuration.timeout());
         // Reload page to let IDs adjust to the deletion
-        miniCart().openMiniCart();
-        miniCart().openCartPage();
+        miniCart.openMiniCart();
+        miniCart.openCartPage();
     }
 
     /**
      * @param oldSubTotal
      * @param oldLineItemTotal
      */
+    @Step("validate sub total and line item total after removing on the cart page")
     public void validateSubAndLineItemTotalAfterRemove(String oldSubTotal, String oldLineItemTotal)
     {
         String newSubTotal = PriceHelper.subtractFromPrice(oldSubTotal, oldLineItemTotal);
-        $("#orderSubTotalValue").shouldHave(exactText(newSubTotal));
+        subTotal.shouldHave(exactText(newSubTotal));
     }
 
     /**
      * @param index
      */
+    @Step("click on a product on the cart page")
     public ProductdetailPage openProductPage(int position)
     {
-        final int index = position - 1;
-        $("#product" + index + " img").scrollTo().click();
-        return page(ProductdetailPage.class);
+        $("#product" + (position - 1) + " img").scrollTo().click();
+        return new ProductdetailPage();
     }
 
     private void clickCheckoutButton()
@@ -264,27 +269,24 @@ public class CartPage extends AbstractBrowsingPage
         $("#btnStartCheckout").scrollTo().click();
     }
 
-    /**
-     * 
-     */
+    @Step("open new shipping address from the cart page")
     public NewShippingAddressPage openNewShippingPage()
     {
         clickCheckoutButton();
-        return page(NewShippingAddressPage.class);
+        return new NewShippingAddressPage();
     }
 
-    /**
-     * 
-     */
+    @Step("open shipping address from the cart page")
     public ShippingAddressPage openShippingPage()
     {
         clickCheckoutButton();
-        return page(ShippingAddressPage.class);
+        return new ShippingAddressPage();
     }
 
     /**
      * @return
      */
+    @Step("check if ther are product on the cart page")
     public boolean hasProductsInCart()
     {
         return $("#btnRemoveProdCount0").exists();
