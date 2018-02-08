@@ -6,11 +6,11 @@ package posters.flows;
 import static com.codeborne.selenide.Selenide.page;
 
 import posters.dataObjects.User;
-import posters.pageObjects.pages.browsing.HomePage;
-import posters.pageObjects.pages.user.AccountOverViewPage;
-import posters.pageObjects.pages.user.DeleteAccountPage;
-import posters.pageObjects.pages.user.LoginPage;
-import posters.pageObjects.pages.user.PersonalDataPage;
+import posters.pageobjects1.pages.browsing.HomePage;
+import posters.pageobjects1.pages.user.AccountOverViewPage;
+import posters.pageobjects1.pages.user.DeleteAccountPage;
+import posters.pageobjects1.pages.user.LoginPage;
+import posters.pageobjects1.pages.user.PersonalDataPage;
 
 /**
  * @author pfotenhauer
