@@ -6,8 +6,8 @@ package posters.flows;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.page;
 
-import posters.pageobjects1.pages.browsing.HomePage;
-import posters.pageobjects1.pages.checkout.CartPage;
+import posters.pageobjects.pages.browsing.HomePage;
+import posters.pageobjects.pages.checkout.CartPage;
 
 /**
  * @author pfotenhauer

@@ -4,7 +4,7 @@ import static com.codeborne.selenide.Selenide.clearBrowserCookies;
 import static com.codeborne.selenide.Selenide.open;
 
 import cucumber.api.java.en.And;
-import posters.pageobjects1.pages.browsing.HomePage;
+import posters.pageobjects.pages.browsing.HomePage;
 import posters.settings.Settings;
 
 public class OpenHomePageFlow
