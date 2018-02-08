@@ -11,7 +11,7 @@ import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 import static com.codeborne.selenide.Selenide.page;
 
-import posters.dataobjects1.Address;
+import posters.dataobjects.Address;
 
 /**
  * @author pfotenhauer

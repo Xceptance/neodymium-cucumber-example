@@ -1,7 +1,7 @@
 /**
  * 
  */
-package posters.dataobjects1;
+package posters.dataobjects;
 
 /**
  * @author pfotenhauer

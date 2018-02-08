@@ -14,7 +14,7 @@ import static com.codeborne.selenide.Selenide.page;
 
 import org.junit.Assert;
 
-import posters.dataobjects1.Product;
+import posters.dataobjects.Product;
 import posters.pageobjects.pages.browsing.AbstractBrowsingPage;
 import posters.pageobjects.pages.browsing.ProductdetailPage;
 import posters.pageobjects.utility.PriceHelper;

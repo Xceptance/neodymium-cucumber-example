@@ -9,8 +9,8 @@ import static com.codeborne.selenide.Condition.matchText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.page;
 
-import posters.dataobjects1.Address;
-import posters.dataobjects1.CreditCard;
+import posters.dataobjects.Address;
+import posters.dataobjects.CreditCard;
 import posters.pageobjects.pages.browsing.HomePage;
 
 /**

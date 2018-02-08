@@ -3,7 +3,7 @@
  */
 package posters.cucumber.dataHelper;
 
-import posters.dataobjects1.User;
+import posters.dataobjects.User;
 
 /**
  * Basic storage object that can be used with dependency injection later on
