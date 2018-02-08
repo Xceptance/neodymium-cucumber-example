@@ -18,7 +18,7 @@ Feature: Register from user menu
     Then I want to be registered successfully
     And I want to be on the login page
     
-    When I fill the register form with "<email>" and "<password>" and send it
+    When I fill the login form with "<email>" and "<password>" and send it
     Then I want to be logged in successfully with "<firstName>"
 
     Examples: 

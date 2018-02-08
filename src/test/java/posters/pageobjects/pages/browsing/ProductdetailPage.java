@@ -11,6 +11,7 @@ import static com.codeborne.selenide.Selenide.$;
 import com.codeborne.selenide.SelenideElement;
 import com.xceptance.neodymium.util.Context;
 
+import cucumber.api.java.en.Then;
 import io.qameta.allure.Step;
 import posters.dataobjects.Product;
 
@@ -53,6 +54,7 @@ public class ProductdetailPage extends AbstractBrowsingPage
         addToCartButton.shouldHave(exactText(Context.localizedText("ProductdetailPage.addToCartButton.text")));
     }
 
+    @Then("^I want to be on a product detail page and see the \"([^\"]*)\" as headline$")
     @Step("validate product name on product detail page")
     public void validateProductName(String name)
     {

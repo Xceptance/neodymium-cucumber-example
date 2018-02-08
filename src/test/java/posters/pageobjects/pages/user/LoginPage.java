@@ -13,6 +13,8 @@ import static com.codeborne.selenide.Selenide.$;
 import com.codeborne.selenide.SelenideElement;
 import com.xceptance.neodymium.util.Context;
 
+import cucumber.api.java.en.Then;
+import cucumber.api.java.en.When;
 import io.qameta.allure.Step;
 import posters.dataobjects.User;
 import posters.pageobjects.pages.browsing.AbstractBrowsingPage;
@@ -41,6 +43,7 @@ public class LoginPage extends AbstractBrowsingPage
     }
 
     @Override
+    @Then("^I want to be on the login page$")
     @Step("validate login page structure")
     public void validateStructure()
     {
@@ -90,6 +93,7 @@ public class LoginPage extends AbstractBrowsingPage
      * @param password
      *            The password of the account you want to log into
      */
+    @When("^I fill the login form with \"([^\"]*)\" and \"([^\"]*)\" and send it$")
     @Step("send login form with valid data")
     public HomePage sendLoginform(String email, String password)
     {
@@ -120,6 +124,7 @@ public class LoginPage extends AbstractBrowsingPage
     /**
      * @return
      */
+    @When("^I click the register button$")
     @Step("open register page from login page")
     public RegisterPage openRegister()
     {
@@ -127,6 +132,7 @@ public class LoginPage extends AbstractBrowsingPage
         return new RegisterPage();
     }
 
+    @Then("^I want to be registered successfully$")
     @Step("validate successful registration message")
     public void validateSuccessfulRegistration()
     {

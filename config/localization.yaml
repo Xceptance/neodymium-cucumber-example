@@ -1,0 +1,48 @@
+default:
+    footer:
+        text: Copyright (c) 2016 Xceptance Software Technologies -- This software is for demo purposes only and not meant to be used in production.
+    search:
+        results:
+            text: Your results for your search
+    HomePage:
+        validation:
+            successfulOrder: Thank you for shopping with us!
+            successfulLogin: Login successful. Have fun in our shop!
+            successfulAccountDeletion: Your account has been deleted. We hope to see you soon again!
+    NoHitsPage:
+        validation:
+            noProductsFound: Sorry! No results found matching your search. Please try again.
+    ProductdetailPage:
+        addToCartButton:
+            text: Add to cart
+    AccountPages:
+        email: Email address*
+        firstname: First name*
+        lastname: Last name*
+        password: Password*
+        passwordRepeat: Repeat password*
+        yourEmail: Your email*
+        yourPassword: Your password*
+        signIn: Sign in
+        newCustomer: New customer
+        createAccount: Create account
+        createNewAccount: Create new Account
+        validation:
+            successfulAccountCreation: Your account has been created. Log in with your email address and password.
+            emailDoesNotExistError: The email address you entered doesn't exist. Please try again.
+            incorrectPasswordError: The password you entered is incorrect. Please try again.
+    General:
+        addresses:
+            fullname: Full name*
+            company: Company
+            address: Address*
+            city: City*
+            state: State/Province*
+            zip: ZIP/Postal code*
+            country: Country*
+        payment:
+            cardnumber: Card number*
+            cardholdername: Cardholder's name*
+            expirationdate: Expiration date*
+            
+            

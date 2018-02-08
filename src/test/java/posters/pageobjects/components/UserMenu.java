@@ -13,6 +13,8 @@ import static com.codeborne.selenide.Selenide.$;
 import com.codeborne.selenide.SelenideElement;
 import com.xceptance.neodymium.util.Context;
 
+import cucumber.api.java.en.Given;
+import cucumber.api.java.en.When;
 import io.qameta.allure.Step;
 import posters.pageobjects.pages.user.AccountOverviewPage;
 import posters.pageobjects.pages.user.LoginPage;
@@ -55,6 +57,7 @@ public class UserMenu extends AbstractComponent
         userMenu.waitUntil(not(visible), Context.get().configuration.timeout());
     }
 
+    @When("^I click the login button$")
     @Step("open login page from user menu")
     public LoginPage openLogin()
     {
@@ -71,6 +74,7 @@ public class UserMenu extends AbstractComponent
         return new AccountOverviewPage();
     }
 
+    @When("^I click the register button in the header$")
     @Step("open register page from user menu")
     public RegisterPage openRegister()
     {
@@ -94,6 +98,7 @@ public class UserMenu extends AbstractComponent
         showUserMenu.find("span.glyphicon").shouldHave(cssClass("logged")).shouldHave(exactText(""));
     }
 
+    @Given("^I am not logged in$")
     @Step("validate that nobody is looged in")
     public void validateNotLoggedIn()
     {
