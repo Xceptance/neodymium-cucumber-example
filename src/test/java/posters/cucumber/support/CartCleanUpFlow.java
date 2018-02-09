@@ -1,7 +1,7 @@
 /**
  * 
  */
-package posters.flows;
+package posters.cucumber.support;
 
 import static com.codeborne.selenide.Selenide.$;
 

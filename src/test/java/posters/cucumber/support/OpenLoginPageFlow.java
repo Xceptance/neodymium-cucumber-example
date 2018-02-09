@@ -1,4 +1,4 @@
-package posters.flows;
+package posters.cucumber.support;
 
 import io.qameta.allure.Step;
 import posters.pageobjects.pages.browsing.HomePage;

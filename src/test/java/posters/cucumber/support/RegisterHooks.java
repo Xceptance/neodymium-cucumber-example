@@ -10,7 +10,6 @@ import cucumber.api.Scenario;
 import cucumber.api.java.After;
 import posters.cucumber.dataHelper.GlobalStorage;
 import posters.dataobjects.User;
-import posters.flows.DeleteUserFlow;
 
 /**
  * @author pfotenhauer
