@@ -35,7 +35,7 @@ public class Search extends AbstractComponent
         return new CategoryPage();
     }
 
-    @When("^I search for \"([^\"]*)\"$")
+    @When("^searched for \"([^\"]*)\"$")
     @Step("search for \"{searchTerm}\"")
     public void search(String searchTerm)
     {

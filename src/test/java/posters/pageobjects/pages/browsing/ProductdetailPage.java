@@ -54,7 +54,7 @@ public class ProductdetailPage extends AbstractBrowsingPage
         addToCartButton.shouldHave(exactText(Context.localizedText("ProductdetailPage.addToCartButton.text")));
     }
 
-    @Then("^I want to be on a product detail page and see the \"([^\"]*)\" as headline$")
+    @Then("^a product detail page shows the headline \"([^\"]*)\"$")
     @Step("validate product name on product detail page")
     public void validateProductName(String name)
     {

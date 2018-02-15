@@ -20,7 +20,7 @@ public class NoHitsPage extends AbstractBrowsingPage
         errorMessage.validateErrorMessage(Context.localizedText("NoHitsPage.validation.noProductsFound"));
     }
 
-    @Then("^I want to be on a no hits page$")
+    @Then("^no hits page is opened$")
     @Step("validate no hits page")
     public void validate()
     {

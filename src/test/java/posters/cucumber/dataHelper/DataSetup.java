@@ -3,7 +3,7 @@
  */
 package posters.cucumber.dataHelper;
 
-import cucumber.api.java.en.And;
+import cucumber.api.java.en.Given;
 import posters.dataobjects.User;
 
 /**
@@ -20,7 +20,7 @@ public class DataSetup
         this.storage = storage;
     }
 
-    @And("^the user will have: \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"$")
+    @Given("^user setup: \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"$")
     public void setUpUser(String firstName, String lastName, String eMail, String password)
     {
         // set up user for the clean up steps

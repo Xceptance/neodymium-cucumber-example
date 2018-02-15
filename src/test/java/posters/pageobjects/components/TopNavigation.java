@@ -50,7 +50,7 @@ public class TopNavigation extends AbstractComponent
         return new CategoryPage();
     }
 
-    @When("^I hover over \"([^\"]*)\" and click on \"([^\"]*)\"$")
+    @When("^a main category \"([^\"]*)\" is hovered and a sub category \"([^\"]*)\" is opened$")
     @Step("click on a \"{subCategoryName}\" subcategory within \"{categoryName}\"")
     public CategoryPage clickSubCategoryByName(String categoryName, String subCategoryName)
     {

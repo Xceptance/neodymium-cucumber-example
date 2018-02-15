@@ -10,17 +10,18 @@ import posters.pageobjects.pages.user.AccountOverviewPage;
 import posters.pageobjects.pages.user.DeleteAccountPage;
 import posters.pageobjects.pages.user.LoginPage;
 import posters.pageobjects.pages.user.PersonalDataPage;
+import posters.pageobjects.pages.user.RegisterPage;
 
 /**
  * @author pfotenhauer
  */
-public class DeleteUserFlow
+public class UserFlows
 {
     /**
      * @param user
      */
     @Step("delete user flow")
-    public static LoginPage flow(User user)
+    public static LoginPage deletUser(User user)
     {
         HomePage homePage = new HomePage();
         // ensure that the user is logged in
@@ -51,6 +52,16 @@ public class DeleteUserFlow
         loginPage.validateStructure();
         loginPage.sendFalseLoginform(user);
         loginPage.validateWrongEmail(user.getEmail());
+
+        return loginPage;
+    }
+
+    public static LoginPage registerUser(User user)
+    {
+        RegisterPage registerPage = OpenPageFlows.registerPage();
+        registerPage.isExpectedPage();
+        LoginPage loginPage = registerPage.sendRegisterForm(user, user.getPassword());
+        loginPage.isExpectedPage();
 
         return loginPage;
     }

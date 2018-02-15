@@ -1,33 +1,45 @@
-@Smoke @Skip
+@Smoke
 Feature: Register
-  Description: Show case clean up steps implementation using regex and scenario name for simple data passing
+  Description: Show case clean up steps implementation using dependency injection for passing data between steps
 
-  #The parameters within the scenario outline cause an error in allure report that leads to not generating data for this feature
-  #see: https://github.com/allure-framework/allure-cucumberjvm/issues/52
   @Register
-  Scenario Outline: Register a new customer with "<email>" and "<password>"
-    Given The browser "<browser>" is open
-    And I am on the homepage of the Posters shop
-    And I am not logged in
-    
-    Then I want see the logo, the carousel and some hot products
-    And the footer should be visible
-    
-    When I click the login button
-    Then I want to be on the login page
-    
-    When I click the register button
-    Then I want to be on the register page
-    
-    When I fill the register form with "<firstName>", "<lastName>", "<email>", "<password>", "<password>" and send it
-    Then I want to be registered successfully
-    And I want to be on the login page
-    
-    When I fill the login form with "<email>" and "<password>" and send it
-    Then I want to be logged in successfully with "<firstName>"
+  Scenario Outline: Register a new customer with
+    Given "<browser>" is open
+        And user setup: "<firstName>", "<lastName>", "<email>", "<password>"
+        And register page is loaded
+        And not logged in
+    When register form is filled with "<firstName>", "<lastName>", "<email>", "<password>", "<password>" and send
+    Then register was successful
+        And login page is opened
 
+    @Chrome
     Examples: 
       | browser         | firstName | lastName | email          | password  |
       | Chrome_1024x768 | Jane      | Doe      | jane@doe.com   | topsecret |
-      | Chrome_1024x768 | Jim       | Doe      | jim@doe.com    | topsecret |
-      | Chrome_1024x768 | Jeremy    | Doe      | jeremy@doe.com | topsecret |
+
+    @Firefox
+    Examples: 
+      | browser     | firstName | lastName | email          | password  |
+      | FF_1024x768 | Jim       | Doe      | jim@doe.com    | topsecret |
+      | FF_1024x768 | Jeremy    | Doe      | jeremy@doe.com | topsecret |
+
+  @Register
+  Scenario Outline: Login a newly registered  customer
+    Given "<browser>" is open
+        And user setup: "<firstName>", "<lastName>", "<email>", "<password>"
+        And login page is opened after registration
+        And not logged in   
+    When login form is filled with "<email>" and "<password>" and send
+    Then login was successful for "<firstName>"
+
+    @Chrome
+    Examples: 
+      | browser         | firstName | lastName | email          | password  |
+      | Chrome_1024x768 | Jane      | Doe      | jane@doe.com   | topsecret |
+
+    @Firefox
+    Examples: 
+      | browser     | firstName | lastName | email          | password  |
+      | FF_1024x768 | Jim       | Doe      | jim@doe.com    | topsecret |
+      | FF_1024x768 | Jeremy    | Doe      | jeremy@doe.com | topsecret |
+      

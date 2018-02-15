@@ -2,14 +2,19 @@
 Feature: Homepage
 
   Scenario Outline: Visting the homepage
-    Given The browser "<browser>" is open
-    And I am on the homepage of the Posters shop
-    
-    Then the page title should be "Posters - The Ultimate Online Shop"
-    And I want see the logo, the carousel and some hot products
-    And the footer should be visible
+    Given "<browser>" is open
+    When homepage is loaded
+    Then page title should be "Posters - The Ultimate Online Shop"
+        And logo, carousel and hot products are visible
+        And footer is visible
 
+    @Chrome
     Examples: 
       | browser         |
       | Chrome_1024x768 |
-      | FF_1024x768     |
+      | Chrome_1024x768 |
+
+    @Firefox
+    Examples: 
+      | browser     |
+      | FF_1024x768 |

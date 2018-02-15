@@ -14,7 +14,7 @@ public class Title extends AbstractComponent
     {
     }
 
-    @Then("^the page title should be \"([^\"]*)\"$")
+    @Then("^page title should be \"([^\"]*)\"$")
     @Step("validate that the page title matches {title}")
     public void validateTitle(String title)
     {

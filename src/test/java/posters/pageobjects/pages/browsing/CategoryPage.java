@@ -31,7 +31,7 @@ public class CategoryPage extends AbstractBrowsingPage
         $("#productOverview").should(exist);
     }
 
-    @Then("^I want to be on a category page and see the \"([^\"]*)\" as headline$")
+    @Then("^a category page with \"([^\"]*)\" headline is visible$")
     @Step("validate category name \"{categoryName}\" on category page")
     public void validateCategoryName(String categoryName)
     {
@@ -40,7 +40,7 @@ public class CategoryPage extends AbstractBrowsingPage
         $("#titleCategoryName").shouldBe(text(categoryName));
     }
 
-    @Then("^I want to be on a category page$")
+    @Then("^a category page is opened$")
     @Step("validate category page structure")
     public void validateStructure()
     {
@@ -85,7 +85,6 @@ public class CategoryPage extends AbstractBrowsingPage
      * @param position
      * @return
      */
-    @When("^I click on the product number \"([^\"]*)\"$")
     @Step("click on a product by position")
     public ProductdetailPage clickProductByPosition(int position)
     {
@@ -101,7 +100,7 @@ public class CategoryPage extends AbstractBrowsingPage
      * @param position
      * @return
      */
-    @When("^I click on the product \"([^\"]*)\"$")
+    @When("^product \"([^\"]*)\" is opened$")
     @Step("click on a product by name \"{productName}\"")
     public ProductdetailPage clickProductByName(String productName)
     {
@@ -128,7 +127,7 @@ public class CategoryPage extends AbstractBrowsingPage
      * @param searchTerm
      * @param searchTermExpectedCount
      */
-    @Then("^the page should show for the searchterm \"([^\"]*)\" \"([^\"]*)\" products$")
+    @Then("^result page contains searchterm \"([^\"]*)\" and shows \"([^\"]*)\" products$")
     @Step("validate search results for \"{searchTerm}\" on category page")
     public void validateSearchHits(String searchTerm, int searchTermExpectedCount)
     {
@@ -150,6 +149,16 @@ public class CategoryPage extends AbstractBrowsingPage
         // Verify that there is the specified amount of results
         // The amount of products shown in the headline matches the expected value
         $("#totalProductCount").shouldHave(exactText(Integer.toString(searchTermExpectedCount)));
+    }
+
+    /**
+     * @param productName
+     */
+    @Then("^product \"([^\"]*)\" is visible$")
+    @Step("validate product \"{productName}\" is visible on category page")
+    public void validateProductVisible(String productName)
+    {
+        $("#productOverview .thumbnails .thumbnail a > img.pImage[title='" + productName + "']").shouldBe(visible);
     }
 
     /**

@@ -43,7 +43,7 @@ public class LoginPage extends AbstractBrowsingPage
     }
 
     @Override
-    @Then("^I want to be on the login page$")
+    @Then("^login page is opened$")
     @Step("validate login page structure")
     public void validateStructure()
     {
@@ -93,7 +93,7 @@ public class LoginPage extends AbstractBrowsingPage
      * @param password
      *            The password of the account you want to log into
      */
-    @When("^I fill the login form with \"([^\"]*)\" and \"([^\"]*)\" and send it$")
+    @When("^login form is filled with \"([^\"]*)\" and \"([^\"]*)\" and send$")
     @Step("send login form with valid data")
     public HomePage sendLoginform(String email, String password)
     {
@@ -124,7 +124,6 @@ public class LoginPage extends AbstractBrowsingPage
     /**
      * @return
      */
-    @When("^I click the register button$")
     @Step("open register page from login page")
     public RegisterPage openRegister()
     {
@@ -132,7 +131,7 @@ public class LoginPage extends AbstractBrowsingPage
         return new RegisterPage();
     }
 
-    @Then("^I want to be registered successfully$")
+    @Then("^register was successful$")
     @Step("validate successful registration message")
     public void validateSuccessfulRegistration()
     {

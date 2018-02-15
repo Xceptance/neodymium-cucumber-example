@@ -19,7 +19,7 @@ public class Footer extends AbstractComponent
         footer.should(exist);
     }
 
-    @Then("^the footer should be visible$")
+    @Then("^footer is visible$")
     @Step("validate the footer")
     public void validate()
     {
