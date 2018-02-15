@@ -12,7 +12,6 @@ Feature: Homepage
     Examples: 
       | browser         |
       | Chrome_1024x768 |
-      | Chrome_1024x768 |
 
     @Firefox
     Examples: 
