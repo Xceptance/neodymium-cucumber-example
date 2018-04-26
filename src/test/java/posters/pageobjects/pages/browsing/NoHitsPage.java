@@ -2,7 +2,6 @@ package posters.pageobjects.pages.browsing;
 
 import com.xceptance.neodymium.util.Context;
 
-import cucumber.api.java.en.Then;
 import io.qameta.allure.Step;
 
 public class NoHitsPage extends AbstractBrowsingPage
@@ -20,7 +19,6 @@ public class NoHitsPage extends AbstractBrowsingPage
         errorMessage.validateErrorMessage(Context.localizedText("NoHitsPage.validation.noProductsFound"));
     }
 
-    @Then("^no hits page is opened$")
     @Step("validate no hits page")
     public void validate()
     {

@@ -9,7 +9,6 @@ import static com.codeborne.selenide.Selenide.$$;
 
 import com.xceptance.neodymium.util.Context;
 
-import cucumber.api.java.en.Then;
 import io.qameta.allure.Step;
 import posters.dataobjects.User;
 
@@ -22,7 +21,6 @@ public class HomePage extends AbstractBrowsingPage
         $("#titleIndex").should(exist);
     }
 
-    @Then("^logo, carousel and hot products are visible$")
     @Step("validate home page structure")
     public void validateStructure()
     {
@@ -69,7 +67,6 @@ public class HomePage extends AbstractBrowsingPage
      * @param firstName
      *            The name should be shown in the mini User Menu
      */
-    @Then("^login was successful for \"([^\"]*)\"$")
     @Step("validate sucessful login on home page")
     public void validateSuccessfulLogin(String firstName)
     {

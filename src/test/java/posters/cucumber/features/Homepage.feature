@@ -3,17 +3,15 @@ Feature: Homepage
 
   Scenario Outline: Visting the homepage
     Given "<browser>" is open
-    When homepage is loaded
-    Then page title should be "Posters - The Ultimate Online Shop"
-        And logo, carousel and hot products are visible
-        And footer is visible
+     When homepage is loaded
+     Then I see homepage with logo, carousel, hot products and footer and it's title is "<pageTitle>"
 
     @Chrome
     Examples: 
-      | browser         |
-      | Chrome_1024x768 |
+      | browser         | pageTitle                          |
+      | Chrome_1024x768 | Posters - The Ultimate Online Shop |
 
     @Firefox
     Examples: 
-      | browser     |
-      | FF_1024x768 |
+      | browser     | pageTitle                          |
+      | FF_1024x768 | Posters - The Ultimate Online Shop |

@@ -2,10 +2,10 @@ Feature: Catalog
 
   Scenario Outline: Browsing the catalog
     Given "<browser>" is open
-        And homepage is loaded
-    When a main category "<categoryName>" is hovered and a sub category "<subCategoryName>" is opened   
-    Then a category page with "<subCategoryName>" headline is visible
-  
+      And homepage is loaded
+     When I choose main category "<categoryName>" and sub category "<subCategoryName>"
+     Then I see category page with "<subCategoryName>" headline
+
     @Chrome
     Examples: 
       | browser         | categoryName    | subCategoryName |

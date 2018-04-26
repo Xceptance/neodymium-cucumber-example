@@ -7,7 +7,6 @@ import static com.codeborne.selenide.Selenide.$;
 import com.codeborne.selenide.SelenideElement;
 import com.xceptance.neodymium.util.Context;
 
-import cucumber.api.java.en.Then;
 import io.qameta.allure.Step;
 
 public class Footer extends AbstractComponent
@@ -19,7 +18,6 @@ public class Footer extends AbstractComponent
         footer.should(exist);
     }
 
-    @Then("^footer is visible$")
     @Step("validate the footer")
     public void validate()
     {
