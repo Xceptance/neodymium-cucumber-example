@@ -7,11 +7,13 @@ Feature: Product
      When product "<productName>" is opened
      Then a product detail page shows the headline "<productName>"
 
+    @Chrome
     Examples: 
       | browser         | categoryName   | subCategoryName | productName            |
       | Chrome_1024x768 | Transportation | Air Travel      | Air Lingus Airbus A320 |
       | Chrome_1024x768 | Dining         | Main Dishes     | Tuna Steak             |
 
+    @Firefox
     Examples: 
       | browser     | categoryName    | subCategoryName | productName       |
       | FF_1024x768 | World of Nature | Animals         | Grizzly Bear      |

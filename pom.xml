@@ -51,7 +51,7 @@
 				<configuration>
 					<forkCount>2</forkCount>
 					<includes>
-						<include>posters/cucumber/tests/AllFeaturesTest.java</include>
+						<include>posters/cucumber/tests/All*FeaturesTest.java</include>
 					</includes>
 					<testFailureIgnore>true</testFailureIgnore>
 					<argLine>-javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"</argLine>

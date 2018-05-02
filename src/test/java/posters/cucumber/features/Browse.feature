@@ -1,4 +1,4 @@
-Feature: Catalog
+Feature: Browse
 
   Scenario Outline: Browsing the catalog
     Given "<browser>" is open

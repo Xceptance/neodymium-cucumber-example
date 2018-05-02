@@ -120,7 +120,7 @@ public class MiniCart extends AbstractComponent
     {
         DecimalFormat format = new DecimalFormat("##0.00");
         validateMiniCart(position, product.getName(), product.getStyle(), product.getSize(), product.getAmount(),
-                         Double.toString(product.getAmount() * product.getUnitPriceDouble()));
+                         "$" + format.format((product.getAmount() * product.getUnitPriceDouble())));
     }
 
     /**
