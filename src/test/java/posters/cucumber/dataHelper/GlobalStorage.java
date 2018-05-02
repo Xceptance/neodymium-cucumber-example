@@ -3,6 +3,11 @@
  */
 package posters.cucumber.dataHelper;
 
+import java.util.ArrayList;
+
+import posters.dataobjects.Address;
+import posters.dataobjects.CreditCard;
+import posters.dataobjects.Product;
 import posters.dataobjects.User;
 
 /**
@@ -13,4 +18,13 @@ import posters.dataobjects.User;
 public class GlobalStorage
 {
     public User user;
+
+    public ArrayList<Product> products;
+
+    public Address shippingAddress;
+
+    public Address billingAddress;
+
+    public CreditCard creditcard;
+
 }

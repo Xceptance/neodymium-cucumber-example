@@ -12,8 +12,6 @@ public class Product
 
     String unitPrice;
 
-    String totalUnitPrice;
-
     String style;
 
     String size;
@@ -28,14 +26,18 @@ public class Product
      * @param size
      * @param amount
      */
-    public Product(String name, String unitPrice, String totalUnitPrice, String style, String size, int amount)
+    public Product(String name, String unitPrice, String style, String size, int amount)
     {
         this.name = name;
         this.unitPrice = unitPrice;
-        this.totalUnitPrice = totalUnitPrice;
         this.style = style;
         this.size = size;
         this.amount = amount;
+    }
+
+    public double getUnitPriceDouble()
+    {
+        return Double.parseDouble(this.unitPrice.replaceAll("\\$", ""));
     }
 
     /**
@@ -56,14 +58,6 @@ public class Product
     }
 
     /**
-     * @return the price
-     */
-    public String getUnitPrice()
-    {
-        return unitPrice;
-    }
-
-    /**
      * @param price
      *            the price to set
      */
@@ -73,20 +67,11 @@ public class Product
     }
 
     /**
-     * @return the totalUnitPrice
+     * @return the unitPrice
      */
-    public String getTotalUnitPrice()
+    public String getUnitPrice()
     {
-        return totalUnitPrice;
-    }
-
-    /**
-     * @param totalUnitPrice
-     *            the totalUnitPrice to set
-     */
-    public void setTotalUnitPrice(String totalUnitPrice)
-    {
-        this.totalUnitPrice = totalUnitPrice;
+        return this.unitPrice;
     }
 
     /**
@@ -124,7 +109,7 @@ public class Product
     }
 
     /**
-     * @return the amount
+     * @return the size
      */
     public int getAmount()
     {
@@ -132,8 +117,8 @@ public class Product
     }
 
     /**
-     * @param amount
-     *            the amount to set
+     * @param size
+     *            the size to set
      */
     public void setAmount(int amount)
     {
@@ -143,6 +128,18 @@ public class Product
     @Override
     public String toString()
     {
-        return String.format("Product [name()=%s, size()=%s, style()=%s, price()=%s]", getName(), getSize(), getStyle(), getUnitPrice());
+        return String.format("Product [name()=%s, size()=%s, style()=%s, price()=%s]", getName(), getSize(), getStyle(), getUnitPrice(), getAmount());
     }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        Product other = (Product) obj;
+        if (this.name.equals(other.name) && this.unitPrice.equals(other.unitPrice) && this.style.equals(other.style) && this.size.equals(other.size))
+        {
+            return true;
+        }
+        return false;
+    }
+
 }

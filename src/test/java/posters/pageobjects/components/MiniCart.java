@@ -10,6 +10,8 @@ import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 
+import java.text.DecimalFormat;
+
 import com.codeborne.selenide.SelenideElement;
 import com.xceptance.neodymium.util.Context;
 
@@ -112,10 +114,13 @@ public class MiniCart extends AbstractComponent
      * @param position
      * @param product
      */
+
     @Step("validate \"{product}\" in the mini cart")
     public void validateMiniCart(int position, Product product)
     {
-        validateMiniCart(position, product.getName(), product.getStyle(), product.getSize(), product.getAmount(), product.getTotalUnitPrice());
+        DecimalFormat format = new DecimalFormat("##0.00");
+        validateMiniCart(position, product.getName(), product.getStyle(), product.getSize(), product.getAmount(),
+                         Double.toString(product.getAmount() * product.getUnitPriceDouble()));
     }
 
     /**

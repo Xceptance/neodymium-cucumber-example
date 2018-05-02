@@ -6,14 +6,19 @@ package posters.pageobjects.pages.checkout;
 import static com.codeborne.selenide.Condition.exactText;
 import static com.codeborne.selenide.Condition.exist;
 import static com.codeborne.selenide.Condition.matchText;
+import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.$$;
+
+import java.text.DecimalFormat;
 
 import com.codeborne.selenide.SelenideElement;
 
 import io.qameta.allure.Step;
 import posters.dataobjects.Address;
 import posters.dataobjects.CreditCard;
+import posters.dataobjects.Product;
 import posters.pageobjects.pages.browsing.HomePage;
 
 /**
@@ -65,6 +70,21 @@ public class PlaceOrderPlace extends AbstractCheckoutPage
      * @param productSize
      *            The size
      */
+    public void validateContainsProduct(Product product)
+    {
+        SelenideElement productEl = $$("div.hidden-xs").filter(text(product.getName())).first().parent().parent();
+        productEl.find(".pName").shouldHave(exactText(product.getName()));
+        productEl.find(".pSize").shouldHave(exactText(product.getSize()));
+        productEl.find(".pStyle").shouldHave(exactText(product.getStyle()));
+        productEl.find(".pCount").shouldHave(exactText(Integer.toString(product.getAmount())));
+        productEl.find(".pPrice").shouldHave(exactText(product.getUnitPrice()));
+        productEl.find(".pStyle").shouldHave(exactText(product.getStyle()));
+        DecimalFormat format = new DecimalFormat("##0.00");
+        double price = product.getUnitPriceDouble() * product.getAmount();
+        productEl.find(".productLineItemPrice").shouldHave(exactText("$" + format.format(price)));
+
+    }
+
     @Step("validate product \"{productName}\" on place order page")
     public void validateProduct(int position, String productName, int productCount, String productStyle, String productSize)
     {

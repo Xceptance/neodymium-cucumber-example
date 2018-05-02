@@ -8,6 +8,7 @@ import com.xceptance.neodymium.util.Context;
 import cucumber.api.java.en.Given;
 import io.qameta.allure.Step;
 import posters.pageobjects.pages.browsing.HomePage;
+import posters.pageobjects.pages.browsing.ProductdetailPage;
 import posters.pageobjects.pages.user.LoginPage;
 import posters.pageobjects.pages.user.RegisterPage;
 
@@ -46,4 +47,20 @@ public class OpenPageFlows
         registerPage.isExpectedPage();
         return registerPage;
     };
+
+    @Given("^product page \"([^\"]*)\" is open$")
+    @Step("open product page with cleared cookes")
+    public static ProductdetailPage openProductdetailsPageWithClearedCookes(String url)
+    {
+        clearBrowserCookies();
+        open(Context.get().configuration.url() + url);
+        return new ProductdetailPage();
+    }
+
+    @Step("open product page without cleared cookes")
+    public static ProductdetailPage openProductdetailsPage(String url)
+    {
+        open(Context.get().configuration.url() + url);
+        return new ProductdetailPage();
+    }
 }

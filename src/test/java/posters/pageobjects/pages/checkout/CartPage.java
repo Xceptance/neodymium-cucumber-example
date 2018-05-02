@@ -84,7 +84,8 @@ public class CartPage extends AbstractBrowsingPage
     @Step("validate \"{product}\" in on the cart page")
     public void validateCartItem(int position, Product product)
     {
-        validateCartItem(position, product.getName(), product.getStyle(), product.getSize(), product.getAmount(), product.getUnitPrice());
+        validateCartItem(position, product.getName(), product.getStyle(), product.getSize(), product.getAmount(),
+                         product.getUnitPrice());
     }
 
     /**
@@ -95,7 +96,8 @@ public class CartPage extends AbstractBrowsingPage
     @Step("validate \"{product}\" in on the cart page")
     public void validateCartItem(int position, Product product, int productAmount)
     {
-        validateCartItem(position, product.getName(), product.getStyle(), product.getSize(), productAmount, product.getUnitPrice());
+        validateCartItem(position, product.getName(), product.getStyle(), product.getSize(),
+                         productAmount, product.getUnitPrice());
     }
 
     private void validateCartItem(int position, String productName, String productStyle, String productSize, int productAmount, String productPrice)
@@ -202,7 +204,7 @@ public class CartPage extends AbstractBrowsingPage
     @Step("get product from line item on the cart page")
     public Product getProduct(int position)
     {
-        return new Product(getProductName(position), getProductUnitPrice(position), getProductTotalUnitPrice(position), getProductStyle(position), getProductSize(position), Integer.parseInt(getProductCount(position)));
+        return new Product(getProductName(position), getProductUnitPrice(position), getProductStyle(position), getProductSize(position), Integer.parseInt(getProductCount(position)));
     };
 
     /**

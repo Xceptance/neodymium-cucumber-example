@@ -126,7 +126,7 @@ public class ProductdetailPage extends AbstractBrowsingPage
     @Step("get product details from product detail page")
     public Product getProduct()
     {
-        return new Product(getProductName(), getProductPrice(), getProductPrice(), getChosenStyle(), getChosenSize(), 1);
+        return new Product(getProductName(), getProductPrice(), getChosenStyle(), getChosenSize(), 1);
     }
 
     /**
