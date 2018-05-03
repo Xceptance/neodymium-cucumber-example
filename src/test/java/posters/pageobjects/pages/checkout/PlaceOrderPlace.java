@@ -70,18 +70,26 @@ public class PlaceOrderPlace extends AbstractCheckoutPage
      * @param productSize
      *            The size
      */
+    @Step("validate order contains product \"{productName}\"")
     public void validateContainsProduct(Product product)
     {
-        SelenideElement productEl = $$("div.hidden-xs").filter(text(product.getName())).first().parent().parent();
-        productEl.find(".pName").shouldHave(exactText(product.getName()));
-        productEl.find(".pSize").shouldHave(exactText(product.getSize()));
-        productEl.find(".pStyle").shouldHave(exactText(product.getStyle()));
-        productEl.find(".pCount").shouldHave(exactText(Integer.toString(product.getAmount())));
-        productEl.find(".pPrice").shouldHave(exactText(product.getUnitPrice()));
-        productEl.find(".pStyle").shouldHave(exactText(product.getStyle()));
+        SelenideElement productContainer = $$("div.hidden-xs").filter(text(product.getName())).first().parent().parent();
+        for (int i = 0; i < $$("div.hidden-xs").filter(text(product.getName())).size(); i++)
+        {
+            SelenideElement productValiant = $$("div.hidden-xs").filter(text(product.getName())).get(i);
+            if (productValiant.find(".pStyle").text().equals(product.getStyle()) && productValiant.find(".pSize").text().equals(product.getSize()))
+            {
+                productContainer = productValiant.parent().parent();
+            }
+        }
+        productContainer.find(".pName").shouldHave(exactText(product.getName()));
+        productContainer.find(".pSize").shouldHave(exactText(product.getSize()));
+        productContainer.find(".pStyle").shouldHave(exactText(product.getStyle()));
+        productContainer.find(".pCount").shouldHave(exactText(Integer.toString(product.getAmount())));
+        productContainer.find(".pPrice").shouldHave(exactText(product.getUnitPrice()));
         DecimalFormat format = new DecimalFormat("##0.00");
         double price = product.getUnitPriceDouble() * product.getAmount();
-        productEl.find(".productLineItemPrice").shouldHave(exactText("$" + format.format(price)));
+        productContainer.find(".productLineItemPrice").shouldHave(exactText("$" + format.format(price)));
 
     }
 

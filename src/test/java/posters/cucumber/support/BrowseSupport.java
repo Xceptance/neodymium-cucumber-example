@@ -6,7 +6,7 @@ import cucumber.api.java.en.When;
 import posters.pageobjects.pages.browsing.CategoryPage;
 import posters.pageobjects.pages.browsing.HomePage;
 
-public class CatalogSupport
+public class BrowseSupport
 {
     @Given("^a main category \"([^\"]*)\" is hovered and a sub category \"([^\"]*)\" is opened$")
     @When("^I choose main category \"([^\"]*)\" and sub category \"([^\"]*)\"$")

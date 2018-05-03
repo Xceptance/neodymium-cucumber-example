@@ -9,6 +9,7 @@ import posters.cucumber.dataHelper.GlobalStorage;
 import posters.dataobjects.Address;
 import posters.dataobjects.CreditCard;
 import posters.dataobjects.Product;
+import posters.pageobjects.pages.browsing.HomePage;
 import posters.pageobjects.pages.browsing.ProductdetailPage;
 import posters.pageobjects.pages.checkout.CartPage;
 import posters.pageobjects.pages.checkout.PaymentPage;
@@ -95,5 +96,13 @@ public class OrderSupport
     {
         PlaceOrderPlace placeOrder = new PlaceOrderPlace();
         placeOrder.validateAddressesAndPayment(storage.shippingAddress, storage.billingAddress, storage.creditcard);
+    }
+
+    @Then("^my order is successfully placed$")
+    public void placeOrder()
+    {
+        HomePage succssefulOrder = new PlaceOrderPlace().placeOrder();
+        succssefulOrder.isExpectedPage();
+        succssefulOrder.validateSuccessfulOrder();
     }
 }

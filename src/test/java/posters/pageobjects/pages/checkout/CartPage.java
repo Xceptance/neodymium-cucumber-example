@@ -8,8 +8,13 @@ import static com.codeborne.selenide.Condition.exactValue;
 import static com.codeborne.selenide.Condition.exist;
 import static com.codeborne.selenide.Condition.hidden;
 import static com.codeborne.selenide.Condition.matchText;
+import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Condition.value;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.$$;
+
+import java.text.DecimalFormat;
 
 import org.junit.Assert;
 
@@ -58,6 +63,29 @@ public class CartPage extends AbstractBrowsingPage
         // Checkout Button
         // Makes sure the checkout button is there.
         $("#btnStartCheckout").should(exist);
+    }
+
+    @Step("validate product in the cart")
+    public void validateContainsProduct(Product product)
+    {
+        SelenideElement productContainer = $$("div.hidden-xs").filter(text(product.getName())).first().parent().parent();
+        for (int i = 0; i < $$("div.hidden-xs").filter(text(product.getName())).size(); i++)
+        {
+            SelenideElement productVariant = $$("div.hidden-xs").filter(text(product.getName())).get(i);
+            if (productVariant.find(".productStyle").text().equals(product.getStyle()) && productVariant.find(".productSize").text().equals(product.getSize()))
+            {
+                productContainer = productVariant.parent().parent();
+                System.out.println(productContainer.find(".productCount"));
+            }
+        }
+        productContainer.find(".productName").shouldHave(exactText(product.getName()));
+        productContainer.find(".productSize").shouldHave(exactText(product.getSize()));
+        productContainer.find(".productStyle").shouldHave(exactText(product.getStyle()));
+        productContainer.find(".productCount").shouldHave(value(Integer.toString(product.getAmount())));
+        productContainer.find(".productUnitPrice").shouldHave(exactText(product.getUnitPrice()));
+        DecimalFormat format = new DecimalFormat("##0.00");
+        double price = product.getUnitPriceDouble() * product.getAmount();
+        productContainer.find(".productTotalUnitPrice").shouldHave(exactText("$" + format.format(price)));
     }
 
     @Step("validate shipping costs on cart page")
@@ -221,6 +249,36 @@ public class CartPage extends AbstractBrowsingPage
         // Click the update button
         // Clicks the update button for the product
         productContainer.find(".btnUpdateProduct").scrollTo().click();
+    }
+
+    private SelenideElement findProductContainer(String productName, String style, String size)
+    {
+        SelenideElement productContainer = $$("div.hidden-xs").filter(text(productName)).first().parent().parent();
+        for (int i = 0; i < $$("div.hidden-xs").filter(text(productName)).size(); i++)
+        {
+            SelenideElement product = $$("div.hidden-xs").filter(text(productName)).get(i);
+            if (product.find(".productStyle").text().equals(style) && product.find(".productSize").text().equals(size))
+            {
+                productContainer = product.parent().parent();
+            }
+        }
+        return productContainer;
+    }
+
+    @Step("update product count by the name")
+    public void updateProductCountByName(String productName, String style, String size, int amount)
+    {
+        SelenideElement productContainer = findProductContainer(productName, style, size);
+        productContainer.find(".productCount").setValue(Integer.toString(amount));
+        productContainer.find(".btnUpdateProduct").scrollTo().click();
+    }
+
+    @Step("remove product by name")
+    public void removeProductByName(String productName, String style, String size)
+    {
+        SelenideElement productContainer = findProductContainer(productName, style, size);
+        productContainer.find(".btnRemoveProduct").click();
+        $("#buttonDelete").click();
     }
 
     /**
