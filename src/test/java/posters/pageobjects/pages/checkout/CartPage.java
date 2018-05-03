@@ -43,6 +43,13 @@ public class CartPage extends AbstractBrowsingPage
         cartTable.should(exist);
     }
 
+    @Step("valiadte subtotal in the cart")
+    public void validateSubtotal(String subtotal)
+    {
+        $$("#cartSummaryList li").findBy(text("Subtotal")).find(".text-right").shouldHave(exactText(subtotal));
+
+    }
+
     @Override
     @Step("validate cart page structure")
     public void validateStructure()
@@ -75,7 +82,6 @@ public class CartPage extends AbstractBrowsingPage
             if (productVariant.find(".productStyle").text().equals(product.getStyle()) && productVariant.find(".productSize").text().equals(product.getSize()))
             {
                 productContainer = productVariant.parent().parent();
-                System.out.println(productContainer.find(".productCount"));
             }
         }
         productContainer.find(".productName").shouldHave(exactText(product.getName()));

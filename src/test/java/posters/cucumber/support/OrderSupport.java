@@ -1,5 +1,6 @@
 package posters.cucumber.support;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import cucumber.api.java.en.Given;
@@ -79,12 +80,18 @@ public class OrderSupport
         {
             Product newProduct = storage.products.get(storage.products.indexOf(product));
             newProduct.setAmount(newProduct.getAmount() + 1);
+            productPage.addToCart();
+            productPage.miniCart.openMiniCart();
+            productPage.miniCart.validateMiniCartByProduct(newProduct);
+
         }
         else
         {
             storage.products.add(product);
+            productPage.addToCart();
+            productPage.miniCart.openMiniCart();
+            productPage.miniCart.validateMiniCartByProduct(product);
         }
-        productPage.addToCart();
     }
 
     @When("^I specify the shipping address \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\" and use it for billing$")
@@ -113,11 +120,15 @@ public class OrderSupport
     @Then("^I see all the products in order overview$")
     public void validateContainsAllProductsWithCorrectPricesAndAmount()
     {
+        double subtotal = 0.0;
+        DecimalFormat format = new DecimalFormat("##0.00");
         PlaceOrderPage placeOrder = new PlaceOrderPage();
         for (int i = 0; i < storage.products.size(); i++)
         {
             placeOrder.validateContainsProduct(storage.products.get(i));
+            subtotal += storage.products.get(i).getUnitPriceDouble() * storage.products.get(i).getAmount();
         }
+        placeOrder.validateSubtotal("$" + format.format(subtotal));
 
     }
 

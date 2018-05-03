@@ -6,6 +6,7 @@ package posters.pageobjects.components;
 import static com.codeborne.selenide.Condition.exactText;
 import static com.codeborne.selenide.Condition.exist;
 import static com.codeborne.selenide.Condition.not;
+import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
@@ -121,6 +122,27 @@ public class MiniCart extends AbstractComponent
         DecimalFormat format = new DecimalFormat("##0.00");
         validateMiniCart(position, product.getName(), product.getStyle(), product.getSize(), product.getAmount(),
                          "$" + format.format((product.getAmount() * product.getUnitPriceDouble())));
+    }
+
+    @Step("validate \"{product}\" in the mini cart by name")
+    public void validateMiniCartByProduct(Product product)
+    {
+        SelenideElement productContainer = $$(".cartItems").filter(text(product.getName())).first();
+        for (int i = 0; i < $$(".cartItems").filter(text(product.getName())).size(); i++)
+        {
+            SelenideElement productVariant = $$(".cartItems").filter(text(product.getName())).get(i);
+            if (productVariant.find(".prodStyle").text().equals(product.getStyle()) && productVariant.find(".prodSize").text().equals(product.getSize()))
+            {
+                productContainer = productVariant;
+            }
+        }
+        DecimalFormat format = new DecimalFormat("##0.00");
+        productContainer.find(".prodName").shouldHave(exactText(product.getName()));
+        productContainer.find(".prodStyle").shouldHave(exactText(product.getStyle()));
+        productContainer.find(".prodSize").shouldHave(exactText(product.getSize()));
+        productContainer.find(".prodCount").shouldHave(exactText(Integer.toString(product.getAmount())));
+        productContainer.find(".prodPrice").shouldHave(exactText("$" + format.format(product.getAmount() * product.getUnitPriceDouble())));
+
     }
 
     /**

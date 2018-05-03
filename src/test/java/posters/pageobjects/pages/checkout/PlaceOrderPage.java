@@ -93,6 +93,12 @@ public class PlaceOrderPage extends AbstractCheckoutPage
 
     }
 
+    @Step("validate subtotal on the place order page")
+    public void validateSubtotal(String subtotal)
+    {
+        $$("#checkoutSummaryList li").findBy(text("Subtotal")).find(".text-right").shouldBe(exactText(subtotal));
+    }
+
     @Step("validate product \"{productName}\" on place order page")
     public void validateProduct(int position, String productName, int productCount, String productStyle, String productSize)
     {

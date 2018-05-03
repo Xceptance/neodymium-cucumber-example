@@ -26,7 +26,15 @@ public class OrderHistoryPage extends AbstractBrowsingPage
     @Step("validate product is in the order")
     public void validateContainsProduct(Product product)
     {
-        SelenideElement productContainer = $$(".productInfo").findBy(text(product.getName())).parent();
+        SelenideElement productContainer = $$(".productInfo").filter(text(product.getName())).first().parent();
+        for (int i = 0; i < $$(".productInfo").filter(text(product.getName())).size(); i++)
+        {
+            SelenideElement productValiant = $$(".productInfo").filter(text(product.getName())).get(i);
+            if (productValiant.find(".productStyle").text().equals(product.getStyle()) && productValiant.find(".productSize").text().equals(product.getSize()))
+            {
+                productContainer = productValiant.parent();
+            }
+        }
         productContainer.find(".productName").shouldBe(exactText(product.getName()));
         productContainer.find(".productStyle").shouldBe(exactText(product.getStyle()));
         productContainer.find(".productSize").shouldBe(exactText(product.getSize()));

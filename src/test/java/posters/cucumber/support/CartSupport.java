@@ -1,5 +1,7 @@
 package posters.cucumber.support;
 
+import java.text.DecimalFormat;
+
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import posters.cucumber.dataHelper.GlobalStorage;
@@ -26,11 +28,15 @@ public class CartSupport
     @Then("^I see all the added products in the cart and their properties are correct$")
     public void validateProductsInTheCart()
     {
+        double subtotal = 0.0;
+        DecimalFormat format = new DecimalFormat("##0.00");
         CartPage cartPage = new CartPage();
         for (int i = 0; i < storage.products.size(); i++)
         {
             cartPage.validateContainsProduct(storage.products.get(i));
+            subtotal += storage.products.get(i).getUnitPriceDouble() * storage.products.get(i).getAmount();
         }
+        cartPage.validateSubtotal("$" + format.format(subtotal));
 
     }
 
