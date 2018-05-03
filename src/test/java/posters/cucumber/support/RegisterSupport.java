@@ -102,7 +102,7 @@ public class RegisterSupport
         registerPage.sendRegisterForm(firstName, lastName, email, password, password);
     }
 
-    @Given("^new user with \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\" is registered")
+    @Given("^new user with \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\" is registered$")
     public void openRegisterPageAndRegisterUser(String firstName, String lastName, String email, String password)
     {
         OpenPageFlows.registerPage();

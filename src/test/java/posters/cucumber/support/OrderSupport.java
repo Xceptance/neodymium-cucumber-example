@@ -2,6 +2,7 @@ package posters.cucumber.support;
 
 import java.util.ArrayList;
 
+import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import io.qameta.allure.Step;
@@ -9,12 +10,17 @@ import posters.cucumber.dataHelper.GlobalStorage;
 import posters.dataobjects.Address;
 import posters.dataobjects.CreditCard;
 import posters.dataobjects.Product;
+import posters.dataobjects.User;
 import posters.pageobjects.pages.browsing.HomePage;
 import posters.pageobjects.pages.browsing.ProductdetailPage;
 import posters.pageobjects.pages.checkout.CartPage;
 import posters.pageobjects.pages.checkout.PaymentPage;
 import posters.pageobjects.pages.checkout.PlaceOrderPage;
 import posters.pageobjects.pages.checkout.ShippingAddressPage;
+import posters.pageobjects.pages.user.AccountOverviewPage;
+import posters.pageobjects.pages.user.LoginPage;
+import posters.pageobjects.pages.user.OrderHistoryPage;
+import posters.pageobjects.pages.user.RegisterPage;
 
 public class OrderSupport
 {
@@ -24,6 +30,30 @@ public class OrderSupport
     {
         // The storage is passed via dependency injection
         this.storage = storage;
+    }
+
+    @Given("^new user with \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\" is registered and logged in$")
+    public void registerAndLogIn(String firstName, String lastName, String email, String password)
+    {
+        RegisterPage registerPage = OpenPageFlows.registerPage();
+        registerPage.isExpectedPage();
+        storage.user = new User(firstName, lastName, email, password);
+        registerPage.sendRegisterForm(firstName, lastName, email, password, password);
+        LoginPage loginPage = registerPage.userMenu.openLogin();
+        loginPage.isExpectedPage();
+        loginPage.sendLoginform(email, password);
+    }
+
+    @Then("^all the product are to find in order history$")
+    public void validateOrderInOrderHistory()
+    {
+        AccountOverviewPage accountOverview = new HomePage().userMenu.openAccountOverview();
+        accountOverview.isExpectedPage();
+        OrderHistoryPage orderHistory = accountOverview.openOrderHistory();
+        for (int i = 0; i < storage.products.size(); i++)
+        {
+            orderHistory.validateContainsProduct(storage.products.get(i));
+        }
     }
 
     @When("^I add product \"([^\"]*)\" in size \"([^\"]*)\" and style \"([^\"]*)\"$")
