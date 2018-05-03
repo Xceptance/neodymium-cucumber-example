@@ -24,7 +24,7 @@ import posters.pageobjects.pages.browsing.HomePage;
 /**
  * @author pfotenhauer
  */
-public class PlaceOrderPlace extends AbstractCheckoutPage
+public class PlaceOrderPage extends AbstractCheckoutPage
 {
     private SelenideElement headline = $("#titleOrderOverview");
 

@@ -56,7 +56,7 @@ public class PaymentPage extends AbstractCheckoutPage
      * @return PPlaceOrder
      */
     @Step("select a payment")
-    public PlaceOrderPlace selectCreditCard(int position)
+    public PlaceOrderPage selectCreditCard(int position)
     {
         final int index = position - 1;
         // Select address
@@ -66,11 +66,11 @@ public class PaymentPage extends AbstractCheckoutPage
         // Clicks the continue button
         $("#btnUsePayment").scrollTo().click();
 
-        return new PlaceOrderPlace();
+        return new PlaceOrderPage();
     }
 
     @Step("fill and send payment form")
-    public PlaceOrderPlace sendPaymentForm(String number, String name, String month, String year)
+    public PlaceOrderPage sendPaymentForm(String number, String name, String month, String year)
     {
         // Credit Card Number
         // Fills the card number field with the parameter
@@ -87,6 +87,6 @@ public class PaymentPage extends AbstractCheckoutPage
         // Clicks the Continue button
         addPaymentButton.scrollTo().click();
 
-        return new PlaceOrderPlace();
+        return new PlaceOrderPage();
     }
 }

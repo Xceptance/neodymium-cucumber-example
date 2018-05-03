@@ -13,7 +13,7 @@ import posters.pageobjects.pages.browsing.HomePage;
 import posters.pageobjects.pages.browsing.ProductdetailPage;
 import posters.pageobjects.pages.checkout.CartPage;
 import posters.pageobjects.pages.checkout.PaymentPage;
-import posters.pageobjects.pages.checkout.PlaceOrderPlace;
+import posters.pageobjects.pages.checkout.PlaceOrderPage;
 import posters.pageobjects.pages.checkout.ShippingAddressPage;
 
 public class OrderSupport
@@ -75,7 +75,7 @@ public class OrderSupport
     {
         PaymentPage paymentPage = new PaymentPage();
         paymentPage.isExpectedPage();
-        PlaceOrderPlace placeOrder = paymentPage.sendPaymentForm(cardNumber, name, month, year);
+        PlaceOrderPage placeOrder = paymentPage.sendPaymentForm(cardNumber, name, month, year);
         storage.creditcard = new CreditCard(name, cardNumber, "xxxx xxxx xxxx " + cardNumber.substring(12, 16), month, year);
         placeOrder.isExpectedPage();
     }
@@ -83,7 +83,7 @@ public class OrderSupport
     @Then("^I see all the products in order overview$")
     public void validateContainsAllProductsWithCorrectPricesAndAmount()
     {
-        PlaceOrderPlace placeOrder = new PlaceOrderPlace();
+        PlaceOrderPage placeOrder = new PlaceOrderPage();
         for (int i = 0; i < storage.products.size(); i++)
         {
             placeOrder.validateContainsProduct(storage.products.get(i));
@@ -94,14 +94,14 @@ public class OrderSupport
     @Then("^my shipping and billing addresses as well as payment data are displayed correctly")
     public void validateAddressesAndPaymentData()
     {
-        PlaceOrderPlace placeOrder = new PlaceOrderPlace();
+        PlaceOrderPage placeOrder = new PlaceOrderPage();
         placeOrder.validateAddressesAndPayment(storage.shippingAddress, storage.billingAddress, storage.creditcard);
     }
 
     @Then("^my order is successfully placed$")
     public void placeOrder()
     {
-        HomePage succssefulOrder = new PlaceOrderPlace().placeOrder();
+        HomePage succssefulOrder = new PlaceOrderPage().placeOrder();
         succssefulOrder.isExpectedPage();
         succssefulOrder.validateSuccessfulOrder();
     }
