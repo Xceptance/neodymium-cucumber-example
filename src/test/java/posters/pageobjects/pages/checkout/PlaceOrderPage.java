@@ -70,18 +70,16 @@ public class PlaceOrderPage extends AbstractCheckoutPage
      * @param productSize
      *            The size
      */
+    // TODO: refacture
     @Step("validate order contains product \"{productName}\"")
     public void validateContainsProduct(Product product)
     {
-        SelenideElement productContainer = $$("div.hidden-xs").filter(text(product.getName())).first().parent().parent();
-        for (int i = 0; i < $$("div.hidden-xs").filter(text(product.getName())).size(); i++)
-        {
-            SelenideElement productValiant = $$("div.hidden-xs").filter(text(product.getName())).get(i);
-            if (productValiant.find(".pStyle").text().equals(product.getStyle()) && productValiant.find(".pSize").text().equals(product.getSize()))
-            {
-                productContainer = productValiant.parent().parent();
-            }
-        }
+
+        SelenideElement productContainer = $$("div.hidden-xs").find((matchText(product.getName() + "\\n" + "[a-zA-Z\\s\\.\\,0-9\\!]+\\n"
+                                                                               + "style\\:\\s"
+                                                                               + product.getStyle()
+                                                                               + "\\n" + "size\\:\\s" + product.getSize())))
+                                                              .parent().parent();
         productContainer.find(".pName").shouldHave(exactText(product.getName()));
         productContainer.find(".pSize").shouldHave(exactText(product.getSize()));
         productContainer.find(".pStyle").shouldHave(exactText(product.getStyle()));

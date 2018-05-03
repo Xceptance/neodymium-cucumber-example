@@ -72,18 +72,16 @@ public class CartPage extends AbstractBrowsingPage
         $("#btnStartCheckout").should(exist);
     }
 
+    // TODO: refacture
     @Step("validate product in the cart")
     public void validateContainsProduct(Product product)
     {
-        SelenideElement productContainer = $$("div.hidden-xs").filter(text(product.getName())).first().parent().parent();
-        for (int i = 0; i < $$("div.hidden-xs").filter(text(product.getName())).size(); i++)
-        {
-            SelenideElement productVariant = $$("div.hidden-xs").filter(text(product.getName())).get(i);
-            if (productVariant.find(".productStyle").text().equals(product.getStyle()) && productVariant.find(".productSize").text().equals(product.getSize()))
-            {
-                productContainer = productVariant.parent().parent();
-            }
-        }
+        SelenideElement productContainer = $$("div.hidden-xs").find((matchText(product.getName() + "\\n" + "[a-zA-Z\\s\\.\\,0-9\\!]+\\n"
+                                                                               + "style\\:\\s"
+                                                                               + product.getStyle()
+                                                                               + "\\n" + "size\\:\\s" + product.getSize())))
+                                                              .parent().parent();
+
         productContainer.find(".productName").shouldHave(exactText(product.getName()));
         productContainer.find(".productSize").shouldHave(exactText(product.getSize()));
         productContainer.find(".productStyle").shouldHave(exactText(product.getStyle()));

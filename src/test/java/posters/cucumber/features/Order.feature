@@ -31,7 +31,7 @@ Feature: Order
      Then I see all the products in order overview
       And my shipping and billing addresses as well as payment data are displayed correctly
       And my order is successfully placed
-      And all the product are to find in order history
+      And all the products are to find in order history
 
     @Chrome
     Examples: 

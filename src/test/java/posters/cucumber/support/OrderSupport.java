@@ -45,7 +45,7 @@ public class OrderSupport
         loginPage.sendLoginform(email, password);
     }
 
-    @Then("^all the product are to find in order history$")
+    @Then("^all the products are to find in order history$")
     public void validateOrderInOrderHistory()
     {
         AccountOverviewPage accountOverview = new HomePage().userMenu.openAccountOverview();

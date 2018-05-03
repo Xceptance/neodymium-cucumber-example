@@ -5,8 +5,8 @@ package posters.pageobjects.components;
 
 import static com.codeborne.selenide.Condition.exactText;
 import static com.codeborne.selenide.Condition.exist;
+import static com.codeborne.selenide.Condition.matchText;
 import static com.codeborne.selenide.Condition.not;
-import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
@@ -124,18 +124,14 @@ public class MiniCart extends AbstractComponent
                          "$" + format.format((product.getAmount() * product.getUnitPriceDouble())));
     }
 
+    // TODO: refacture
     @Step("validate \"{product}\" in the mini cart by name")
     public void validateMiniCartByProduct(Product product)
     {
-        SelenideElement productContainer = $$(".cartItems").filter(text(product.getName())).first();
-        for (int i = 0; i < $$(".cartItems").filter(text(product.getName())).size(); i++)
-        {
-            SelenideElement productVariant = $$(".cartItems").filter(text(product.getName())).get(i);
-            if (productVariant.find(".prodStyle").text().equals(product.getStyle()) && productVariant.find(".prodSize").text().equals(product.getSize()))
-            {
-                productContainer = productVariant;
-            }
-        }
+        SelenideElement productContainer = $$(".cartItems").find((matchText(product.getName() + "\\n" + "Quantity:\\s" + "\\d+\\s" + "\\(" + product.getStyle()
+                                                                            + ",\\s" + product.getSize()
+                                                                            + "\\s\\)\\n" + "\\$\\d+" + "\\." + "\\d+")));
+
         DecimalFormat format = new DecimalFormat("##0.00");
         productContainer.find(".prodName").shouldHave(exactText(product.getName()));
         productContainer.find(".prodStyle").shouldHave(exactText(product.getStyle()));
