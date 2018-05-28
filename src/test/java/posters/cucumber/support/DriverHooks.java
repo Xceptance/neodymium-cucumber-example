@@ -2,6 +2,7 @@ package posters.cucumber.support;
 
 import com.xceptance.neodymium.util.Driver;
 
+import cucumber.api.Scenario;
 import cucumber.api.java.After;
 import cucumber.api.java.en.Given;
 
@@ -17,8 +18,8 @@ public class DriverHooks
     // have a lower order number than default in order to shut down the driver after
     // the test case specific after hooks
     @After(order = 100)
-    public void tearDown()
+    public void tearDown(Scenario scenario)
     {
-        Driver.tearDown();
+        Driver.tearDown(scenario);
     }
 }
