@@ -27,4 +27,30 @@ public class GlobalStorage
 
     public CreditCard creditcard;
 
+    public Product getProduct(int index)
+    {
+        return products.get(index);
+    }
+
+    public Product addProduct(Product product)
+    {
+        // set up product array if needed
+        if (products == null)
+        {
+            products = new ArrayList<Product>();
+        }
+
+        // increase amount of product if already there or add the whole product
+        if (products.contains(product))
+        {
+            Product updatedProduct = products.get(products.indexOf(product));
+            updatedProduct.setAmount(updatedProduct.getAmount() + 1);
+            return updatedProduct;
+        }
+        else
+        {
+            products.add(product);
+            return product;
+        }
+    }
 }

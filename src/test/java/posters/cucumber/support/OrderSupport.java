@@ -1,7 +1,6 @@
 package posters.cucumber.support;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -53,7 +52,7 @@ public class OrderSupport
         OrderHistoryPage orderHistory = accountOverview.openOrderHistory();
         for (int i = 0; i < storage.products.size(); i++)
         {
-            orderHistory.validateContainsProduct(storage.products.get(i));
+            orderHistory.validateContainsProduct(storage.getProduct(i));
         }
     }
 
@@ -62,36 +61,21 @@ public class OrderSupport
     public void openProductPageAndAddItoTheCart(String productUrl, String size, String style)
     {
         OpenPageFlows.openProductdetailsPage(productUrl);
-        addProductToTheCart(size, style);
+        addProductToCart(size, style);
     }
 
     @When("I add this product with size \"([^\"]*)\" and style \"([^\"]*)\" to the cart$")
-    public void addProductToTheCart(String size, String style)
+    public void addProductToCart(String size, String style)
     {
         ProductdetailPage productPage = new ProductdetailPage();
         productPage.setSize(size);
         productPage.setStyle(style);
-        if (storage.products == null)
-        {
-            storage.products = new ArrayList<Product>();
-        }
-        Product product = new Product(productPage.getProductName(), productPage.getProductPrice(), style, size, 1);
-        if (storage.products.contains(product))
-        {
-            Product newProduct = storage.products.get(storage.products.indexOf(product));
-            newProduct.setAmount(newProduct.getAmount() + 1);
-            productPage.addToCart();
-            productPage.miniCart.openMiniCart();
-            productPage.miniCart.validateMiniCartByProduct(newProduct);
 
-        }
-        else
-        {
-            storage.products.add(product);
-            productPage.addToCart();
-            productPage.miniCart.openMiniCart();
-            productPage.miniCart.validateMiniCartByProduct(product);
-        }
+        Product product = storage.addProduct(productPage.getProduct());
+
+        productPage.addToCart();
+        productPage.miniCart.openMiniCart();
+        productPage.miniCart.validateMiniCartByProduct(product);
     }
 
     @When("^I specify the shipping address \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\" and use it for billing$")

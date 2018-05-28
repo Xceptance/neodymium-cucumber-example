@@ -5,6 +5,7 @@ import java.text.DecimalFormat;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import posters.cucumber.dataHelper.GlobalStorage;
+import posters.dataobjects.Product;
 import posters.pageobjects.pages.browsing.ProductdetailPage;
 import posters.pageobjects.pages.checkout.CartPage;
 
@@ -31,13 +32,13 @@ public class CartSupport
         double subtotal = 0.0;
         DecimalFormat format = new DecimalFormat("##0.00");
         CartPage cartPage = new CartPage();
-        for (int i = 0; i < storage.products.size(); i++)
+
+        for (Product product : storage.products)
         {
-            cartPage.validateContainsProduct(storage.products.get(i));
-            subtotal += storage.products.get(i).getUnitPriceDouble() * storage.products.get(i).getAmount();
+            cartPage.validateContainsProduct(product);
+            subtotal += product.getUnitPriceDouble() * product.getAmount();
         }
         cartPage.validateSubtotal("$" + format.format(subtotal));
-
     }
 
     @Then("^I can change amount of the \"([^\"]*)\" with \"([^\"]*)\" and \"([^\"]*)\" to (\\d+)$")
@@ -45,14 +46,14 @@ public class CartSupport
     {
         CartPage cartPage = new CartPage();
         cartPage.updateProductCountByName(productName, style, size, amount);
-        for (int i = 0; i < storage.products.size(); i++)
+        for (Product product : storage.products)
         {
-            if (storage.products.get(i).getName().equals(productName) && storage.products.get(i).getSize().equals(size)
-                && storage.products.get(i).getStyle().equals(style))
+            if (product.getName().equals(productName) && product.getSize().equals(size)
+                && product.getStyle().equals(style))
             {
-                storage.products.get(i).setAmount(amount);
+                product.setAmount(amount);
             }
-            cartPage.validateContainsProduct(storage.products.get(i));
+            cartPage.validateContainsProduct(product);
         }
     }
 
@@ -61,12 +62,12 @@ public class CartSupport
     {
         CartPage cartPage = new CartPage();
         cartPage.removeProductByName(productName, style, size);
-        for (int i = 0; i < storage.products.size(); i++)
+        for (Product product : storage.products)
         {
-            if (storage.products.get(i).getName().equals(productName) && storage.products.get(i).getSize().equals(size)
-                && storage.products.get(i).getStyle().equals(style))
+            if (product.getName().equals(productName) && product.getSize().equals(size)
+                && product.getStyle().equals(style))
             {
-                storage.products.remove(i);
+                storage.products.remove(product);
             }
         }
         validateProductsInTheCart();
