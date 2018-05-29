@@ -21,7 +21,7 @@ Feature: Order
       | browser     | productUrl                               | productSize | productStyle | name  | company             | address     | city           | state    | zip   | country       | cardNumber       | month | year |
       | FF_1024x768 | productDetail/Grizzly%20Bear?productId=1 | 32 x 24 in  | gloss        | James | Monster Corporation | 621 Wall St | North Tonawada | New York | 14120 | United States | 4111111111111111 |    05 | 2021 |
 
-  @Registered
+  @DeleteUserAfterwards 
   Scenario Outline: Order some products as User
     Given "<browser>" is open
       And new user with "<firstName>", "<lastName>", "<email>", "<password>" is registered and logged in

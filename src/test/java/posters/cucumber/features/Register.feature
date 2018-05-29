@@ -2,7 +2,7 @@
 Feature: Register
   Description: Show case clean up steps implementation using dependency injection for passing data between steps
 
-  @Registered
+  @DeleteUserAfterwards
   Scenario Outline: Register a new customer
     Given "<browser>" is open
       And register page is loaded
@@ -22,7 +22,7 @@ Feature: Register
       | FF_1024x768 | Jim       | Doe      | jim@doe.com    | topsecret |
       | FF_1024x768 | Jeremy    | Doe      | jeremy@doe.com | topsecret |
 
-  @Registered
+  @DeleteUserAfterwards
   Scenario Outline: Login a newly registered  customer
     Given "<browser>" is open
       And new user with "<firstName>", "<lastName>", "<email>", "<password>" is registered

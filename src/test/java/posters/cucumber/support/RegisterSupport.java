@@ -1,12 +1,10 @@
 package posters.cucumber.support;
 
-import cucumber.api.Scenario;
 import cucumber.api.java.After;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import io.qameta.allure.Step;
-import posters.cucumber.dataHelper.GlobalStorage;
 import posters.dataobjects.User;
 import posters.pageobjects.pages.browsing.HomePage;
 import posters.pageobjects.pages.user.AccountOverviewPage;
@@ -32,13 +30,6 @@ public class RegisterSupport
         storage.user = new User(firstName, lastName, eMail, password);
     };
 
-    @After("@Register")
-    public void afterRegisterFromUserMenu(Scenario scenario)
-    {
-        // use the user coming from dependency injection
-        deletUser(storage.user);
-    }
-
     @Given("^login page is opened after registration$")
     public void registerUserSetup()
     {
@@ -46,8 +37,9 @@ public class RegisterSupport
         registerUser(storage.user);
     }
 
+    @After("@DeleteUserAfterwards")
     @Step("delete user flow")
-    public static LoginPage deletUser(User user)
+    public LoginPage deleteUser()
     {
         HomePage homePage = new HomePage();
         // ensure that the user is logged in
@@ -55,7 +47,7 @@ public class RegisterSupport
         if (!homePage.userMenu.isLoggedIn())
         {
             loginPage = homePage.userMenu.openLogin();
-            homePage = loginPage.sendLoginform(user);
+            homePage = loginPage.sendLoginform(storage.user);
         }
 
         // goto account page
@@ -68,16 +60,17 @@ public class RegisterSupport
 
         // goto account deletion page
         DeleteAccountPage deleteAccountPage = personalDataPage.openDeleteAccount();
+        deleteAccountPage.validateStructure();
 
         // delete the account
-        homePage = deleteAccountPage.deleteAccount(user.getPassword());
+        homePage = deleteAccountPage.deleteAccount(storage.user.getPassword());
         homePage.validateSuccessfulDeletedAccount();
 
         // verify that the account is not available anymore
         loginPage = homePage.userMenu.openLogin();
         loginPage.validateStructure();
-        loginPage.sendFalseLoginform(user);
-        loginPage.validateWrongEmail(user.getEmail());
+        loginPage.sendFalseLoginform(storage.user);
+        loginPage.validateWrongEmail(storage.user.getEmail());
 
         return loginPage;
     }
