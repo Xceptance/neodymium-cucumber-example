@@ -1,7 +1,7 @@
 /**
  * 
  */
-package posters.cucumber.dataHelper;
+package posters.cucumber.support;
 
 import java.util.ArrayList;
 
@@ -27,11 +27,6 @@ public class GlobalStorage
 
     public CreditCard creditcard;
 
-    public Product getProduct(int index)
-    {
-        return products.get(index);
-    }
-
     public Product addProduct(Product product)
     {
         // set up product array if needed
@@ -51,6 +46,18 @@ public class GlobalStorage
         {
             products.add(product);
             return product;
+        }
+    }
+
+    public void removeProduct(String productName, String style, String size)
+    {
+        for (Product product : products)
+        {
+            if (product.getName().equals(productName) && product.getSize().equals(size)
+                && product.getStyle().equals(style))
+            {
+                products.remove(product);
+            }
         }
     }
 }

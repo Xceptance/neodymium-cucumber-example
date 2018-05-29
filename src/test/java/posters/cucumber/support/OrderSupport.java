@@ -6,7 +6,6 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import io.qameta.allure.Step;
-import posters.cucumber.dataHelper.GlobalStorage;
 import posters.dataobjects.Address;
 import posters.dataobjects.CreditCard;
 import posters.dataobjects.Product;
@@ -50,9 +49,9 @@ public class OrderSupport
         AccountOverviewPage accountOverview = new HomePage().userMenu.openAccountOverview();
         accountOverview.isExpectedPage();
         OrderHistoryPage orderHistory = accountOverview.openOrderHistory();
-        for (int i = 0; i < storage.products.size(); i++)
+        for (Product product : storage.products)
         {
-            orderHistory.validateContainsProduct(storage.getProduct(i));
+            orderHistory.validateContainsProduct(product);
         }
     }
 
@@ -107,10 +106,10 @@ public class OrderSupport
         double subtotal = 0.0;
         DecimalFormat format = new DecimalFormat("##0.00");
         PlaceOrderPage placeOrder = new PlaceOrderPage();
-        for (int i = 0; i < storage.products.size(); i++)
+        for (Product product : storage.products)
         {
-            placeOrder.validateContainsProduct(storage.products.get(i));
-            subtotal += storage.products.get(i).getUnitPriceDouble() * storage.products.get(i).getAmount();
+            placeOrder.validateContainsProduct(product);
+            subtotal += product.getUnitPriceDouble() * product.getAmount();
         }
         placeOrder.validateSubtotal("$" + format.format(subtotal));
 

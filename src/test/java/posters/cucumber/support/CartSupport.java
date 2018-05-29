@@ -4,7 +4,6 @@ import java.text.DecimalFormat;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import posters.cucumber.dataHelper.GlobalStorage;
 import posters.dataobjects.Product;
 import posters.pageobjects.pages.browsing.ProductdetailPage;
 import posters.pageobjects.pages.checkout.CartPage;
@@ -62,15 +61,9 @@ public class CartSupport
     {
         CartPage cartPage = new CartPage();
         cartPage.removeProductByName(productName, style, size);
-        for (Product product : storage.products)
-        {
-            if (product.getName().equals(productName) && product.getSize().equals(size)
-                && product.getStyle().equals(style))
-            {
-                storage.products.remove(product);
-            }
-        }
+
+        storage.removeProduct(productName, style, size);
+
         validateProductsInTheCart();
     }
-
 }
