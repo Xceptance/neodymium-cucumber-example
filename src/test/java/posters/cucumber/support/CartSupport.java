@@ -1,12 +1,11 @@
 package posters.cucumber.support;
 
-import java.text.DecimalFormat;
-
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import posters.dataobjects.Product;
 import posters.pageobjects.pages.browsing.ProductdetailPage;
 import posters.pageobjects.pages.checkout.CartPage;
+import posters.pageobjects.utility.PriceHelper;
 
 public class CartSupport
 {
@@ -29,7 +28,6 @@ public class CartSupport
     public void validateProductsInTheCart()
     {
         double subtotal = 0.0;
-        DecimalFormat format = new DecimalFormat("##0.00");
         CartPage cartPage = new CartPage();
 
         for (Product product : storage.products)
@@ -37,7 +35,7 @@ public class CartSupport
             cartPage.validateContainsProduct(product);
             subtotal += product.getUnitPriceDouble() * product.getAmount();
         }
-        cartPage.validateSubtotal("$" + format.format(subtotal));
+        cartPage.validateSubtotal(PriceHelper.format(subtotal));
     }
 
     @Then("^I can change amount of the \"([^\"]*)\" with \"([^\"]*)\" and \"([^\"]*)\" to (\\d+)$")

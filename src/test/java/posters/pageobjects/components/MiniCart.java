@@ -11,14 +11,13 @@ import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 
-import java.text.DecimalFormat;
-
 import com.codeborne.selenide.SelenideElement;
 import com.xceptance.neodymium.util.Context;
 
 import io.qameta.allure.Step;
 import posters.dataobjects.Product;
 import posters.pageobjects.pages.checkout.CartPage;
+import posters.pageobjects.utility.PriceHelper;
 
 /**
  * @author pfotenhauer
@@ -119,9 +118,8 @@ public class MiniCart extends AbstractComponent
     @Step("validate \"{product}\" in the mini cart")
     public void validateMiniCart(int position, Product product)
     {
-        DecimalFormat format = new DecimalFormat("##0.00");
         validateMiniCart(position, product.getName(), product.getStyle(), product.getSize(), product.getAmount(),
-                         "$" + format.format((product.getAmount() * product.getUnitPriceDouble())));
+                         PriceHelper.format((product.getAmount() * product.getUnitPriceDouble())));
     }
 
     // TODO: refacture
@@ -132,12 +130,11 @@ public class MiniCart extends AbstractComponent
                                                                             + ",\\s" + product.getSize()
                                                                             + "\\s\\)\\n" + "\\$\\d+" + "\\." + "\\d+")));
 
-        DecimalFormat format = new DecimalFormat("##0.00");
         productContainer.find(".prodName").shouldHave(exactText(product.getName()));
         productContainer.find(".prodStyle").shouldHave(exactText(product.getStyle()));
         productContainer.find(".prodSize").shouldHave(exactText(product.getSize()));
         productContainer.find(".prodCount").shouldHave(exactText(Integer.toString(product.getAmount())));
-        productContainer.find(".prodPrice").shouldHave(exactText("$" + format.format(product.getAmount() * product.getUnitPriceDouble())));
+        productContainer.find(".prodPrice").shouldHave(exactText(PriceHelper.format(product.getAmount() * product.getUnitPriceDouble())));
 
     }
 

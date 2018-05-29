@@ -14,8 +14,6 @@ import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 
-import java.text.DecimalFormat;
-
 import org.junit.Assert;
 
 import com.codeborne.selenide.SelenideElement;
@@ -87,9 +85,8 @@ public class CartPage extends AbstractBrowsingPage
         productContainer.find(".productStyle").shouldHave(exactText(product.getStyle()));
         productContainer.find(".productCount").shouldHave(value(Integer.toString(product.getAmount())));
         productContainer.find(".productUnitPrice").shouldHave(exactText(product.getUnitPrice()));
-        DecimalFormat format = new DecimalFormat("##0.00");
         double price = product.getUnitPriceDouble() * product.getAmount();
-        productContainer.find(".productTotalUnitPrice").shouldHave(exactText("$" + format.format(price)));
+        productContainer.find(".productTotalUnitPrice").shouldHave(exactText(PriceHelper.format(price)));
     }
 
     @Step("validate shipping costs on cart page")

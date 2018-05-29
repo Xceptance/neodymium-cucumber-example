@@ -11,8 +11,6 @@ import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 
-import java.text.DecimalFormat;
-
 import com.codeborne.selenide.SelenideElement;
 
 import io.qameta.allure.Step;
@@ -20,6 +18,7 @@ import posters.dataobjects.Address;
 import posters.dataobjects.CreditCard;
 import posters.dataobjects.Product;
 import posters.pageobjects.pages.browsing.HomePage;
+import posters.pageobjects.utility.PriceHelper;
 
 /**
  * @author pfotenhauer
@@ -85,9 +84,8 @@ public class PlaceOrderPage extends AbstractCheckoutPage
         productContainer.find(".pStyle").shouldHave(exactText(product.getStyle()));
         productContainer.find(".pCount").shouldHave(exactText(Integer.toString(product.getAmount())));
         productContainer.find(".pPrice").shouldHave(exactText(product.getUnitPrice()));
-        DecimalFormat format = new DecimalFormat("##0.00");
         double price = product.getUnitPriceDouble() * product.getAmount();
-        productContainer.find(".productLineItemPrice").shouldHave(exactText("$" + format.format(price)));
+        productContainer.find(".productLineItemPrice").shouldHave(exactText(PriceHelper.format(price)));
 
     }
 

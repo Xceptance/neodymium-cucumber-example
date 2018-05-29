@@ -7,6 +7,7 @@ import cucumber.api.java.en.When;
 import io.qameta.allure.Step;
 import posters.dataobjects.User;
 import posters.pageobjects.pages.browsing.HomePage;
+import posters.pageobjects.pages.checkout.CartPage;
 import posters.pageobjects.pages.user.AccountOverviewPage;
 import posters.pageobjects.pages.user.DeleteAccountPage;
 import posters.pageobjects.pages.user.LoginPage;
@@ -48,6 +49,16 @@ public class RegisterSupport
         {
             loginPage = homePage.userMenu.openLogin();
             homePage = loginPage.sendLoginform(storage.user);
+        }
+
+        // needed since there is a bug in posters
+        if (homePage.miniCart.getTotalCount() > 0)
+        {
+            CartPage cartPage = homePage.miniCart.openCartPage();
+            while (cartPage.hasProductsInCart())
+            {
+                cartPage.removeProduct(1);
+            }
         }
 
         // goto account page

@@ -1,7 +1,5 @@
 package posters.cucumber.support;
 
-import java.text.DecimalFormat;
-
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -20,6 +18,7 @@ import posters.pageobjects.pages.user.AccountOverviewPage;
 import posters.pageobjects.pages.user.LoginPage;
 import posters.pageobjects.pages.user.OrderHistoryPage;
 import posters.pageobjects.pages.user.RegisterPage;
+import posters.pageobjects.utility.PriceHelper;
 
 public class OrderSupport
 {
@@ -104,14 +103,13 @@ public class OrderSupport
     public void validateContainsAllProductsWithCorrectPricesAndAmount()
     {
         double subtotal = 0.0;
-        DecimalFormat format = new DecimalFormat("##0.00");
         PlaceOrderPage placeOrder = new PlaceOrderPage();
         for (Product product : storage.products)
         {
             placeOrder.validateContainsProduct(product);
             subtotal += product.getUnitPriceDouble() * product.getAmount();
         }
-        placeOrder.validateSubtotal("$" + format.format(subtotal));
+        placeOrder.validateSubtotal(PriceHelper.format(subtotal));
 
     }
 
