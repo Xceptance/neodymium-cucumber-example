@@ -33,10 +33,10 @@ Feature: Register
     @Chrome
     Examples: 
       | browser         | firstName | lastName | email        | password  |
-      | Chrome_1024x768 | Jane      | Doe      | jane@doe.com | topsecret |
+      | Chrome_1024x768 | Joseph      | Doe      | joseph@doe.com | topsecret |
 
     @Firefox
     Examples: 
       | browser     | firstName | lastName | email          | password  |
-      | FF_1024x768 | Jim       | Doe      | jim@doe.com    | topsecret |
-      | FF_1024x768 | Jeremy    | Doe      | jeremy@doe.com | topsecret |
+      | FF_1024x768 | Julia       | Doe      | julia@doe.com    | topsecret |
+      | FF_1024x768 | Jin    | Doe      | jin@doe.com | topsecret |
