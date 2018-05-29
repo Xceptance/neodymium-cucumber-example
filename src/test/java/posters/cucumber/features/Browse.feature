@@ -1,3 +1,4 @@
+@Browse
 Feature: Browse
 
   Scenario Outline: Browsing the catalog

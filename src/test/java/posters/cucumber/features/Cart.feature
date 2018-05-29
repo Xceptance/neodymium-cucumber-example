@@ -1,3 +1,4 @@
+@Cart
 Feature: Cart
 
   Scenario Outline: Add to cart
@@ -6,11 +7,10 @@ Feature: Cart
      When I add this product with size "<firtsProductSize>" and style "<firtsProductStyle>" to the cart
       And I add product "<firstProductUrl>" in size "<firtsProductSize>" and style "<firtsProductStyle>"
       And I add product "<secondProductUrl>" in size "<secondProductSize>" and style "<secondProductStyle>"
-     And I open the cart
+      And I open the cart
      Then I see all the added products in the cart and their properties are correct
-     And I can change amount of the "<firstProductName>" with "<firtsProductSize>" and "<firtsProductStyle>" to 1
-     And I can remove "<firstProductName>" with "<firtsProductSize>" and "<firtsProductStyle>"
-     
+      And I can change amount of the "<firstProductName>" with "<firtsProductSize>" and "<firtsProductStyle>" to 1
+      And I can remove "<firstProductName>" with "<firtsProductSize>" and "<firtsProductStyle>"
 
     @Chrome
     Examples: 

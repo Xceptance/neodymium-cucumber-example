@@ -1,4 +1,4 @@
-@Smoke
+@Smoke @Homepage
 Feature: Homepage
 
   Scenario Outline: Visting the homepage

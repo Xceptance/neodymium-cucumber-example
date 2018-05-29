@@ -1,3 +1,4 @@
+@Product
 Feature: Product
 
   Scenario Outline: Opening  a product detail page from a catalog page
