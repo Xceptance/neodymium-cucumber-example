@@ -13,7 +13,6 @@ import static com.codeborne.selenide.Selenide.$;
 import com.codeborne.selenide.SelenideElement;
 import com.xceptance.neodymium.util.Context;
 
-import cucumber.api.java.en.Given;
 import io.qameta.allure.Step;
 import posters.pageobjects.pages.user.AccountOverviewPage;
 import posters.pageobjects.pages.user.LoginPage;
@@ -95,7 +94,6 @@ public class UserMenu extends AbstractComponent
         showUserMenu.find("span.glyphicon").shouldHave(cssClass("logged")).shouldHave(exactText(""));
     }
 
-    @Given("^not logged in$")
     @Step("validate that nobody is looged in")
     public void validateNotLoggedIn()
     {

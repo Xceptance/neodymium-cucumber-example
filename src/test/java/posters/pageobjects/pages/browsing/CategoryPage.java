@@ -15,8 +15,6 @@ import static com.codeborne.selenide.Selenide.$$;
 import com.codeborne.selenide.SelenideElement;
 import com.xceptance.neodymium.util.Context;
 
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
 import io.qameta.allure.Step;
 
 /**
@@ -31,7 +29,6 @@ public class CategoryPage extends AbstractBrowsingPage
         $("#productOverview").should(exist);
     }
 
-    @Then("^a category page with \"([^\"]*)\" headline is visible$")
     @Step("validate category name \"{categoryName}\" on category page")
     public void validateCategoryName(String categoryName)
     {
@@ -40,7 +37,6 @@ public class CategoryPage extends AbstractBrowsingPage
         $("#titleCategoryName").shouldBe(text(categoryName));
     }
 
-    @Then("^a category page is opened$")
     @Step("validate category page structure")
     public void validateStructure()
     {
@@ -100,7 +96,6 @@ public class CategoryPage extends AbstractBrowsingPage
      * @param position
      * @return
      */
-    @When("^product \"([^\"]*)\" is opened$")
     @Step("click on a product by name \"{productName}\"")
     public ProductdetailPage clickProductByName(String productName)
     {
@@ -127,7 +122,6 @@ public class CategoryPage extends AbstractBrowsingPage
      * @param searchTerm
      * @param searchTermExpectedCount
      */
-    @Then("^result page contains searchterm \"([^\"]*)\" and shows \"([^\"]*)\" products$")
     @Step("validate search results for \"{searchTerm}\" on category page")
     public void validateSearchHits(String searchTerm, int searchTermExpectedCount)
     {
@@ -154,7 +148,6 @@ public class CategoryPage extends AbstractBrowsingPage
     /**
      * @param productName
      */
-    @Then("^product \"([^\"]*)\" is visible$")
     @Step("validate product \"{productName}\" is visible on category page")
     public void validateProductVisible(String productName)
     {

@@ -12,7 +12,6 @@ import static com.codeborne.selenide.Selenide.$;
 import com.codeborne.selenide.SelenideElement;
 import com.xceptance.neodymium.util.Context;
 
-import cucumber.api.java.en.When;
 import io.qameta.allure.Step;
 import posters.dataobjects.User;
 import posters.pageobjects.pages.browsing.AbstractBrowsingPage;
@@ -85,7 +84,6 @@ public class RegisterPage extends AbstractBrowsingPage
      * @param password
      *            The password of the account you want to log into
      */
-    @When("^register form is filled with \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\" and send$")
     @Step("fill and send register form")
     public LoginPage sendRegisterForm(String firstName, String lastName, String eMail, String password, String passwordRepeat)
     {
@@ -99,7 +97,7 @@ public class RegisterPage extends AbstractBrowsingPage
         // Type the password parameter into the password field.
         passwordField.val(password);
         // Type the second password parameter into the second password field.
-        passwordRepeatField.val(password);
+        passwordRepeatField.val(passwordRepeat);
         // Register and open the login page if successful
         // Click on the Register Button
         registerButton.scrollTo().click();

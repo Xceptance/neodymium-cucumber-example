@@ -11,7 +11,6 @@ import org.openqa.selenium.By;
 
 import com.codeborne.selenide.SelenideElement;
 
-import cucumber.api.java.en.When;
 import io.qameta.allure.Step;
 import posters.pageobjects.pages.browsing.CategoryPage;
 
@@ -50,7 +49,6 @@ public class TopNavigation extends AbstractComponent
         return new CategoryPage();
     }
 
-    @When("^a main category \"([^\"]*)\" is hovered and a sub category \"([^\"]*)\" is opened$")
     @Step("click on a \"{subCategoryName}\" subcategory within \"{categoryName}\"")
     public CategoryPage clickSubCategoryByName(String categoryName, String subCategoryName)
     {

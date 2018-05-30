@@ -11,7 +11,6 @@ import static com.codeborne.selenide.Selenide.$;
 import com.codeborne.selenide.SelenideElement;
 import com.xceptance.neodymium.util.Context;
 
-import cucumber.api.java.en.Then;
 import io.qameta.allure.Step;
 import posters.dataobjects.Product;
 
@@ -54,7 +53,6 @@ public class ProductdetailPage extends AbstractBrowsingPage
         addToCartButton.shouldHave(exactText(Context.localizedText("ProductdetailPage.addToCartButton.text")));
     }
 
-    @Then("^a product detail page shows the headline \"([^\"]*)\"$")
     @Step("validate product name on product detail page")
     public void validateProductName(String name)
     {
@@ -63,18 +61,38 @@ public class ProductdetailPage extends AbstractBrowsingPage
         productName.shouldHave(exactText(name));
     }
 
+    @Step("select size")
+    public void setSize(String size)
+    {
+        productSize.selectOptionContainingText(size);
+    }
+
+    @Step("select style")
+    public void setStyle(String style)
+    {
+        $(".radio #finish-" + style).selectRadio(style);
+
+    }
+
+    @Step("add product to the cart")
+    public void addToCart()
+    {
+        addToCartButton.scrollTo().click();
+
+    }
+
     @Step("add product with size:\"{size}\" and style:\"{style}\" to cart")
     public void addToCart(String size, String style)
     {
         // Style
         // Checks the chosen style.
-        $(".radio #finish-" + style).selectRadio(style);
+        setStyle(style);
         // Size
         // Selects the chosen size.
-        productSize.selectOptionContainingText(size);
+        setSize(size);
         // Click the Add to cart button
         // click("css= #btnAddToCart");
-        addToCartButton.scrollTo().click();
+        addToCart();
     }
 
     @Step("get product name from product detail page")
@@ -108,7 +126,7 @@ public class ProductdetailPage extends AbstractBrowsingPage
     @Step("get product details from product detail page")
     public Product getProduct()
     {
-        return new Product(getProductName(), getProductPrice(), getProductPrice(), getChosenStyle(), getChosenSize(), 1);
+        return new Product(getProductName(), getProductPrice(), getChosenStyle(), getChosenSize(), 1);
     }
 
     /**
