@@ -3,6 +3,10 @@
  */
 package posters.dataobjects;
 
+import com.xceptance.neodymium.util.Context;
+
+import posters.pageobjects.utility.PriceHelper;
+
 /**
  * @author pfotenhauer
  */
@@ -33,11 +37,6 @@ public class Product
         this.style = style;
         this.size = size;
         this.amount = amount;
-    }
-
-    public double getUnitPriceDouble()
-    {
-        return Double.parseDouble(this.unitPrice.replaceAll("\\$", ""));
     }
 
     /**
@@ -71,7 +70,7 @@ public class Product
      */
     public String getUnitPrice()
     {
-        return this.unitPrice;
+        return unitPrice;
     }
 
     /**
@@ -135,11 +134,41 @@ public class Product
     public boolean equals(Object obj)
     {
         Product other = (Product) obj;
-        if (this.name.equals(other.name) && this.unitPrice.equals(other.unitPrice) && this.style.equals(other.style) && this.size.equals(other.size))
+        if (name.equals(other.name) && unitPrice.equals(other.unitPrice) && style.equals(other.style) && size.equals(other.size))
         {
             return true;
         }
         return false;
     }
 
+    public String getRowRegex()
+    {
+        return getName()
+               + "\\n[a-zA-Z\\s\\.\\,0-9\\!]+\\n"
+               + Context.localizedText("General.product.style")
+               + "\\:\\s" + getStyle()
+               + "\\n"
+               + Context.localizedText("General.product.size")
+               + "\\:\\s" + getSize();
+    }
+
+    public String getCartRowRegex()
+    {
+        return getName()
+               + "\\n"
+               + Context.localizedText("General.product.quantity")
+               + ":\\s" + "\\d+\\s\\(" + getStyle()
+               + ",\\s" + getSize()
+               + "\\s\\)\\n\\$\\d+\\.\\d+";
+    }
+
+    private double getUnitPriceDouble()
+    {
+        return Double.parseDouble(PriceHelper.removeCurrency(unitPrice));
+    }
+
+    public double getTotalPrice()
+    {
+        return amount * getUnitPriceDouble();
+    }
 }

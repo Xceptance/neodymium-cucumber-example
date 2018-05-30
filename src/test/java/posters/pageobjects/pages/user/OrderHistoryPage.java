@@ -23,21 +23,15 @@ public class OrderHistoryPage extends AbstractBrowsingPage
         headline.should(exist);
     }
 
-    // TODO: refacture
     @Step("validate product is in the order")
     public void validateContainsProduct(Product product)
     {
-        SelenideElement productContainer = $$(".productInfo").find((matchText(product.getName() + "\\n" + "[a-zA-Z\\s\\.\\,0-9\\!]+\\n"
-                                                                              + "style\\:\\s"
-                                                                              + product.getStyle()
-                                                                              + "\\n" + "size\\:\\s" + product.getSize())))
+        SelenideElement productContainer = $$(".productInfo").filter((matchText(product.getRowRegex()))).shouldHaveSize(1).first()
                                                              .parent();
 
         productContainer.find(".productName").shouldBe(exactText(product.getName()));
         productContainer.find(".productStyle").shouldBe(exactText(product.getStyle()));
         productContainer.find(".productSize").shouldBe(exactText(product.getSize()));
         productContainer.find(".orderCount").shouldBe(exactText(Integer.toString(product.getAmount()) + "x"));
-
     }
-
 }

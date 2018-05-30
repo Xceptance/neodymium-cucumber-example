@@ -107,10 +107,9 @@ public class OrderSupport
         for (Product product : storage.products)
         {
             placeOrder.validateContainsProduct(product);
-            subtotal += product.getUnitPriceDouble() * product.getAmount();
+            subtotal += product.getTotalPrice();
         }
         placeOrder.validateSubtotal(PriceHelper.format(subtotal));
-
     }
 
     @Then("^my shipping and billing addresses as well as payment data are displayed correctly")

@@ -70,14 +70,10 @@ public class CartPage extends AbstractBrowsingPage
         $("#btnStartCheckout").should(exist);
     }
 
-    // TODO: refacture
     @Step("validate product in the cart")
     public void validateContainsProduct(Product product)
     {
-        SelenideElement productContainer = $$("div.hidden-xs").find((matchText(product.getName() + "\\n" + "[a-zA-Z\\s\\.\\,0-9\\!]+\\n"
-                                                                               + "style\\:\\s"
-                                                                               + product.getStyle()
-                                                                               + "\\n" + "size\\:\\s" + product.getSize())))
+        SelenideElement productContainer = $$("div.hidden-xs").filter((matchText(product.getRowRegex()))).shouldHaveSize(1).first()
                                                               .parent().parent();
 
         productContainer.find(".productName").shouldHave(exactText(product.getName()));
@@ -85,8 +81,7 @@ public class CartPage extends AbstractBrowsingPage
         productContainer.find(".productStyle").shouldHave(exactText(product.getStyle()));
         productContainer.find(".productCount").shouldHave(value(Integer.toString(product.getAmount())));
         productContainer.find(".productUnitPrice").shouldHave(exactText(product.getUnitPrice()));
-        double price = product.getUnitPriceDouble() * product.getAmount();
-        productContainer.find(".productTotalUnitPrice").shouldHave(exactText(PriceHelper.format(price)));
+        productContainer.find(".productTotalUnitPrice").shouldHave(exactText(PriceHelper.format(product.getTotalPrice())));
     }
 
     @Step("validate shipping costs on cart page")

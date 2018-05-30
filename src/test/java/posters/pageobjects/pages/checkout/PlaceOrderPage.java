@@ -69,24 +69,18 @@ public class PlaceOrderPage extends AbstractCheckoutPage
      * @param productSize
      *            The size
      */
-    // TODO: refacture
-    @Step("validate order contains product \"{productName}\"")
+    @Step("validate order contains product \"{product.name}\"")
     public void validateContainsProduct(Product product)
     {
-
-        SelenideElement productContainer = $$("div.hidden-xs").find((matchText(product.getName() + "\\n" + "[a-zA-Z\\s\\.\\,0-9\\!]+\\n"
-                                                                               + "style\\:\\s"
-                                                                               + product.getStyle()
-                                                                               + "\\n" + "size\\:\\s" + product.getSize())))
+        SelenideElement productContainer = $$("div.hidden-xs").filter((matchText(product.getRowRegex()))).shouldHaveSize(1).first()
                                                               .parent().parent();
+
         productContainer.find(".pName").shouldHave(exactText(product.getName()));
         productContainer.find(".pSize").shouldHave(exactText(product.getSize()));
         productContainer.find(".pStyle").shouldHave(exactText(product.getStyle()));
         productContainer.find(".pCount").shouldHave(exactText(Integer.toString(product.getAmount())));
         productContainer.find(".pPrice").shouldHave(exactText(product.getUnitPrice()));
-        double price = product.getUnitPriceDouble() * product.getAmount();
-        productContainer.find(".productLineItemPrice").shouldHave(exactText(PriceHelper.format(price)));
-
+        productContainer.find(".productLineItemPrice").shouldHave(exactText(PriceHelper.format(product.getTotalPrice())));
     }
 
     @Step("validate subtotal on the place order page")

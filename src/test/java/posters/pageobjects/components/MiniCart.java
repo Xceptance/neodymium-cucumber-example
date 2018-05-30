@@ -119,23 +119,19 @@ public class MiniCart extends AbstractComponent
     public void validateMiniCart(int position, Product product)
     {
         validateMiniCart(position, product.getName(), product.getStyle(), product.getSize(), product.getAmount(),
-                         PriceHelper.format((product.getAmount() * product.getUnitPriceDouble())));
+                         PriceHelper.format(product.getTotalPrice()));
     }
 
-    // TODO: refacture
     @Step("validate \"{product}\" in the mini cart by name")
     public void validateMiniCartByProduct(Product product)
     {
-        SelenideElement productContainer = $$(".cartItems").find((matchText(product.getName() + "\\n" + "Quantity:\\s" + "\\d+\\s" + "\\(" + product.getStyle()
-                                                                            + ",\\s" + product.getSize()
-                                                                            + "\\s\\)\\n" + "\\$\\d+" + "\\." + "\\d+")));
+        SelenideElement productContainer = $$(".cartItems").filter(matchText(product.getCartRowRegex())).shouldHaveSize(1).first();
 
         productContainer.find(".prodName").shouldHave(exactText(product.getName()));
         productContainer.find(".prodStyle").shouldHave(exactText(product.getStyle()));
         productContainer.find(".prodSize").shouldHave(exactText(product.getSize()));
         productContainer.find(".prodCount").shouldHave(exactText(Integer.toString(product.getAmount())));
-        productContainer.find(".prodPrice").shouldHave(exactText(PriceHelper.format(product.getAmount() * product.getUnitPriceDouble())));
-
+        productContainer.find(".prodPrice").shouldHave(exactText(PriceHelper.format(product.getTotalPrice())));
     }
 
     /**

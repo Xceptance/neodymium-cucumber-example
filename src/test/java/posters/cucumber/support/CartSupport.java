@@ -33,7 +33,7 @@ public class CartSupport
         for (Product product : storage.products)
         {
             cartPage.validateContainsProduct(product);
-            subtotal += product.getUnitPriceDouble() * product.getAmount();
+            subtotal += product.getTotalPrice();
         }
         cartPage.validateSubtotal(PriceHelper.format(subtotal));
     }
