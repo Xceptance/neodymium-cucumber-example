@@ -91,4 +91,10 @@ public class HomePage extends AbstractBrowsingPage
     {
         successMessage.validateSuccessMessage(Context.localizedText("HomePage.validation.successfulAccountDeletion"));
     }
+
+    public void validateAndVisualAssert()
+    {
+        validateStructureAndVisual();
+        footer.validate();
+    }
 }

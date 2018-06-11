@@ -12,7 +12,7 @@ public class BrowseSupport
     @When("^I choose main category \"([^\"]*)\" and sub category \"([^\"]*)\"$")
     public void openSubcCategory(String categoryName, String subCategoryName)
     {
-        new HomePage().topNav.clickSubCategoryByName(categoryName, subCategoryName);
+        new HomePage().topNav.clickSubCategoryByNames(categoryName, subCategoryName);
     }
 
     @Then("^I see category page with \"([^\"]*)\" headline$")
