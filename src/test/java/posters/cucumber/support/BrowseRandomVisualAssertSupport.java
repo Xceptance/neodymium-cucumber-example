@@ -2,6 +2,8 @@ package posters.cucumber.support;
 
 import java.util.Random;
 
+import org.apache.commons.lang3.StringUtils;
+
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -26,7 +28,14 @@ public class BrowseRandomVisualAssertSupport
     @When("^I choose random sub category with seed \"([^\"]*)\"$")
     public void openRandomSubCategoryAndValidate(String seed)
     {
-        random = new Random(Long.valueOf(seed));
+        if (StringUtils.isEmpty(seed))
+        {
+            random = new Random();
+        }
+        else
+        {
+            random = new Random(Long.valueOf(seed));
+        }
         String categoryName = new HomePage().topNav.getRandomSubcategoryName(random);
         CategoryPage categoryPage = new HomePage().topNav.clickSubcategoryByName(categoryName);
         categoryPage.isExpectedPage();

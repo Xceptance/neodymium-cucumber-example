@@ -1,5 +1,7 @@
+@BrowseRandomVisualAssert
 Feature: BrowseRandomVisualAssert
 
+  @Skip
   Scenario Outline: Browsing the catalog
     Given "<browser>" is open
       And homepage is open
@@ -9,5 +11,5 @@ Feature: BrowseRandomVisualAssert
 
     @Firefox
     Examples: 
-      | browser     | seed          |
-      | FF_1024x768 | 8645363546353 |
+      | browser          | seed          |
+      | Firefox_headless | 8645363546353 |
