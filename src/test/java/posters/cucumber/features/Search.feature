@@ -1,4 +1,4 @@
-@Smoke @Search @WebDriverSetUpViaBrowserTag
+@Smoke @Search @WebDriverSetUpViaBrowserProfileName
 Feature: Searching for products
 
   Scenario Outline: Searching for existing products

@@ -15,7 +15,7 @@ public class DriverHooks
         Driver.setUp(browserProfileName);
     }
 
-    @Before("@WebDriverSetUpViaBrowserTag")
+    @Before("@WebDriverSetUpViaBrowserProfileName")
     public static void setUp(Scenario scenario)
     {
         Driver.setUpWithBrowserTag(scenario);
