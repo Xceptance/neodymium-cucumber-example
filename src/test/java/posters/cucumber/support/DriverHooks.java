@@ -4,15 +4,21 @@ import com.xceptance.neodymium.util.Driver;
 
 import cucumber.api.Scenario;
 import cucumber.api.java.After;
+import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 
 public class DriverHooks
 {
-
     @Given("^\"([^\"]*)\" is open$")
     public static void setUp(final String browserProfileName)
     {
         Driver.setUp(browserProfileName);
+    }
+
+    @Before("@WebDriverSetUpViaBrowserTag")
+    public static void setUp(Scenario scenario)
+    {
+        Driver.setUpWithBrowserTag(scenario);
     }
 
     // have a lower order number than default in order to shut down the driver after
