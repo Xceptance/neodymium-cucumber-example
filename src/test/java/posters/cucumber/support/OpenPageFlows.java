@@ -3,7 +3,7 @@ package posters.cucumber.support;
 import static com.codeborne.selenide.Selenide.clearBrowserCookies;
 import static com.codeborne.selenide.Selenide.open;
 
-import com.xceptance.neodymium.util.Context;
+import com.xceptance.neodymium.util.Neodymium;
 
 import cucumber.api.java.en.Given;
 import io.qameta.allure.Step;
@@ -20,9 +20,8 @@ public class OpenPageFlows
     {
         // clear cookies to ensure a new session
         clearBrowserCookies();
-
         // open home page
-        open(Context.get().configuration.url());
+        open(Neodymium.configuration().url());
         HomePage homePage = new HomePage();
         homePage.isExpectedPage();
         return homePage;
@@ -53,14 +52,14 @@ public class OpenPageFlows
     public static ProductdetailPage openProductdetailsPageWithClearedCookes(String url)
     {
         clearBrowserCookies();
-        open(Context.get().configuration.url() + url);
+        open(Neodymium.configuration().url() + url);
         return new ProductdetailPage();
     }
 
     @Step("open product page without cleared cookes")
     public static ProductdetailPage openProductdetailsPage(String url)
     {
-        open(Context.get().configuration.url() + url);
+        open(Neodymium.configuration().url() + url);
         return new ProductdetailPage();
     }
 }

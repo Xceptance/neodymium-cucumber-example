@@ -29,7 +29,8 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <surefire.version>2.21.0</surefire.version>
         <aspectj.version>1.8.13</aspectj.version>
-        <neodymium.version>1.1.0</neodymium.version>
+        <neodymium.version>1.1.1-SNAPSHOT</neodymium.version>
+        <cucumber.version>2.4.0</cucumber.version>
     </properties>
 
     <build>
@@ -81,7 +82,7 @@
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-picocontainer</artifactId>
-            <version>2.3.1</version>
+            <version>${cucumber.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
