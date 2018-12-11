@@ -19,5 +19,5 @@ Feature: Cart
 
     @Firefox
     Examples: 
-      | browser     | firstProductUrl                          | firstProductName | secondProductUrl                                     | firtsProductSize | secondProductSize | secondProductStyle | firtsProductStyle |
-      | FF_1024x768 | productDetail/Grizzly%20Bear?productId=1 | Grizzly Bear     | productDetail/Gummy%20Bears%20in%20Bowl?productId=57 | 32 x 24 in       | 16 x 12 in        | gloss              | matte             |
+      | browser     | firstProductUrl                               | firstProductName | secondProductUrl                                     | firtsProductSize | secondProductSize | secondProductStyle | firtsProductStyle |
+      | Firefox_1024x768 | productDetail/Grizzly%20Bear?productId=1 | Grizzly Bear     | productDetail/Gummy%20Bears%20in%20Bowl?productId=57 | 32 x 24 in       | 16 x 12 in        | gloss              | matte             |

@@ -16,6 +16,6 @@ Feature: Product
 
     @Firefox
     Examples: 
-      | browser     | categoryName    | subCategoryName | productName       |
-      | FF_1024x768 | World of Nature | Animals         | Grizzly Bear      |
-      | FF_1024x768 | Dining          | Sweets          | Colored Sprinkles |
+      | browser          | categoryName    | subCategoryName | productName       |
+      | Firefox_1024x768 | World of Nature | Animals         | Grizzly Bear      |
+      | Firefox_1024x768 | Dining          | Sweets          | Colored Sprinkles |

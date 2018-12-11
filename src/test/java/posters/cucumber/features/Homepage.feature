@@ -13,5 +13,5 @@ Feature: Homepage
 
     @Firefox
     Examples: 
-      | browser     | pageTitle                          |
-      | FF_1024x768 | Posters - The Ultimate Online Shop |
+      | browser          | pageTitle                          |
+      | Firefox_1024x768 | Posters - The Ultimate Online Shop |

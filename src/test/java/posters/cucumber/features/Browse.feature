@@ -15,6 +15,6 @@ Feature: Browse
 
     @Firefox
     Examples: 
-      | browser     | categoryName | subCategoryName |
-      | FF_1024x768 | Dining       | Main Dishes     |
-      | FF_1024x768 | Dining       | Sweets          |
+      | browser          | categoryName | subCategoryName |
+      | Firefox_1024x768 | Dining       | Main Dishes     |
+      | Firefox_1024x768 | Dining       | Sweets          |

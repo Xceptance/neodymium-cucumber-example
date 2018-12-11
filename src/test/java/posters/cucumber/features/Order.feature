@@ -18,8 +18,8 @@ Feature: Order
 
     @Firefox
     Examples: 
-      | browser     | productUrl                               | productSize | productStyle | name  | company             | address     | city           | state    | zip   | country       | cardNumber       | month | year |
-      | FF_1024x768 | productDetail/Grizzly%20Bear?productId=1 | 32 x 24 in  | gloss        | James | Monster Corporation | 621 Wall St | North Tonawada | New York | 14120 | United States | 4111111111111111 |    05 | 2021 |
+      | browser          | productUrl                               | productSize | productStyle | name  | company             | address     | city           | state    | zip   | country       | cardNumber       | month | year |
+      | Firefox_1024x768 | productDetail/Grizzly%20Bear?productId=1 | 32 x 24 in  | gloss        | James | Monster Corporation | 621 Wall St | North Tonawada | New York | 14120 | United States | 4111111111111111 |    05 | 2021 |
 
   @DeleteUserAfterwards 
   Scenario Outline: Order some products as User
@@ -35,10 +35,10 @@ Feature: Order
 
     @Chrome
     Examples: 
-      | browser         | firstName | lastName | email        | password  | productUrl                               | productSize | productStyle | name  | company             | address     | city           | state    | zip   | country       | cardNumber       | month | year |
-      | Chrome_1024x768 | Jakobi      | Doe      | jakobi@doe.com | topsecret | productDetail/Grizzly%20Bear?productId=1 | 32 x 24 in  | gloss        | James | Monster Corporation | 621 Wall St | North Tonawada | New York | 14120 | United States | 4111111111111111 |    05 | 2021 |
+      | browser         | firstName | lastName | email          | password  | productUrl                               | productSize | productStyle | name  | company             | address     | city           | state    | zip   | country       | cardNumber       | month | year |
+      | Chrome_1024x768 | Jakobi    | Doe      | jakobi@doe.com | topsecret | productDetail/Grizzly%20Bear?productId=1 | 32 x 24 in  | gloss        | James | Monster Corporation | 621 Wall St | North Tonawada | New York | 14120 | United States | 4111111111111111 |    05 | 2021 |
 
     @Firefox
     Examples: 
-      | browser     | firstName | lastName | email       | password  | productUrl                               | productSize | productStyle | name  | company             | address     | city           | state    | zip   | country       | cardNumber       | month | year |
-      | FF_1024x768 | Justus       | Doe      | justus@doe.com | topsecret | productDetail/Grizzly%20Bear?productId=1 | 32 x 24 in  | gloss        | James | Monster Corporation | 621 Wall St | North Tonawada | New York | 14120 | United States | 4111111111111111 |    05 | 2021 |
+      | browser          | firstName | lastName | email          | password  | productUrl                               | productSize | productStyle | name  | company             | address     | city           | state    | zip   | country       | cardNumber       | month | year |
+      | Firefox_1024x768 | Justus    | Doe      | justus@doe.com | topsecret | productDetail/Grizzly%20Bear?productId=1 | 32 x 24 in  | gloss        | James | Monster Corporation | 621 Wall St | North Tonawada | New York | 14120 | United States | 4111111111111111 |    05 | 2021 |
