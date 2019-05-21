@@ -29,8 +29,8 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <surefire.version>2.22.1</surefire.version>
         <aspectj.version>1.9.2</aspectj.version>
-        <cucumber.version>4.2.3</cucumber.version>
-        <neodymium.version>3.1.0</neodymium.version>
+        <cucumber.version>4.3.0</cucumber.version>
+        <neodymium.version>3.2.0</neodymium.version>
     </properties>
 
     <build>
