@@ -5,7 +5,7 @@
 
     <groupId>com.xceptance.neodymium.project</groupId>
     <artifactId>neodymium-cucumber-example</artifactId>
-    <version>3.1.0-SNAPSHOT</version>
+    <version>3.3.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>neodymium-cucumber-example</name>
@@ -29,8 +29,8 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <surefire.version>2.22.1</surefire.version>
         <aspectj.version>1.9.2</aspectj.version>
-        <cucumber.version>4.3.0</cucumber.version>
-        <neodymium.version>3.2.0</neodymium.version>
+		<allure.version>2.10.0</allure.version>
+        <neodymium.version>3.3.0</neodymium.version>
     </properties>
 
     <build>
@@ -63,9 +63,9 @@
             <plugin>
                 <groupId>io.qameta.allure</groupId>
                 <artifactId>allure-maven</artifactId>
-                <version>2.10.0</version>
+                <version>${allure.version}</version>
                 <configuration>
-                    <reportVersion>2.10.0</reportVersion>
+                    <reportVersion>${allure.version}</reportVersion>
                 </configuration>
             </plugin>
         </plugins>
@@ -76,18 +76,6 @@
             <groupId>com.xceptance</groupId>
             <artifactId>neodymium-library</artifactId>
             <version>${neodymium.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-slf4j-impl</artifactId>
-            <version>2.11.1</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.cucumber</groupId>
-            <artifactId>cucumber-picocontainer</artifactId>
-            <version>${cucumber.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
