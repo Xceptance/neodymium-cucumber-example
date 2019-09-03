@@ -1,7 +1,7 @@
 package posters.cucumber.support;
 
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 import posters.pageobjects.pages.browsing.CategoryPage;
 import posters.pageobjects.pages.browsing.HomePage;
 import posters.pageobjects.pages.browsing.NoHitsPage;

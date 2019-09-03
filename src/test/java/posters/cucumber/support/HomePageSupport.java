@@ -1,6 +1,6 @@
 package posters.cucumber.support;
 
-import cucumber.api.java.en.Then;
+import io.cucumber.java.en.Then;
 import io.qameta.allure.Step;
 import posters.pageobjects.pages.browsing.HomePage;
 

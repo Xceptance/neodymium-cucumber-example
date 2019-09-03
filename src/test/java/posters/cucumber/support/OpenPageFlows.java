@@ -5,7 +5,7 @@ import static com.codeborne.selenide.Selenide.open;
 
 import com.xceptance.neodymium.util.Neodymium;
 
-import cucumber.api.java.en.Given;
+import io.cucumber.java.en.Given;
 import io.qameta.allure.Step;
 import posters.pageobjects.pages.browsing.HomePage;
 import posters.pageobjects.pages.browsing.ProductdetailPage;
