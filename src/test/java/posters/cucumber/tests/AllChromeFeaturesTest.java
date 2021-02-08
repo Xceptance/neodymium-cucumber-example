@@ -7,11 +7,10 @@ import com.xceptance.neodymium.NeodymiumCucumberRunner;
 import io.cucumber.junit.CucumberOptions;
 
 @RunWith(NeodymiumCucumberRunner.class)
-@CucumberOptions(features = "src/test/java/posters/cucumber/features/", glue = "posters", tags = "@Chrome and not @Skip and not @Blocked and not @WIP", plugin =
-{
-  "pretty", // console // output
-  "html:target/cucumber-report/", // html report
-})
+@CucumberOptions(features = "src/test/java/posters/cucumber/features/", //
+    glue = "posters", //
+    tags = "@Chrome and not @Skip and not @Blocked and not @Wip", //
+    monochrome = true)
 public class AllChromeFeaturesTest
 {
 }

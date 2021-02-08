@@ -61,7 +61,8 @@ public class TopNavigation extends AbstractComponent
         categoryMenu.find(By.linkText(categoryName)).hover();
         // Clicks the subcategory with position @{subCategoryPosition}
         // belonging to the category with position @{categoryPosition}
-        categoryMenu.find(By.linkText(subCategoryName)).click();
+        // Sometimes there can be a timeout at this point.
+        categoryMenu.find(By.linkText(subCategoryName)).waitUntil(exist, 5000).click();
         return new CategoryPage();
     }
 

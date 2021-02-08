@@ -46,7 +46,10 @@ public class MiniCart extends AbstractComponent
         headerCart.scrollTo().click();
         // Wait for mini cart to appear
         // Wait for the mini cart to show
-        miniCart.waitUntil(visible, Neodymium.configuration().selenideTimeout());
+        // Sometimes there can be a timeout at this point.
+        // Then you can increase the value from default 3s to 5 seconds.
+        miniCart.waitUntil(exist, Neodymium.configuration().selenideTimeout());
+        // miniCart.waitUntil(visible, Neodymium.configuration().selenideTimeout());
     }
 
     @Step("close the mini cart")
