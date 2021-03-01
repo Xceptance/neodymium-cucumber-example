@@ -15,8 +15,9 @@ import io.cucumber.junit.CucumberOptions;
 // tags - annotations in the step definition files can be used to define which scenarios and steps should be carried out
 // - - -- they can be freely defined (e.g.: @Wip - work in progress)
 // monochrome - false produces colored console output if console supports it
+// - - - - - -- in Eclipse use plugin "ANSI Escape in Console"
 // - - - - - -- default value is false
-// - - - - - -- therefore you have to set it to true for more readable console messages
+// - - - - - -- therefore you have to set it to true for more readable console messages,
 // - - - - - -- if the console does not support colored output
 // dryRun - checks if all the steps have the step definition without completely running the tests
 // - - - -- is equivalent to cucumber.execution.dry-run in cucumber.properties
