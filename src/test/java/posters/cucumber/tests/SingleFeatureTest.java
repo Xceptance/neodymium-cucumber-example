@@ -14,18 +14,22 @@ import io.cucumber.junit.CucumberOptions;
 // glue - the paths to load step definitions, hooks and plugins
 // tags - annotations in the step definition files can be used to define which scenarios and steps should be carried out
 // - - -- they can be freely defined (e.g.: @Wip - work in progress)
-// monochrome - option for more readable console messages
-// - - - - - -- default value is false - therefore you have to set it to true
+// monochrome - false produces colored console output if console supports it
+// - - - - - -- default value is false
+// - - - - - -- therefore you have to set it to true for more readable console messages
+// - - - - - -- if the console does not support colored output
 // dryRun - checks if all the steps have the step definition without completely running the tests
 // - - - -- is equivalent to cucumber.execution.dry-run in cucumber.properties
 // - - - -- use it here for single test cases
 // publish - publish the report online to https://reports.cucumber.io
 // - - - - - is equivalent to cucumber.publish.enabled in cucumber.properties
 // plugin - register plugins
+
+// Recommendation for experts:
 // For more information look at class io.cucumber.junit.CucumberOptions.
 @CucumberOptions(features = "src/test/java/posters/cucumber/features", //
     glue = "posters.cucumber.support", //
-    tags = "@Wip and not @Skip", //
+    tags = "@Wip and not @Skip and not @Firefox", //
     monochrome = true, //
     // dryRun = true, //
     // publish = true, //
