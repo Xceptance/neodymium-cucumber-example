@@ -7,7 +7,7 @@ import com.xceptance.neodymium.NeodymiumCucumberRunner;
 import io.cucumber.junit.CucumberOptions;
 
 // This test case is used for development purposes. So you can run a single cucumber test case over and over again
-// It should not be carried out in automatic test runs (CI / CD).
+// It should not be executed in automatic test runs (CI / CD).
 // Therefore it is excluded in the pom.xml in the line: <include>posters/cucumber/tests/All*FeaturesTest.java</include>.
 @RunWith(NeodymiumCucumberRunner.class)
 // features - the paths of the *.feature files
