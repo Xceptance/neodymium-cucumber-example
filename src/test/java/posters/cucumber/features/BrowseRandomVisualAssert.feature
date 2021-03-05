@@ -9,7 +9,7 @@ Feature: BrowseRandomVisualAssert
       And I choose some random product
      Then I see correct product
 
-  @Firefox
+    @Firefox
     Examples: 
       | browser          | seed          |
       | Firefox_headless | 8645363546353 |
