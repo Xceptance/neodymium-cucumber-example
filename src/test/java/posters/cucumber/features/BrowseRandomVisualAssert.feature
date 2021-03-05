@@ -1,4 +1,4 @@
-@Wip @BrowseRandomVisualAssert
+@BrowseRandomVisualAssert
 Feature: BrowseRandomVisualAssert
 
   @Skip

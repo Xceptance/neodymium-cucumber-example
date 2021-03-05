@@ -30,7 +30,7 @@ import io.cucumber.junit.CucumberOptions;
 // For more information look at class io.cucumber.junit.CucumberOptions.
 @CucumberOptions(features = "src/test/java/posters/cucumber/features", //
     glue = "posters.cucumber.support", //
-    tags = "@Wip and not @Skip and not @Firefox", //
+    tags = "@Wip", //
     monochrome = true, //
     // dryRun = true, //
     // publish = true, //
