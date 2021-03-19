@@ -23,6 +23,6 @@ mvn test allure:report
 mvn allure:aggregate
 
 # show allure report
-echo "Copy .\target\site\allure-maven-plugin\history to .\target\allure-results\history"
+echo "Copy ./target/site/allure-maven-plugin/history to ./target/allure-results/history"
 mv ./target/site/allure-maven-plugin/history ./target/allure-results/history
 mvn allure:serve
