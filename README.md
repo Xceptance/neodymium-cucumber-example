@@ -15,15 +15,32 @@ You will need the following technologies available to try it out:
 * IDE of your choice 
 * Web browser's of your choice and their respective [WebDrivers](https://github.com/Xceptance/neodymium-library/wiki/How-to-set-up-a-WebDriver)
 
-### Get and run Posters
+### Manage Posters
 Posters is a web shop for demo purposes build by [Xceptance](https://www.xceptance.com/en/). We use it throughout all our software products to demonstrate their capabilities within a simple and stable environment. 
+
+##### Get Posters
 1. Download latest XLT [here](https://www.xceptance.com/en/xlt/download.html).
-2. Goto [downloadPathXlt]/samples/app-server/bin/
-3. Start with: ./start.sh
-4. Goto [https://localhost:8443/posters/](https://localhost:8443/posters/) to check if it is running
+2. Extract the zip file in the preferred folder.
+
+##### Run Posters
+1. Open a console goto [extractXltPath]/samples/app-server/bin/
+2. Start Posters with: ./start.sh for Linux or \start.cmd for Windows.
+3. Goto [https://localhost:8443/posters/](https://localhost:8443/posters/) to check if it is running.
+
+##### Stop Posters
+Stopping Posters just press Ctrl+C and cancel the batch process with "Y".
+
+##### Reset database
+1. Stop the server.
+2. Delete ./samples/app-server/data
+3. Start the server again.
+4. DB will be recreated with default values.
+
+##### Delete log files
+The posters store create log files which are located in ./samples/app-server/logs folder. You can delete them while the server is stopped to free disk space.
 
 ### Get yourself a free copy
-Simply clone or fork this project.
+Simply clone or fork this project from [here](https://github.com/Xceptance/neodymium-cucumber-example).
 
 ### IDE way of doing
 1. Import the project as Maven project
