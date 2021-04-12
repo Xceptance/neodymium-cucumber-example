@@ -1,6 +1,3 @@
-/**
- * 
- */
 package posters.cucumber.support;
 
 import java.util.ArrayList;

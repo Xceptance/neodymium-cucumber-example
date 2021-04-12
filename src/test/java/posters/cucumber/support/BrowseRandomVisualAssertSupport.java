@@ -37,7 +37,7 @@ public class BrowseRandomVisualAssertSupport
             random = new Random(Long.valueOf(seed));
         }
         String categoryName = new HomePage().topNav.getRandomSubcategoryName(random);
-        CategoryPage categoryPage = new HomePage().topNav.clickSubcategoryByName(categoryName);
+        var categoryPage = new HomePage().topNav.clickSubcategoryByName(categoryName);
         categoryPage.isExpectedPage();
         categoryPage.validateAndVisualAssert(categoryName);
     }

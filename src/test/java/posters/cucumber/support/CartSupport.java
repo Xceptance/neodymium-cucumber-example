@@ -20,7 +20,7 @@ public class CartSupport
     @When("^I open the cart$")
     public void openCart()
     {
-        CartPage cartPage = new ProductdetailPage().miniCart.openCartPage();
+        var cartPage = new ProductdetailPage().miniCart.openCartPage();
         cartPage.isExpectedPage();
     }
 
@@ -41,7 +41,7 @@ public class CartSupport
     @Then("^I can change amount of the \"([^\"]*)\" with \"([^\"]*)\" and \"([^\"]*)\" to (\\d+)$")
     public void updateCountOfProduct(String productName, String size, String style, int amount)
     {
-        CartPage cartPage = new CartPage();
+        var cartPage = new CartPage();
         cartPage.updateProductCountByName(productName, style, size, amount);
         for (Product product : storage.products)
         {
@@ -57,7 +57,7 @@ public class CartSupport
     @Then("^I can remove \"([^\"]*)\" with \"([^\"]*)\" and \"([^\"]*)\"$")
     public void removeProduct(String productName, String size, String style)
     {
-        CartPage cartPage = new CartPage();
+        var cartPage = new CartPage();
         cartPage.removeProductByName(productName, style, size);
 
         storage.removeProduct(productName, style, size);
