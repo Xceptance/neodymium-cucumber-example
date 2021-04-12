@@ -42,9 +42,9 @@ public class RegisterSupport
     @Step("delete user flow")
     public LoginPage deleteUser()
     {
-        HomePage homePage = new HomePage();
+        var homePage = new HomePage();
         // ensure that the user is logged in
-        LoginPage loginPage;
+        var loginPage = new LoginPage();
         if (!homePage.userMenu.isLoggedIn())
         {
             loginPage = homePage.userMenu.openLogin();
@@ -54,7 +54,7 @@ public class RegisterSupport
         // needed since there is a bug in posters
         if (homePage.miniCart.getTotalCount() > 0)
         {
-            CartPage cartPage = homePage.miniCart.openCartPage();
+            var cartPage = homePage.miniCart.openCartPage();
             while (cartPage.hasProductsInCart())
             {
                 cartPage.removeProduct(1);
@@ -62,15 +62,15 @@ public class RegisterSupport
         }
 
         // goto account page
-        AccountOverviewPage accountOverviewPage = homePage.userMenu.openAccountOverview();
+        var accountOverviewPage = homePage.userMenu.openAccountOverview();
         accountOverviewPage.validateStructure();
 
         // goto personal data page
-        PersonalDataPage personalDataPage = accountOverviewPage.openPersonalData();
+        var personalDataPage = accountOverviewPage.openPersonalData();
         personalDataPage.validateStructure();
 
         // goto account deletion page
-        DeleteAccountPage deleteAccountPage = personalDataPage.openDeleteAccount();
+        var deleteAccountPage = personalDataPage.openDeleteAccount();
         deleteAccountPage.validateStructure();
 
         // delete the account
@@ -88,9 +88,9 @@ public class RegisterSupport
 
     public static LoginPage registerUser(User user)
     {
-        RegisterPage registerPage = OpenPageFlows.registerPage();
+        var registerPage = OpenPageFlows.registerPage();
         registerPage.isExpectedPage();
-        LoginPage loginPage = registerPage.sendRegisterForm(user, user.getPassword());
+        var loginPage = registerPage.sendRegisterForm(user, user.getPassword());
         loginPage.isExpectedPage();
 
         return loginPage;
@@ -100,7 +100,7 @@ public class RegisterSupport
     @Step("set up user and register him")
     public void registerUser(String firstName, String lastName, String email, String password)
     {
-        RegisterPage registerPage = new RegisterPage();
+        var registerPage = new RegisterPage();
         registerPage.isExpectedPage();
         storage.user = new User(firstName, lastName, email, password);
         registerPage.sendRegisterForm(firstName, lastName, email, password, password);

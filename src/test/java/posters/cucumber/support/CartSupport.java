@@ -28,7 +28,7 @@ public class CartSupport
     public void validateProductsInTheCart()
     {
         double subtotal = 0.0;
-        CartPage cartPage = new CartPage();
+        var cartPage = new CartPage();
 
         for (Product product : storage.products)
         {

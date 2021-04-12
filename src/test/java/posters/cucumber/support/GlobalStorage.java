@@ -35,7 +35,7 @@ public class GlobalStorage
         // increase amount of product if already there or add the whole product
         if (products.contains(product))
         {
-            Product updatedProduct = products.get(products.indexOf(product));
+            var updatedProduct = products.get(products.indexOf(product));
             updatedProduct.setAmount(updatedProduct.getAmount() + 1);
             return updatedProduct;
         }
@@ -48,7 +48,7 @@ public class GlobalStorage
 
     public void removeProduct(String productName, String style, String size)
     {
-        for (Product product : products)
+        for (var product : products)
         {
             if (product.getName().equals(productName) && product.getSize().equals(size)
                 && product.getStyle().equals(style))

@@ -21,7 +21,7 @@ public class BrowseRandomVisualAssertSupport
     @Given("^homepage is open")
     public void openHomePageAndValidate()
     {
-        HomePage homepage = OpenPageFlows.homepage();
+        var homepage = OpenPageFlows.homepage();
         homepage.validateAndVisualAssert();
     }
 

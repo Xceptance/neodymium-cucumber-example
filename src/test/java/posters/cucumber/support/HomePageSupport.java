@@ -10,7 +10,7 @@ public class HomePageSupport
     @Step("validate homepage")
     public void validateHomePage(String title)
     {
-        HomePage homePage = new HomePage();
+        var homePage = new HomePage();
         homePage.isExpectedPage();
         homePage.title.validateTitle(title);
         homePage.validateStructure();

@@ -30,7 +30,7 @@ public class OpenPageFlows
     public static LoginPage loginPage()
     {
         // open login page and check for expected page
-        LoginPage loginPage = homepage().userMenu.openLogin();
+        var loginPage = homepage().userMenu.openLogin();
         loginPage.isExpectedPage();
         return loginPage;
     };
@@ -40,7 +40,7 @@ public class OpenPageFlows
     public static RegisterPage registerPage()
     {
         // open login page and check for expected page
-        RegisterPage registerPage = homepage().userMenu.openRegister();
+        var registerPage = homepage().userMenu.openRegister();
         registerPage.isExpectedPage();
         return registerPage;
     };
