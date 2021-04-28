@@ -36,8 +36,9 @@ public class ShippingAddressPage extends AbstractCheckoutPage
     @Step("ensure this is a shipping address page")
     public ShippingAddressPage isExpectedPage()
     {
+        super.isExpectedPage();
         headline.should(exist);
-		return this;
+        return this;
     }
 
     @Override
@@ -70,7 +71,7 @@ public class ShippingAddressPage extends AbstractCheckoutPage
         // Clicks the continue button
         $("#btnUseAddressContinue").scrollTo().click();
 
-        return new BillingAddressPage();
+        return new BillingAddressPage().isExpectedPage();
     }
 
     @Step("fill and send shipping address form")
@@ -112,6 +113,6 @@ public class ShippingAddressPage extends AbstractCheckoutPage
         // Click on Continue
         addShippingButton.scrollTo().click();
 
-        return new BillingAddressPage();
+        return new BillingAddressPage().isExpectedPage();
     }
 }

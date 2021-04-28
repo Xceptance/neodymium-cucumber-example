@@ -14,7 +14,7 @@ import posters.dataobjects.Product;
 /**
  * @author pfotenhauer
  */
-public class ProductdetailPage extends AbstractBrowsingPage
+public class ProductDetailPage extends AbstractBrowsingPage
 {
     private SelenideElement addToCartButton = $("#btnAddToCart");
 
@@ -26,10 +26,11 @@ public class ProductdetailPage extends AbstractBrowsingPage
 
     @Override
     @Step("ensure this is a product detail page")
-    public ProductdetailPage isExpectedPage()
+    public ProductDetailPage isExpectedPage()
     {
+        super.isExpectedPage();
         $("#addToCartForm").should(exist);
-		return this;
+        return this;
     }
 
     @Override
@@ -135,7 +136,7 @@ public class ProductdetailPage extends AbstractBrowsingPage
     {
         validateStructure();
         validateProductName(productName);
-    };
+    }
 
     /**
      * @param productName

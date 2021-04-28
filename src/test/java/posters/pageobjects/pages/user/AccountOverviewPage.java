@@ -22,8 +22,9 @@ public class AccountOverviewPage extends AbstractBrowsingPage
     @Step("ensure this is an account overview page")
     public AccountOverviewPage isExpectedPage()
     {
+        super.isExpectedPage();
         headline.should(exist);
-		return this;
+        return this;
     }
 
     @Override
@@ -58,12 +59,12 @@ public class AccountOverviewPage extends AbstractBrowsingPage
         // Open the personal data page
         // Click on the link to Personal Data
         personalDataLink.scrollTo().click();
-        return new PersonalDataPage();
+        return new PersonalDataPage().isExpectedPage();
     }
 
     public OrderHistoryPage openOrderHistory()
     {
         $("#linkOrderOverview").scrollTo().click();
-        return new OrderHistoryPage();
+        return new OrderHistoryPage().isExpectedPage();
     }
 }

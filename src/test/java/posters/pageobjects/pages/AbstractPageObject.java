@@ -18,7 +18,7 @@ public abstract class AbstractPageObject
 
     public AbstractPageObject isExpectedPage()
     {
-		return this;
+        return this;
     }
 
     abstract public void validateStructure();

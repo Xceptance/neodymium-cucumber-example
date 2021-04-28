@@ -3,7 +3,7 @@ package posters.cucumber.support;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import posters.dataobjects.Product;
-import posters.pageobjects.pages.browsing.ProductdetailPage;
+import posters.pageobjects.pages.browsing.ProductDetailPage;
 import posters.pageobjects.pages.checkout.CartPage;
 import posters.pageobjects.utility.PriceHelper;
 
@@ -20,7 +20,7 @@ public class CartSupport
     @When("^I open the cart$")
     public void openCart()
     {
-        var cartPage = new ProductdetailPage().miniCart.openCartPage();
+        var cartPage = new ProductDetailPage().miniCart.openCartPage();
         cartPage.isExpectedPage();
     }
 

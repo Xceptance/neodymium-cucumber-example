@@ -34,8 +34,9 @@ public class LoginPage extends AbstractBrowsingPage
     @Step("ensure this is a login page")
     public LoginPage isExpectedPage()
     {
+        super.isExpectedPage();
         loginForm.should(exist);
-		return this;
+        return this;
     }
 
     @Override
@@ -92,7 +93,7 @@ public class LoginPage extends AbstractBrowsingPage
     public HomePage sendLoginform(String email, String password)
     {
         sendFormWithData(email, password);
-        return new HomePage();
+        return new HomePage().isExpectedPage();
     }
 
     /**
@@ -112,7 +113,7 @@ public class LoginPage extends AbstractBrowsingPage
     public LoginPage sendFalseLoginform(User user)
     {
         sendFormWithData(user.getEmail(), user.getPassword());
-        return new LoginPage();
+        return new LoginPage().isExpectedPage();
     }
 
     /**
@@ -122,7 +123,7 @@ public class LoginPage extends AbstractBrowsingPage
     public RegisterPage openRegister()
     {
         registerLink.scrollTo().click();
-        return new RegisterPage();
+        return new RegisterPage().isExpectedPage();
     }
 
     @Step("validate successful registration message")

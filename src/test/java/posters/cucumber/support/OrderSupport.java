@@ -9,15 +9,9 @@ import posters.dataobjects.CreditCard;
 import posters.dataobjects.Product;
 import posters.dataobjects.User;
 import posters.pageobjects.pages.browsing.HomePage;
-import posters.pageobjects.pages.browsing.ProductdetailPage;
-import posters.pageobjects.pages.checkout.CartPage;
+import posters.pageobjects.pages.browsing.ProductDetailPage;
 import posters.pageobjects.pages.checkout.PaymentPage;
 import posters.pageobjects.pages.checkout.PlaceOrderPage;
-import posters.pageobjects.pages.checkout.ShippingAddressPage;
-import posters.pageobjects.pages.user.AccountOverviewPage;
-import posters.pageobjects.pages.user.LoginPage;
-import posters.pageobjects.pages.user.OrderHistoryPage;
-import posters.pageobjects.pages.user.RegisterPage;
 import posters.pageobjects.utility.PriceHelper;
 
 public class OrderSupport
@@ -65,7 +59,7 @@ public class OrderSupport
     @When("I add this product with size \"([^\"]*)\" and style \"([^\"]*)\" to the cart$")
     public void addProductToCart(String size, String style)
     {
-        var productDetailPage = new ProductdetailPage();
+        var productDetailPage = new ProductDetailPage();
         productDetailPage.setSize(size);
         productDetailPage.setStyle(style);
 
@@ -79,7 +73,7 @@ public class OrderSupport
     @When("^I specify the shipping address \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\" and use it for billing$")
     public void openFillAndSendShippingFormUseForBilling(String name, String company, String address, String city, String state, String zip, String country)
     {
-        var cartPage = new ProductdetailPage().miniCart.openCartPage();
+        var cartPage = new ProductDetailPage().miniCart.openCartPage();
         cartPage.isExpectedPage();
         var shippingAddressPage = cartPage.openShippingPage();
         shippingAddressPage.isExpectedPage();

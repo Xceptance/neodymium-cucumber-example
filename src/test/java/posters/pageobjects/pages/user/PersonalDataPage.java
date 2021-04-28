@@ -23,8 +23,9 @@ public class PersonalDataPage extends AbstractBrowsingPage
     @Step("ensure this is a personal data page")
     public PersonalDataPage isExpectedPage()
     {
+        super.isExpectedPage();
         headline.should(exist);
-		return this;
+        return this;
     }
 
     @Override
@@ -54,6 +55,6 @@ public class PersonalDataPage extends AbstractBrowsingPage
         // Open the delete account page
         // Clicks the button to get to the Delete Account page
         deleteButton.scrollTo().click();
-        return new DeleteAccountPage();
+        return new DeleteAccountPage().isExpectedPage();
     }
 }

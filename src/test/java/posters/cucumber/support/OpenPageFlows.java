@@ -8,7 +8,7 @@ import com.xceptance.neodymium.util.Neodymium;
 import io.cucumber.java.en.Given;
 import io.qameta.allure.Step;
 import posters.pageobjects.pages.browsing.HomePage;
-import posters.pageobjects.pages.browsing.ProductdetailPage;
+import posters.pageobjects.pages.browsing.ProductDetailPage;
 import posters.pageobjects.pages.user.LoginPage;
 import posters.pageobjects.pages.user.RegisterPage;
 
@@ -47,17 +47,17 @@ public class OpenPageFlows
 
     @Given("^product page \"([^\"]*)\" is open$")
     @Step("open product page with cleared cookes")
-    public static ProductdetailPage openProductdetailsPageWithClearedCookes(String url)
+    public static ProductDetailPage openProductdetailsPageWithClearedCookes(String url)
     {
         clearBrowserCookies();
         open(Neodymium.configuration().url() + url);
-        return new ProductdetailPage();
+        return new ProductDetailPage();
     }
 
     @Step("open product page without cleared cookes")
-    public static ProductdetailPage openProductdetailsPage(String url)
+    public static ProductDetailPage openProductdetailsPage(String url)
     {
         open(Neodymium.configuration().url() + url);
-        return new ProductdetailPage();
+        return new ProductDetailPage();
     }
 }

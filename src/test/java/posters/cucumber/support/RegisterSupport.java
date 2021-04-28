@@ -7,11 +7,7 @@ import io.cucumber.java.en.When;
 import io.qameta.allure.Step;
 import posters.dataobjects.User;
 import posters.pageobjects.pages.browsing.HomePage;
-import posters.pageobjects.pages.checkout.CartPage;
-import posters.pageobjects.pages.user.AccountOverviewPage;
-import posters.pageobjects.pages.user.DeleteAccountPage;
 import posters.pageobjects.pages.user.LoginPage;
-import posters.pageobjects.pages.user.PersonalDataPage;
 import posters.pageobjects.pages.user.RegisterPage;
 
 public class RegisterSupport

@@ -10,7 +10,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import posters.pageobjects.pages.browsing.CategoryPage;
 import posters.pageobjects.pages.browsing.HomePage;
-import posters.pageobjects.pages.browsing.ProductdetailPage;
+import posters.pageobjects.pages.browsing.ProductDetailPage;
 
 public class BrowseRandomVisualAssertSupport
 {
@@ -52,7 +52,7 @@ public class BrowseRandomVisualAssertSupport
     @Then("^I see correct product")
     public void validateProduct()
     {
-        new ProductdetailPage().validateAndVisualAssert(productName);
+        new ProductDetailPage().validateAndVisualAssert(productName);
     }
 
 }

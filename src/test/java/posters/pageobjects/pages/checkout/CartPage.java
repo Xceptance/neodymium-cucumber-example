@@ -19,7 +19,7 @@ import com.xceptance.neodymium.util.Neodymium;
 import io.qameta.allure.Step;
 import posters.dataobjects.Product;
 import posters.pageobjects.pages.browsing.AbstractBrowsingPage;
-import posters.pageobjects.pages.browsing.ProductdetailPage;
+import posters.pageobjects.pages.browsing.ProductDetailPage;
 import posters.pageobjects.utility.PriceHelper;
 
 /**
@@ -35,15 +35,15 @@ public class CartPage extends AbstractBrowsingPage
     @Step("ensure this is a cart page")
     public CartPage isExpectedPage()
     {
-        cartTable.should(exist);
-		return this;
+        super.isExpectedPage();
+        $("#titleCart").shouldBe(visible);
+        return this;
     }
 
     @Step("validate subtotal in the cart")
     public void validateSubtotal(String subtotal)
     {
         $$("#cartSummaryList li").findBy(text("Subtotal")).find(".text-right").shouldHave(exactText(subtotal));
-
     }
 
     @Override
@@ -73,7 +73,6 @@ public class CartPage extends AbstractBrowsingPage
     {
         SelenideElement productContainer = $$("div.hidden-xs").filter((matchText(product.getRowRegex()))).shouldHaveSize(1).first()
                                                               .parent().parent();
-
         productContainer.find(".productName").shouldHave(exactText(product.getName()));
         productContainer.find(".productSize").shouldHave(exactText(product.getSize()));
         productContainer.find(".productStyle").shouldHave(exactText(product.getStyle()));
@@ -227,7 +226,7 @@ public class CartPage extends AbstractBrowsingPage
     public Product getProduct(int position)
     {
         return new Product(getProductName(position), getProductUnitPrice(position), getProductStyle(position), getProductSize(position), Integer.parseInt(getProductCount(position)));
-    };
+    }
 
     /**
      * @param position
@@ -312,10 +311,10 @@ public class CartPage extends AbstractBrowsingPage
      * @param position
      */
     @Step("click on a product on the cart page")
-    public ProductdetailPage openProductPage(int position)
+    public ProductDetailPage openProductPage(int position)
     {
         $("#product" + (position - 1) + " img").scrollTo().click();
-        return new ProductdetailPage();
+        return new ProductDetailPage().isExpectedPage();
     }
 
     private void clickCheckoutButton()
@@ -327,14 +326,14 @@ public class CartPage extends AbstractBrowsingPage
     public NewShippingAddressPage openNewShippingPage()
     {
         clickCheckoutButton();
-        return new NewShippingAddressPage();
+        return new NewShippingAddressPage().isExpectedPage();
     }
 
     @Step("open shipping address from the cart page")
     public ShippingAddressPage openShippingPage()
     {
         clickCheckoutButton();
-        return new ShippingAddressPage();
+        return new ShippingAddressPage().isExpectedPage();
     }
 
     /**
