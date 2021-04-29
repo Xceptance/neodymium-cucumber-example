@@ -71,15 +71,15 @@ public class OrderSupport
     }
 
     @When("^I specify the shipping address \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\" and use it for billing$")
-    public void openFillAndSendShippingFormUseForBilling(String name, String company, String address, String city, String state, String zip, String country)
+    public void openFillAndSendShippingFormUseForBilling(String firstName, String lastName, String company, String street, String city, String state, String zip, String country)
     {
         var cartPage = new ProductDetailPage().miniCart.openCartPage();
         cartPage.isExpectedPage();
         var shippingAddressPage = cartPage.openShippingPage();
         shippingAddressPage.isExpectedPage();
-        shippingAddressPage.sendShippingAddressForm(name, company, address, city, state, zip, country, true);
-        storage.shippingAddress = new Address(name, company, address, city, state, zip, country);
-        storage.billingAddress = new Address(name, company, address, city, state, zip, country);
+        shippingAddressPage.sendShippingAddressForm(firstName, lastName, company, street, city, state, zip, country, true);
+        storage.shippingAddress = new Address(firstName, lastName, company, street, city, state, zip, country);
+        storage.billingAddress = new Address(firstName, lastName, company, street, city, state, zip, country);
         new PaymentPage().isExpectedPage();
     }
 
