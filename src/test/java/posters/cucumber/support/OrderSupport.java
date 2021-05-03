@@ -70,7 +70,7 @@ public class OrderSupport
         productDetailPage.miniCart.validateMiniCartByProduct(product);
     }
 
-    @When("^I specify the shipping address \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\" and use it for billing$")
+    @When("^I specify the shipping address \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\" and use it for billing$")
     public void openFillAndSendShippingFormUseForBilling(String firstName, String lastName, String company, String street, String city, String state, String zip, String country)
     {
         var cartPage = new ProductDetailPage().miniCart.openCartPage();

@@ -39,19 +39,16 @@ public class CartSupport
     }
 
     @Then("^I can change amount of the \"([^\"]*)\" with \"([^\"]*)\" and \"([^\"]*)\" to (\\d+)$")
-    public void updateCountOfProduct(String productName, String size, String style, int amount)
+    public void updateCountOfProduct(String name, String size, String style, int amount)
     {
         var cartPage = new CartPage();
-        cartPage.updateProductCountByName(productName, style, size, amount);
-        for (Product product : storage.products)
-        {
-            if (product.getName().equals(productName) && product.getSize().equals(size)
-                && product.getStyle().equals(style))
-            {
-                product.setAmount(amount);
-            }
-            cartPage.validateContainsProduct(product);
-        }
+        cartPage.updateProductCountByName(name, style, size, amount);
+        
+        var updateProduct = storage.getProductFromArrayList(name, size, style);
+        storage.products.remove(updateProduct);
+        String unitPrice = updateProduct.getUnitPrice();
+        updateProduct = new Product(name, unitPrice, style, size, amount);
+        storage.products.add(updateProduct);
     }
 
     @Then("^I can remove \"([^\"]*)\" with \"([^\"]*)\" and \"([^\"]*)\"$")
