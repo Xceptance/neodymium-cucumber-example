@@ -31,8 +31,7 @@ public class OrderSupport
         registerPage.isExpectedPage();
         storage.user = new User(firstName, lastName, email, password);
         registerPage.sendRegisterForm(firstName, lastName, email, password, password);
-        var loginPage = registerPage.userMenu.openLogin();
-        loginPage.isExpectedPage();
+        var loginPage = registerPage.userMenu.openLogin();;
         loginPage.sendLoginform(email, password);
     }
 
@@ -40,7 +39,6 @@ public class OrderSupport
     public void validateOrderInOrderHistory()
     {
         var accountOverviewPage = new HomePage().userMenu.openAccountOverview();
-        accountOverviewPage.isExpectedPage();
         var orderHistoryPage = accountOverviewPage.openOrderHistory();
         for (Product product : storage.products)
         {
@@ -70,16 +68,15 @@ public class OrderSupport
         productDetailPage.miniCart.validateMiniCartByProduct(product);
     }
 
-    @When("^I specify the shipping address \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\" and use it for billing$")
-    public void openFillAndSendShippingFormUseForBilling(String firstName, String lastName, String company, String street, String city, String state, String zip, String country)
+    @When("^I specify the shipping address \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\" and use it for billing$")
+    public void openFillAndSendShippingFormUseForBilling(String name, String company, String street, String city, String state, String zip, String country)
     {
         var cartPage = new ProductDetailPage().miniCart.openCartPage();
-        cartPage.isExpectedPage();
         var shippingAddressPage = cartPage.openShippingPage();
-        shippingAddressPage.isExpectedPage();
-        shippingAddressPage.sendShippingAddressForm(firstName, lastName, company, street, city, state, zip, country, true);
-        storage.shippingAddress = new Address(firstName, lastName, company, street, city, state, zip, country);
-        storage.billingAddress = new Address(firstName, lastName, company, street, city, state, zip, country);
+        shippingAddressPage.sendShippingAddressForm(name, company, street, city, state, zip, country, true);
+        
+        storage.shippingAddress = new Address(storage.user.getFirstName(), storage.user.getLastName(), company, street, city, state, zip, country);
+        storage.billingAddress = new Address(storage.user.getFirstName(), storage.user.getLastName(), company, street, city, state, zip, country);
         new PaymentPage().isExpectedPage();
     }
 
@@ -88,9 +85,9 @@ public class OrderSupport
     {
         var paymentPage = new PaymentPage();
         paymentPage.isExpectedPage();
-        var placeOrderPage = paymentPage.sendPaymentForm(cardNumber, name, month, year);
+        paymentPage.sendPaymentForm(cardNumber, name, month, year);
+        
         storage.creditcard = new CreditCard(name, cardNumber, "xxxx xxxx xxxx " + cardNumber.substring(12, 16), month, year);
-        placeOrderPage.isExpectedPage();
     }
 
     @Then("^I see all the products in order overview$")
@@ -117,7 +114,6 @@ public class OrderSupport
     public void placeOrder()
     {
         HomePage succssefulOrder = new PlaceOrderPage().placeOrder();
-        succssefulOrder.isExpectedPage();
         succssefulOrder.validateSuccessfulOrder();
     }
 }

@@ -75,12 +75,12 @@ public class ShippingAddressPage extends AbstractCheckoutPage
     }
 
     @Step("fill and send shipping address form")
-    public BillingAddressPage sendShippingAddressForm(String firstName, String lastName, String company, String street, String city,
+    public BillingAddressPage sendShippingAddressForm(String name, String company, String street, String city,
                                                       String state, String zip, String country, boolean sameBillingAddress)
     {
         // Name
         // Enter the name parameter
-        nameField.val(firstName + " " + lastName);
+        nameField.val(name);
         // Company
         // Enter the company parameter
         companyField.val(company);

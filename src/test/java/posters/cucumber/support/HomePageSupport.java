@@ -11,7 +11,6 @@ public class HomePageSupport
     public void validateHomePage(String title)
     {
         var homePage = new HomePage();
-        homePage.isExpectedPage();
         homePage.title.validateTitle(title);
         homePage.validateStructure();
         homePage.footer.validate();

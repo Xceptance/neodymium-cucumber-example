@@ -20,8 +20,7 @@ public class CartSupport
     @When("^I open the cart$")
     public void openCart()
     {
-        var cartPage = new ProductDetailPage().miniCart.openCartPage();
-        cartPage.isExpectedPage();
+        new ProductDetailPage().miniCart.openCartPage();
     }
 
     @Then("^I see all the added products in the cart and their properties are correct$")

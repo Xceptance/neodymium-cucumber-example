@@ -21,8 +21,8 @@ public class BrowseRandomVisualAssertSupport
     @Given("^homepage is open")
     public void openHomePageAndValidate()
     {
-        var homepage = OpenPageFlows.homepage();
-        homepage.validateAndVisualAssert();
+        var homePage = OpenPageFlows.homePage();
+        homePage.validateAndVisualAssert();
     }
 
     @When("^I choose random sub category with seed \"([^\"]*)\"$")
@@ -38,7 +38,6 @@ public class BrowseRandomVisualAssertSupport
         }
         String categoryName = new HomePage().topNav.getRandomSubcategoryName(random);
         var categoryPage = new HomePage().topNav.clickSubcategoryByName(categoryName);
-        categoryPage.isExpectedPage();
         categoryPage.validateAndVisualAssert(categoryName);
     }
 

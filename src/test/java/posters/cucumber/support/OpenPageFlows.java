@@ -16,7 +16,7 @@ public class OpenPageFlows
 {
     @Given("^homepage is loaded$")
     @Step("open home page")
-    public static HomePage homepage()
+    public static HomePage homePage()
     {
         // clear cookies to ensure a new session
         clearBrowserCookies();
@@ -30,9 +30,7 @@ public class OpenPageFlows
     public static LoginPage loginPage()
     {
         // open login page and check for expected page
-        var loginPage = homepage().userMenu.openLogin();
-        loginPage.isExpectedPage();
-        return loginPage;
+        return homePage().userMenu.openLogin();
     };
 
     @Given("^register page is loaded$")
@@ -40,9 +38,7 @@ public class OpenPageFlows
     public static RegisterPage registerPage()
     {
         // open login page and check for expected page
-        var registerPage = homepage().userMenu.openRegister();
-        registerPage.isExpectedPage();
-        return registerPage;
+        return homePage().userMenu.openRegister();
     };
 
     @Given("^product page \"([^\"]*)\" is open$")
@@ -54,6 +50,7 @@ public class OpenPageFlows
         return new ProductDetailPage();
     }
 
+    // TODO check if needed - else delete
     @Step("open product page without cleared cookes")
     public static ProductDetailPage openProductdetailsPage(String url)
     {
