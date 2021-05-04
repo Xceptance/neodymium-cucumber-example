@@ -35,25 +35,6 @@ public class OrderSupport
         loginPage.sendLoginform(email, password);
     }
 
-    @Then("^all the products are to find in order history$")
-    public void validateOrderInOrderHistory()
-    {
-        var accountOverviewPage = new HomePage().userMenu.openAccountOverview();
-        var orderHistoryPage = accountOverviewPage.openOrderHistory();
-        for (Product product : storage.products)
-        {
-            orderHistoryPage.validateContainsProduct(product);
-        }
-    }
-
-    @When("^I add product \"([^\"]*)\" in size \"([^\"]*)\" and style \"([^\"]*)\"$")
-    @Step("open product page and add product to the cart")
-    public void openProductPageAndAddItoTheCart(String productUrl, String size, String style)
-    {
-        OpenPageFlows.openProductdetailsPage(productUrl);
-        addProductToCart(size, style);
-    }
-
     @When("I add this product with size \"([^\"]*)\" and style \"([^\"]*)\" to the cart$")
     public void addProductToCart(String size, String style)
     {
@@ -67,7 +48,15 @@ public class OrderSupport
         productDetailPage.miniCart.openMiniCart();
         productDetailPage.miniCart.validateMiniCartByProduct(product);
     }
-
+    
+    @When("^I add product \"([^\"]*)\" in size \"([^\"]*)\" and style \"([^\"]*)\"$")
+    @Step("open product page and add product to the cart")
+    public void openProductPageAndAddItoTheCart(String productUrl, String size, String style)
+    {
+        OpenPageFlows.openProductdetailsPage(productUrl);
+        addProductToCart(size, style);
+    }
+    
     @When("^I specify the shipping address \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\" and use it for billing$")
     public void openFillAndSendShippingFormUseForBilling(String name, String company, String street, String city, String state, String zip, String country)
     {
@@ -115,5 +104,16 @@ public class OrderSupport
     {
         HomePage succssefulOrder = new PlaceOrderPage().placeOrder();
         succssefulOrder.validateSuccessfulOrder();
+    }
+
+    @Then("^all the products are to find in order history$")
+    public void validateOrderInOrderHistory()
+    {
+        var accountOverviewPage = new HomePage().userMenu.openAccountOverview();
+        var orderHistoryPage = accountOverviewPage.openOrderHistory();
+        for (Product product : storage.products)
+        {
+            orderHistoryPage.validateContainsProduct(product);
+        }
     }
 }

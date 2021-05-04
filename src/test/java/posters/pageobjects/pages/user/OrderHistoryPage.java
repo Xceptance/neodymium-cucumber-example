@@ -28,8 +28,8 @@ public class OrderHistoryPage extends AbstractBrowsingPage
     @Step("validate product is in the order")
     public void validateContainsProduct(Product product)
     {
-        SelenideElement productContainer = $$(".productInfo").filter((matchText(product.getRowRegex()))).shouldHaveSize(1).first()
-                                                             .parent();
+        SelenideElement productContainer = $$(".productInfo").filter((matchText(product.getRowRegex())))
+                                                             .shouldHaveSize(1).first().parent();
 
         productContainer.find(".productName").shouldBe(exactText(product.getName()));
         productContainer.find(".productStyle").shouldBe(exactText(product.getStyle()));
