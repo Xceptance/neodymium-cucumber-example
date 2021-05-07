@@ -33,7 +33,7 @@ public class RegisterSupport
 //        registerUser(storage.user);
         var registerPage = OpenPageFlows.registerPage();
         registerPage.isExpectedPage();
-        var loginPage = registerPage.sendRegisterForm(storage.user, storage.user.getPassword());
+        var loginPage = registerPage.sendRegisterForm(storage.user);
         loginPage.isExpectedPage();
 
         return loginPage;
@@ -92,7 +92,7 @@ public class RegisterSupport
         var registerPage = new RegisterPage();
         registerPage.isExpectedPage();
         storage.user = new User(firstName, lastName, email, password);
-        registerPage.sendRegisterForm(firstName, lastName, email, password, password);
+        registerPage.sendRegisterForm(storage.user);
     }
 
     @Given("^new user with \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\" is registered$")

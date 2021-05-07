@@ -31,7 +31,7 @@ public class OrderSupport
         storage.user = new User(firstName, lastName, email, password);
         
         var registerPage = OpenPageFlows.registerPage();
-        registerPage.sendRegisterForm(firstName, lastName, email, password, password);
+        registerPage.sendRegisterForm(storage.user);
         var loginPage = registerPage.userMenu.openLogin();;
         loginPage.sendLoginform(email, password);
     }
