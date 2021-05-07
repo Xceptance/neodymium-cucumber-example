@@ -9,7 +9,7 @@ import com.codeborne.selenide.SelenideElement;
 
 import io.qameta.allure.Step;
 import posters.dataobjects.Address;
-import posters.pageobjects.utility.AddressHelper;
+import posters.pageobjects.components.AddressForm;
 
 /**
  * @author pfotenhauer
@@ -59,32 +59,34 @@ public class ShippingAddressPage extends AbstractCheckoutPage
         return new BillingAddressPage().isExpectedPage();
     }
 
-    @Step("fill and send shipping address form")
-    public PaymentPage fillAndSendAddresses(Address shippingAddress, Address billingAddress, boolean sameBillingAddress)
+    @Step("fill and send shipping address without different billing address")
+    public PaymentPage fillShippingAddressWithSameAsBilling(Address shippingAddress)
     {
-        if (sameBillingAddress)
-        {
             // Fill shipping address
-            AddressHelper.fillAddressForm(shippingAddress);
+            AddressForm.fillAddressForm(shippingAddress);
+            
+            // Click checkbox YES
             $("#billEqualShipp-Yes").scrollTo().click();
             
-            // Send shipping addresses by clicking the button  Continue
+            // Send shipping addresses by clicking the button Continue
             $("#btnAddDelAddr").scrollTo().click();
-        }
-        else 
-        {
+            
+            return new PaymentPage().isExpectedPage();
+    }
+
+    @Step("fill and send shipping address with different billing address")
+    public BillingAddressPage fillShippingAddressWithDifferentBilling(Address shippingAddress)
+    {
             // Fill shipping address
-            AddressHelper.fillAddressForm(shippingAddress);
+            AddressForm.fillAddressForm(shippingAddress);
+            $("#billEqualShipp-Yes").scrollTo().click();
+            
+            // Click checkbox NO
             $("#billEqualShipp-No").scrollTo().click();
             
-            // Send shipping addresses by clicking the button  Continue
+            // Send shipping addresses by clicking the button Continue
             $("#btnAddDelAddr").scrollTo().click();
             
-            // Fill billing address
-            AddressHelper.fillAddressForm(billingAddress);
-            // Send billing addresses by clicking the button Continue
-            $("#btnAddBillAddr").scrollTo().click();
-        }
-            return new PaymentPage().isExpectedPage();
+            return new BillingAddressPage().isExpectedPage();
     }
 }

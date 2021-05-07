@@ -8,12 +8,14 @@ import static com.codeborne.selenide.Selenide.$;
 import com.codeborne.selenide.SelenideElement;
 
 import io.qameta.allure.Step;
+import posters.pageobjects.components.AddressForm;
+import posters.dataobjects.Address;
 
 /**
  * @author pfotenhauer
  */
 public class BillingAddressPage extends AbstractCheckoutPage
-{
+{    
     private SelenideElement headline = $("#titleBillAddr");
 
     @Override
@@ -53,6 +55,18 @@ public class BillingAddressPage extends AbstractCheckoutPage
         // Open the billing address page in the checkout process
         // Clicks the continue button
         $("#btnUseBillAddress").scrollTo().click();
+
+        return new PaymentPage().isExpectedPage();
+    }
+    
+    @Step("fill the billing address")
+    public PaymentPage fillBillingAddress(Address billingAddress)
+    {
+        // Fill billing address
+        AddressForm.fillAddressForm(billingAddress);
+        
+        // Send billing addresses by clicking the button Continue
+        $("#btnAddBillAddr").scrollTo().click();
 
         return new PaymentPage().isExpectedPage();
     }
