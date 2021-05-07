@@ -15,6 +15,7 @@ Feature: Order
     Examples: 
       | browser         | productUrl                               | productSize | productStyle | firstName | lastName | name  | company             | address     | city           | state    | zip   | country       | cardNumber       | month | year | sameBillingAddress |
       | Chrome_1024x768 | productDetail/Grizzly%20Bear?productId=1 | 32 x 24 in  | gloss        |  Jakobi   | Doe      | James | Monster Corporation | 621 Wall St | North Tonawada | New York | 14120 | United States | 4111111111111111 |    05 | 2021 | false              |
+      | Chrome_1024x768 | productDetail/Grizzly%20Bear?productId=1 | 32 x 24 in  | gloss        |  Jakobi   | Doe      | James | Monster Corporation | 621 Wall St | North Tonawada | New York | 14120 | United States | 4111111111111111 |    05 | 2021 | true               |
 
     @Firefox
     Examples: 

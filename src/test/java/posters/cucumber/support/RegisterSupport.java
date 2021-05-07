@@ -4,7 +4,6 @@ import io.cucumber.java.After;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import io.qameta.allure.Step;
 import posters.dataobjects.User;
 import posters.pageobjects.pages.browsing.HomePage;
 import posters.pageobjects.pages.user.LoginPage;
@@ -40,18 +39,7 @@ public class RegisterSupport
         return loginPage;
     }
 
-//    public  LoginPage registerUser()
-//    {
-//        var registerPage = OpenPageFlows.registerPage();
-//        registerPage.isExpectedPage();
-//        var loginPage = registerPage.sendRegisterForm(storage.user, storage.user.getPassword());
-//        loginPage.isExpectedPage();
-//
-//        return loginPage;
-//    }
-
     @After("@DeleteUserAfterwards")
-    @Step("delete user flow")
     public LoginPage deleteUser()
     {
         var homePage = new HomePage();
@@ -99,7 +87,6 @@ public class RegisterSupport
     }
 
     @When("^I register a new user with \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"$")
-    @Step("set up user and register him")
     public void registerUser(String firstName, String lastName, String email, String password)
     {
         var registerPage = new RegisterPage();

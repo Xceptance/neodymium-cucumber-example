@@ -79,7 +79,6 @@ public class ShippingAddressPage extends AbstractCheckoutPage
     {
             // Fill shipping address
             AddressForm.fillAddressForm(shippingAddress);
-            $("#billEqualShipp-Yes").scrollTo().click();
             
             // Click checkbox NO
             $("#billEqualShipp-No").scrollTo().click();

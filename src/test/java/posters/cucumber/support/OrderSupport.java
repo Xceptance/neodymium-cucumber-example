@@ -3,7 +3,6 @@ package posters.cucumber.support;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import io.qameta.allure.Step;
 import posters.dataobjects.Address;
 import posters.dataobjects.CreditCard;
 import posters.dataobjects.Product;
@@ -52,7 +51,6 @@ public class OrderSupport
     }
     
     @When("^I add product \"([^\"]*)\" in size \"([^\"]*)\" and style \"([^\"]*)\"$")
-    @Step("open product page and add product to the cart")
     public void openProductPageAndAddItoTheCart(String productUrl, String size, String style)
     {
         OpenPageFlows.openProductdetailsPage(productUrl);
