@@ -103,49 +103,29 @@ public class NewShippingAddressPage extends AbstractCheckoutPage
     /**
      * //
      * 
-     * @param name
-     *            First and last name you want to use // T
-     * @param company
-     *            The company you want to use
      * @param address
      *            The address you want to use
-     * @param city
-     *            The City you want to use
-     * @param state
-     *            The state you want to use
-     * @param zip
-     *            The Zip you want to use, has to be in numbers format
-     * @param country
-     *            The country you want to use, currently only United States or Germany
      * @param sameBillingAddress
      *            Decision whether or not use the same billing address
      */
     @Step("fill and send new shipping address form")
-    public NewBillingAddressPage sendShippingAddressForm(String name, String company, String address, String city,
-                                                         String state, String zip, String country, boolean sameBillingAddress)
+    public NewBillingAddressPage sendShippingAddressForm(Address address, boolean sameBillingAddress)
     {
-        // Name
         // Enter the name parameter
-        nameField.val(name);
-        // Company
+        nameField.val(address.getFirstName());
         // Enter the company parameter
-        companyField.val(company);
-        // Address
-        // Enter the address parameter
-        addressField.val(address);
-        // City
+        companyField.val(address.getCompany());
+        // Enter the street parameter
+        addressField.val(address.getStreet());
         // Enter the city parameter
-        cityField.val(city);
-        // State
+        cityField.val(address.getCity());
         // Enter the state parameter
-        stateField.val(state);
-        // Zip
+        stateField.val(address.getState());
         // Enter the zip parameter
-        zipField.val(zip);
-        // Country
+        zipField.val(address.getZip());
         // Select the country whose label equals the parameter
-        countryField.selectOption(country);
-        // Radio Button
+        countryField.selectOption(address.getCountry());
+        
         // Click the radio button for Yes or No
         if (sameBillingAddress)
         {
@@ -160,19 +140,5 @@ public class NewShippingAddressPage extends AbstractCheckoutPage
         addShippingButton.scrollTo().click();
 
         return new NewBillingAddressPage().isExpectedPage();
-    }
-
-    /**
-     * @param shippingAddress
-     * @param sameBillingAddress
-     * @return
-     */
-    public NewBillingAddressPage sendShippingAddressForm(Address shippingAddress, boolean sameBillingAddress)
-    {
-        String fullName = shippingAddress.getFirstName() + " " + shippingAddress.getLastName();
-
-        return sendShippingAddressForm(fullName, shippingAddress.getCompany(), shippingAddress.getStreet(),
-                                       shippingAddress.getCity(), shippingAddress.getState(), shippingAddress.getZip(),
-                                       shippingAddress.getCountry(), sameBillingAddress);
     }
 }

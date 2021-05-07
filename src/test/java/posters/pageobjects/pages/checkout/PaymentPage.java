@@ -8,6 +8,7 @@ import static com.codeborne.selenide.Selenide.$;
 import com.codeborne.selenide.SelenideElement;
 
 import io.qameta.allure.Step;
+import posters.dataobjects.CreditCard;
 
 /**
  * @author pfotenhauer
@@ -69,19 +70,19 @@ public class PaymentPage extends AbstractCheckoutPage
     }
 
     @Step("fill and send payment form")
-    public PlaceOrderPage sendPaymentForm(String number, String name, String month, String year)
+    public PlaceOrderPage sendPaymentForm(CreditCard card)
     {
         // Credit Card Number
         // Fills the card number field with the parameter
-        creditCardNumber.val(number);
+        creditCardNumber.val(card.getCardNumber());
         // Name
         // Fills the card holder field with the parameter
-        creditCardName.val(name);
+        creditCardName.val(card.getFullName());
         // Expiration
         // Chooses the expiration month matching the parameter
-        expirationMonth.selectOption(month);
+        expirationMonth.selectOption(card.getExpDateMonth());
         // Chooses the expiration year matching the parameter
-        expirationYear.selectOption(year);
+        expirationYear.selectOption(card.getExpDateYear());
         // Opens the order overview page
         // Clicks the Continue button
         addPaymentButton.scrollTo().click();

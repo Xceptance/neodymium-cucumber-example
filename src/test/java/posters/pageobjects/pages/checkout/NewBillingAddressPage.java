@@ -99,63 +99,30 @@ public class NewBillingAddressPage extends AbstractCheckoutPage
     /**
      * //
      * 
-     * @param name
-     *            First and last name you want to use // T
-     * @param company
-     *            The company you want to use
      * @param address
      *            The address you want to use
-     * @param city
-     *            The City you want to use
-     * @param state
-     *            The state you want to use
-     * @param zip
-     *            The Zip you want to use, has to be in numbers format
-     * @param country
-     *            The country you want to use, currently only United States or Germany
      */
     @Step("fill and send new billing address form")
-    public NewPaymentPage sendBillingAddressForm(String name, String company, String address, String city,
-                                                 String state, String zip, String country)
+    public NewPaymentPage sendBillingAddressForm(Address address)
     {
-        // Name
         // Enter the name parameter
-        nameField.val(name);
-        // Company
+        nameField.val(address.getFirstName());
         // Enter the company parameter
-        companyField.val(company);
-        // Address
-        // Enter the address parameter
-        addressField.val(address);
-        // City
+        companyField.val(address.getCompany());
+        // Enter the street parameter
+        addressField.val(address.getStreet());
         // Enter the city parameter
-        cityField.val(city);
-        // State
+        cityField.val(address.getCity());
         // Enter the state parameter
-        stateField.val(state);
-        // Zip
+        stateField.val(address.getState());
         // Enter the zip parameter
-        zipField.val(zip);
-        // Country
+        zipField.val(address.getZip());
         // Select the country whose label equals the parameter
-        countryField.selectOption(country);
+        countryField.selectOption(address.getCountry());
         // Open the billing addresses or payment options page, depending on which radio button you checked
         // Click on Continue
         addBillingButton.scrollTo().click();
 
         return new NewPaymentPage().isExpectedPage();
-    }
-
-    /**
-     * @param billingAddress
-     * @return
-     */
-    public NewPaymentPage sendBillingAddressForm(Address billingAddress)
-    {
-        String fullName = billingAddress.getFirstName() + " " + billingAddress.getLastName();
-
-        return sendBillingAddressForm(fullName, billingAddress.getCompany(), billingAddress.getStreet(),
-                                      billingAddress.getCity(), billingAddress.getState(), billingAddress.getZip(),
-                                      billingAddress.getCountry());
     }
 }

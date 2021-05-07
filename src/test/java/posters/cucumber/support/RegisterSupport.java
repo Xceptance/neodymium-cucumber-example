@@ -23,16 +23,32 @@ public class RegisterSupport
     @Given("^user setup: \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"$")
     public void setUpUser(String firstName, String lastName, String eMail, String password)
     {
-        // set up user for the clean up steps
+        // create a user for later use (e.g. register or delete)
         storage.user = new User(firstName, lastName, eMail, password);
     };
 
     @Given("^login page is opened after registration$")
-    public void registerUserSetup()
+    public LoginPage registerUserSetup()
     {
         // use the user coming from dependency injection
-        registerUser(storage.user);
+//        registerUser(storage.user);
+        var registerPage = OpenPageFlows.registerPage();
+        registerPage.isExpectedPage();
+        var loginPage = registerPage.sendRegisterForm(storage.user, storage.user.getPassword());
+        loginPage.isExpectedPage();
+
+        return loginPage;
     }
+
+//    public  LoginPage registerUser()
+//    {
+//        var registerPage = OpenPageFlows.registerPage();
+//        registerPage.isExpectedPage();
+//        var loginPage = registerPage.sendRegisterForm(storage.user, storage.user.getPassword());
+//        loginPage.isExpectedPage();
+//
+//        return loginPage;
+//    }
 
     @After("@DeleteUserAfterwards")
     @Step("delete user flow")
@@ -78,16 +94,6 @@ public class RegisterSupport
         loginPage.validateStructure();
         loginPage.sendFalseLoginform(storage.user);
         loginPage.validateWrongEmail(storage.user.getEmail());
-
-        return loginPage;
-    }
-
-    public static LoginPage registerUser(User user)
-    {
-        var registerPage = OpenPageFlows.registerPage();
-        registerPage.isExpectedPage();
-        var loginPage = registerPage.sendRegisterForm(user, user.getPassword());
-        loginPage.isExpectedPage();
 
         return loginPage;
     }
