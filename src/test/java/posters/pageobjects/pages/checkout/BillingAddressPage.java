@@ -6,6 +6,7 @@ import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 
 import com.codeborne.selenide.SelenideElement;
+import com.xceptance.neodymium.util.Neodymium;
 
 import io.qameta.allure.Step;
 import posters.pageobjects.components.AddressForm;
@@ -15,8 +16,10 @@ import posters.dataobjects.Address;
  * @author pfotenhauer
  */
 public class BillingAddressPage extends AbstractCheckoutPage
-{    
+{
     private SelenideElement headline = $("#titleBillAddr");
+
+    private AddressForm billingAddressForm = new AddressForm(Neodymium.localizedText("CheckoutPages.billingAddressFormTitle"));
 
     @Override
     @Step("ensure this is a billing address page")
@@ -38,6 +41,7 @@ public class BillingAddressPage extends AbstractCheckoutPage
         // First address
         // Makes sure at least one address is visible
         $("#billAddr0").shouldBe(visible);
+        billingAddressForm.isComponentAvailable();
     }
 
     /**
@@ -58,13 +62,13 @@ public class BillingAddressPage extends AbstractCheckoutPage
 
         return new PaymentPage().isExpectedPage();
     }
-    
+
     @Step("fill the billing address")
     public PaymentPage fillBillingAddress(Address billingAddress)
     {
         // Fill billing address
-        AddressForm.fillAddressForm(billingAddress);
-        
+        billingAddressForm.fillAddressForm(billingAddress);
+
         // Send billing addresses by clicking the button Continue
         $("#btnAddBillAddr").scrollTo().click();
 

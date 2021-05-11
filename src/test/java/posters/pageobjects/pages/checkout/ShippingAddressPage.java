@@ -6,6 +6,7 @@ import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 
 import com.codeborne.selenide.SelenideElement;
+import com.xceptance.neodymium.util.Neodymium;
 
 import io.qameta.allure.Step;
 import posters.dataobjects.Address;
@@ -18,7 +19,7 @@ public class ShippingAddressPage extends AbstractCheckoutPage
 {
     private SelenideElement headline = $("#titleDelAddr");
 
-    
+    private AddressForm shippingAddressForm = new AddressForm(Neodymium.localizedText("CheckoutPages.shippingAddressFormTitle"));
 
     @Override
     @Step("ensure this is a shipping address page")
@@ -39,6 +40,7 @@ public class ShippingAddressPage extends AbstractCheckoutPage
         headline.should(matchText("[A-Z].{3,}"));
         // Makes sure at least one address is visible
         $("#delAddr0").shouldBe(visible);
+        shippingAddressForm.isComponentAvailable();
     }
 
     /**
@@ -62,30 +64,30 @@ public class ShippingAddressPage extends AbstractCheckoutPage
     @Step("fill and send shipping address without different billing address")
     public PaymentPage fillShippingAddressWithSameAsBilling(Address shippingAddress)
     {
-            // Fill shipping address
-            AddressForm.fillAddressForm(shippingAddress);
-            
-            // Click checkbox YES
-            $("#billEqualShipp-Yes").scrollTo().click();
-            
-            // Send shipping addresses by clicking the button Continue
-            $("#btnAddDelAddr").scrollTo().click();
-            
-            return new PaymentPage().isExpectedPage();
+        // Fill shipping address
+        shippingAddressForm.fillAddressForm(shippingAddress);
+
+        // Click checkbox YES
+        $("#billEqualShipp-Yes").scrollTo().click();
+
+        // Send shipping addresses by clicking the button Continue
+        $("#btnAddDelAddr").scrollTo().click();
+
+        return new PaymentPage().isExpectedPage();
     }
 
     @Step("fill and send shipping address with different billing address")
     public BillingAddressPage fillShippingAddressWithDifferentBilling(Address shippingAddress)
     {
-            // Fill shipping address
-            AddressForm.fillAddressForm(shippingAddress);
-            
-            // Click checkbox NO
-            $("#billEqualShipp-No").scrollTo().click();
-            
-            // Send shipping addresses by clicking the button Continue
-            $("#btnAddDelAddr").scrollTo().click();
-            
-            return new BillingAddressPage().isExpectedPage();
+        // Fill shipping address
+        shippingAddressForm.fillAddressForm(shippingAddress);
+
+        // Click checkbox NO
+        $("#billEqualShipp-No").scrollTo().click();
+
+        // Send shipping addresses by clicking the button Continue
+        $("#btnAddDelAddr").scrollTo().click();
+
+        return new BillingAddressPage().isExpectedPage();
     }
 }

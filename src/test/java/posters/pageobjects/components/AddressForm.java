@@ -1,6 +1,6 @@
 package posters.pageobjects.components;
 
-import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Condition.exactText;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 
@@ -10,12 +10,19 @@ import posters.dataobjects.Address;
 
 public class AddressForm extends AbstractComponent
 {
+    private final String title;
+
+    public AddressForm(String title)
+    {
+        this.title = title;
+    }
+
     public void isComponentAvailable()
     {
-        $(".header-container>h2").shouldHave(text("address"));
+        $(".header-container>h2").shouldHave(exactText(title));
     }
-    
-    public static void fillAddressForm(Address address)
+
+    public void fillAddressForm(Address address)
     {
         // Wait for the address form to be visible
         $("#fullName").waitUntil(visible, Neodymium.configuration().selenideTimeout());
