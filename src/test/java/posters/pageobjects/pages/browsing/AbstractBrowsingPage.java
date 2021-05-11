@@ -8,7 +8,6 @@ import posters.pageobjects.components.Search;
 import posters.pageobjects.components.SuccessMessage;
 import posters.pageobjects.components.TopNavigation;
 import posters.pageobjects.components.UserMenu;
-import posters.pageobjects.components.AddressForm;
 import posters.pageobjects.pages.AbstractPageObject;
 
 public abstract class AbstractBrowsingPage extends AbstractPageObject
@@ -25,8 +24,6 @@ public abstract class AbstractBrowsingPage extends AbstractPageObject
 
     public UserMenu userMenu = new UserMenu();
     
-    public AddressForm addressForm = new AddressForm();
-
     public SuccessMessage successMessage = new SuccessMessage();
 
     public ErrorMessage errorMessage = new ErrorMessage();
@@ -42,7 +39,6 @@ public abstract class AbstractBrowsingPage extends AbstractPageObject
         search.isComponentAvailable();
         topNav.isComponentAvailable();
         userMenu.isComponentAvailable();
-        addressForm.isComponentAvailable();
         successMessage.isComponentAvailable();
         errorMessage.isComponentAvailable();
     }
