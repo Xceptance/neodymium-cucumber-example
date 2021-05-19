@@ -42,13 +42,13 @@ public class OpenPageFlows
     {
         clearBrowserCookies();
         open(Neodymium.configuration().url() + url);
-        return new ProductDetailPage();
+        return new ProductDetailPage().isExpectedPage();
     }
 
     // TODO check if needed - else delete
     public static ProductDetailPage openProductdetailsPage(String url)
     {
         open(Neodymium.configuration().url() + url);
-        return new ProductDetailPage();
+        return new ProductDetailPage().isExpectedPage();
     }
 }
