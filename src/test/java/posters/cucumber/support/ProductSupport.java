@@ -8,9 +8,9 @@ import posters.pageobjects.pages.browsing.ProductDetailPage;
 public class ProductSupport
 {
     @When("^product \"([^\"]*)\" is opened$")
-    public ProductDetailPage clickProductByName(String productName)
+    public void clickProductByName(String productName)
     {
-        return new CategoryPage().clickProductByName(productName);
+        new CategoryPage().clickProductByName(productName);
     }
 
     @Then("^a product detail page shows the headline \"([^\"]*)\"$")

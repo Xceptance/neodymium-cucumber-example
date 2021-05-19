@@ -27,20 +27,18 @@ public class RegisterSupport
     };
 
     @Given("^login page is opened after registration$")
-    public LoginPage registerUserSetup()
+    public void registerUserSetup()
     {
         // use the user coming from dependency injection
-//        registerUser(storage.user);
+        // registerUser(storage.user);
         var registerPage = OpenPageFlows.registerPage();
         registerPage.isExpectedPage();
         var loginPage = registerPage.sendRegisterForm(storage.user);
         loginPage.isExpectedPage();
-
-        return loginPage;
     }
 
     @After("@DeleteUserAfterwards")
-    public LoginPage deleteUser()
+    public void deleteUser()
     {
         var homePage = new HomePage();
         // ensure that the user is logged in
@@ -82,8 +80,6 @@ public class RegisterSupport
         loginPage.validateStructure();
         loginPage.sendFalseLoginform(storage.user);
         loginPage.validateWrongEmail(storage.user.getEmail());
-
-        return loginPage;
     }
 
     @When("^I register a new user with \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"$")
