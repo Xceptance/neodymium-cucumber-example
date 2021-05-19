@@ -24,9 +24,9 @@ public class PlaceOrderPage extends AbstractCheckoutPage
 {
     private SelenideElement headline = $("#titleOrderOverview");
 
-    private SelenideElement shippingAddressForm = $("#shippingAddr");
+    private SelenideElement shippingAddressContainer = $("#shippingAddr");
 
-    private SelenideElement billingAddressForm = $("#billingAddr");
+    private SelenideElement billingAddressContainer = $("#billingAddr");
 
     private SelenideElement paymentForm = $("#payment");
 
@@ -50,8 +50,8 @@ public class PlaceOrderPage extends AbstractCheckoutPage
         // Headline
         // Headline is there and starts with a capital letter
         headline.should(matchText("[A-Z].{3,}"));
-        shippingAddressForm.shouldBe(visible);
-        billingAddressForm.shouldBe(visible);
+        shippingAddressContainer.shouldBe(visible);
+        billingAddressContainer.shouldBe(visible);
         paymentForm.shouldBe(visible);
         orderButton.shouldBe(visible);
     }
@@ -111,47 +111,47 @@ public class PlaceOrderPage extends AbstractCheckoutPage
         String firstName = shippingAddress.getFirstName();
         String lastName = shippingAddress.getLastName();
         String fullName = firstName + " " + lastName;
-        shippingAddressForm.find(".name").shouldHave(exactText(fullName));
+        shippingAddressContainer.find(".name").shouldHave(exactText(fullName));
         // Company
         // Makes sure the shipping address company matches the parameter
-        shippingAddressForm.find(".company").shouldHave(exactText(shippingAddress.getCompany()));
+        shippingAddressContainer.find(".company").shouldHave(exactText(shippingAddress.getCompany()));
         // Address
         // Makes sure the shipping address matches the parameter
-        shippingAddressForm.find(".addressLine").shouldHave(exactText(shippingAddress.getStreet()));
+        shippingAddressContainer.find(".addressLine").shouldHave(exactText(shippingAddress.getStreet()));
         // City
         // Makes sure the shipping address city matches the parameter
-        shippingAddressForm.find(".city").shouldHave(exactText(shippingAddress.getCity()));
+        shippingAddressContainer.find(".city").shouldHave(exactText(shippingAddress.getCity()));
         // State
         // Makes sure the shipping address state matches the parameter
-        shippingAddressForm.find(".state").shouldHave(exactText(shippingAddress.getState()));
+        shippingAddressContainer.find(".state").shouldHave(exactText(shippingAddress.getState()));
         // ZIP
         // Makes sure the shipping address ZIP matches the parameter
-        shippingAddressForm.find(".zip").shouldHave(exactText(" " + shippingAddress.getZip()));
+        shippingAddressContainer.find(".zip").shouldHave(exactText(" " + shippingAddress.getZip()));
         // Country
         // Makes sure the shipping address country matches the parameter
-        shippingAddressForm.find(".country").shouldHave(exactText(shippingAddress.getCountry()));
+        shippingAddressContainer.find(".country").shouldHave(exactText(shippingAddress.getCountry()));
         // Billing address
         // Name
         // Makes sure the billing address name matches the parameter
-        billingAddressForm.find(".name").shouldHave(exactText(fullName));
+        billingAddressContainer.find(".name").shouldHave(exactText(fullName));
         // Company
         // Makes sure the billing address company matches the parameter
-        billingAddressForm.find(".company").shouldHave(exactText(billingAddress.getCompany()));
+        billingAddressContainer.find(".company").shouldHave(exactText(billingAddress.getCompany()));
         // Address
         // Makes sure the billing address matches the parameter
-        billingAddressForm.find(".addressLine").shouldHave(exactText(billingAddress.getStreet()));
+        billingAddressContainer.find(".addressLine").shouldHave(exactText(billingAddress.getStreet()));
         // City
         // Makes sure the billing address city matches the parameter
-        billingAddressForm.find(".city").shouldHave(exactText(billingAddress.getCity()));
+        billingAddressContainer.find(".city").shouldHave(exactText(billingAddress.getCity()));
         // State
         // Makes sure the billing address state matches the parameter
-        billingAddressForm.find(".state").shouldHave(exactText(billingAddress.getState()));
+        billingAddressContainer.find(".state").shouldHave(exactText(billingAddress.getState()));
         // ZIP
         // Makes sure the billing address ZIP matches the parameter
-        billingAddressForm.find(".zip").shouldHave(exactText(billingAddress.getZip()));
+        billingAddressContainer.find(".zip").shouldHave(exactText(billingAddress.getZip()));
         // Country
         // Makes sure the billing address country matches the parameter
-        billingAddressForm.find(".country").shouldHave(exactText(billingAddress.getCountry()));
+        billingAddressContainer.find(".country").shouldHave(exactText(billingAddress.getCountry()));
         // Payment
         // Name
         // Makes sure the credit card holder matches the parameter
