@@ -42,12 +42,8 @@ public class CartSupport
     {
         var cartPage = new CartPage();
         cartPage.updateProductCountByName(name, style, size, amount);
-        
-        var updateProduct = storage.getProductFromArrayList(name, size, style);
-        storage.products.remove(updateProduct);
-        String unitPrice = updateProduct.getUnitPrice();
-        updateProduct = new Product(name, unitPrice, style, size, amount);
-        storage.products.add(updateProduct);
+
+        storage.updateCountOfProduct(name, size, style, amount);
     }
 
     @Then("^I can remove \"([^\"]*)\" with \"([^\"]*)\" and \"([^\"]*)\"$")

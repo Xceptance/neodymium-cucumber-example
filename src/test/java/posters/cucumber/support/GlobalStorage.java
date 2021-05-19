@@ -35,16 +35,8 @@ public class GlobalStorage
         // increase amount of product if already there or add the whole product
         if (products.contains(product))
         {
-            var updatedProduct = products.get(products.indexOf(product));
-            String name = updatedProduct.getName();
-            String unitPrice = updatedProduct.getUnitPrice();
-            String style = updatedProduct.getStyle();
-            String size = updatedProduct.getSize();
-            int amount = updatedProduct.getAmount();
-            products.remove(updatedProduct);
-            updatedProduct = new Product(name, unitPrice, style, size, amount + 1); 
-            products.add(updatedProduct);
-            return updatedProduct;
+            updateCountOfProduct(product.getName(), product.getSize(), product.getStyle(), product.getAmount() + 1);
+            return getProductFromArrayList(product.getName(), product.getSize(), product.getStyle());
         }
         else
         {
@@ -52,21 +44,20 @@ public class GlobalStorage
             return product;
         }
     }
-    
+
     public Product getProductFromArrayList(String name, String size, String style)
     {
         int i = 0;
         for (Product product : products)
         {
-            if (product.getName().equals(name) && product.getSize().equals(size)
-                && product.getStyle().equals(style))
+            if (product.getName().equals(name) && product.getSize().equals(size) && product.getStyle().equals(style))
             {
-            i = products.indexOf(product);
+                i = products.indexOf(product);
             }
         }
         return products.get(i);
     }
-    
+
     public void updateCountOfProduct(String name, String size, String style, int amount)
     {
         var updateProducht = getProductFromArrayList(name, size, style);
@@ -75,7 +66,7 @@ public class GlobalStorage
         updateProducht = new Product(name, unitPrice, style, size, amount);
         products.add(updateProducht);
     }
-    
+
     public void removeProduct(String name, String style, String size)
     {
         var updateProducht = getProductFromArrayList(name, size, style);
