@@ -83,7 +83,7 @@ public class Product
     @Override
     public String toString()
     {
-        return String.format("Product [name()=%s, size()=%s, style()=%s, price()=%s]", getName(), getSize(), getStyle(), getUnitPrice(), getAmount());
+        return String.format("Product [name()=%s, size()=%s, style()=%s, price()=%s, amount()=%]", getName(), getSize(), getStyle(), getUnitPrice(), getAmount());
     }
 
     @Override
