@@ -38,7 +38,7 @@ public class OpenPageFlows
     };
 
     @Given("^product page \"([^\"]*)\" is open$")
-    public static ProductDetailPage openProductdetailsPageWithClearedCookes(String url)
+    public static ProductDetailPage openProductDetailsPageWithClearedCookes(String url)
     {
         clearBrowserCookies();
         open(Neodymium.configuration().url() + url);
@@ -46,7 +46,7 @@ public class OpenPageFlows
     }
 
     // TODO check if needed - else delete
-    public static ProductDetailPage openProductdetailsPage(String url)
+    public static ProductDetailPage openProductDetailsPage(String url)
     {
         open(Neodymium.configuration().url() + url);
         return new ProductDetailPage().isExpectedPage();

@@ -53,7 +53,7 @@ public class OrderSupport
     @When("^I add product \"([^\"]*)\" in size \"([^\"]*)\" and style \"([^\"]*)\"$")
     public void openProductPageAndAddItoTheCart(String productUrl, String size, String style)
     {
-        OpenPageFlows.openProductdetailsPage(productUrl);
+        OpenPageFlows.openProductDetailsPage(productUrl);
         addProductToCart(size, style);
     }
     
