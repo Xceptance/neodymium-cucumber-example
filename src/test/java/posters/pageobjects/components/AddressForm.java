@@ -37,7 +37,8 @@ public class AddressForm extends AbstractComponent
 
     public void isComponentAvailable()
     {
-        $("#fullName").shouldBe(visible);
+        nameField.shouldBe(visible);
+        zipField.shouldBe(visible);
     }
 
     public void validateStructure()
