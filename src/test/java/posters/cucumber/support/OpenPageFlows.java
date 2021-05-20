@@ -21,21 +21,21 @@ public class OpenPageFlows
         // open home page
         open(Neodymium.configuration().url());
         return new HomePage().isExpectedPage();
-    };
+    }
 
     @Given("^login page is loaded$")
     public static LoginPage loginPage()
     {
         // open login page and check for expected page
         return homePage().userMenu.openLogin();
-    };
+    }
 
     @Given("^register page is loaded$")
     public static RegisterPage registerPage()
     {
         // open login page and check for expected page
         return homePage().userMenu.openRegister();
-    };
+    }
 
     @Given("^product page \"([^\"]*)\" is open$")
     public static ProductDetailPage openProductDetailsPageWithClearedCookes(String url)
