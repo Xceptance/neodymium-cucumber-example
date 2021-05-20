@@ -26,15 +26,6 @@ public class RegisterSupport
         storage.user = new User(firstName, lastName, eMail, password);
     };
 
-    @Given("^login page is opened after registration$")
-    public void registerUserSetup()
-    {
-        // use the user coming from dependency injection
-        // registerUser(storage.user);
-        var registerPage = OpenPageFlows.registerPage();
-        registerPage.sendRegisterForm(storage.user);
-    }
-
     @After("@DeleteUserAfterwards")
     public void deleteUser()
     {
