@@ -45,7 +45,6 @@ public class OpenPageFlows
         return new ProductDetailPage().isExpectedPage();
     }
 
-    // TODO check if needed - else delete
     public static ProductDetailPage openProductDetailsPage(String url)
     {
         open(Neodymium.configuration().url() + url);
