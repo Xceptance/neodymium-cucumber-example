@@ -35,8 +35,8 @@ public class GlobalStorage
         // increase amount of product if already there or add the whole product
         if (products.contains(product))
         {
-            updateCountOfProduct(product.getName(), product.getSize(), product.getStyle(), product.getAmount() + 1);
-            return getProductFromArrayList(product.getName(), product.getSize(), product.getStyle());
+
+            return updateCountOfProduct(product.getName(), product.getSize(), product.getStyle(), product.getAmount() + 1);
         }
         else
         {
@@ -58,13 +58,14 @@ public class GlobalStorage
         return products.get(i);
     }
 
-    public void updateCountOfProduct(String name, String size, String style, int amount)
+    public Product updateCountOfProduct(String name, String size, String style, int amount)
     {
         var updateProducht = getProductFromArrayList(name, size, style);
         String unitPrice = updateProducht.getUnitPrice();
         products.remove(products.indexOf(updateProducht));
         updateProducht = new Product(name, unitPrice, style, size, amount);
         products.add(updateProducht);
+        return updateProducht;
     }
 
     public void removeProduct(String name, String style, String size)
