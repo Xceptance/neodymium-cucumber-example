@@ -32,9 +32,7 @@ public class RegisterSupport
         // use the user coming from dependency injection
         // registerUser(storage.user);
         var registerPage = OpenPageFlows.registerPage();
-        registerPage.isExpectedPage();
-        var loginPage = registerPage.sendRegisterForm(storage.user);
-        loginPage.isExpectedPage();
+        registerPage.sendRegisterForm(storage.user);
     }
 
     @After("@DeleteUserAfterwards")
