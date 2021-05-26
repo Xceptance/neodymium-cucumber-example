@@ -6,6 +6,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import posters.dataobjects.User;
 import posters.pageobjects.pages.browsing.HomePage;
+import posters.pageobjects.pages.user.AccountOverviewPage;
 import posters.pageobjects.pages.user.LoginPage;
 import posters.pageobjects.pages.user.RegisterPage;
 
@@ -49,7 +50,11 @@ public class RegisterSupport
         }
 
         // goto account page
-        var accountOverviewPage = homePage.userMenu.openAccountOverview();
+        var accountOverviewPage = new AccountOverviewPage();
+        if (!accountOverviewPage.isPage())
+        {
+            accountOverviewPage = homePage.userMenu.openAccountOverview();
+        }
         accountOverviewPage.validateStructure();
 
         // goto personal data page
