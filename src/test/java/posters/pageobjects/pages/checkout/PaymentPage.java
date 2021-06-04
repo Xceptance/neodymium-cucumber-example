@@ -1,16 +1,14 @@
-/**
- * 
- */
 package posters.pageobjects.pages.checkout;
 
 import static com.codeborne.selenide.Condition.exist;
 import static com.codeborne.selenide.Condition.matchText;
-import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 
 import com.codeborne.selenide.SelenideElement;
 
 import io.qameta.allure.Step;
+import posters.dataobjects.CreditCard;
+import posters.pageobjects.components.PaymentForm;
 
 /**
  * @author pfotenhauer
@@ -19,21 +17,15 @@ public class PaymentPage extends AbstractCheckoutPage
 {
     private SelenideElement headline = $("#titlePayment");
 
-    private SelenideElement creditCardNumber = $("#creditCardNumber");
-
-    private SelenideElement creditCardName = $("#name");
-
-    private SelenideElement expirationMonth = $("#expirationDateMonth");
-
-    private SelenideElement expirationYear = $("#expirationDateYear");
-
-    private SelenideElement addPaymentButton = $("#btnAddPayment");
+    private PaymentForm paymentForm = new PaymentForm();
 
     @Override
     @Step("ensure this is a payment page")
-    public void isExpectedPage()
+    public PaymentPage isExpectedPage()
     {
+        super.isExpectedPage();
         headline.should(exist);
+        return this;
     }
 
     @Override
@@ -45,9 +37,7 @@ public class PaymentPage extends AbstractCheckoutPage
         // Headline
         // Makes sure the headline is there and starts with a capital letter
         headline.should(matchText("[A-Z].{3,}"));
-        // First credit card
-        // Makes sure at least one credit card is saved
-        $("#payment0").shouldBe(visible);
+        paymentForm.validateStructure();
     }
 
     /**
@@ -66,27 +56,13 @@ public class PaymentPage extends AbstractCheckoutPage
         // Clicks the continue button
         $("#btnUsePayment").scrollTo().click();
 
-        return new PlaceOrderPage();
+        return new PlaceOrderPage().isExpectedPage();
     }
 
     @Step("fill and send payment form")
-    public PlaceOrderPage sendPaymentForm(String number, String name, String month, String year)
+    public PlaceOrderPage sendPaymentForm(CreditCard card)
     {
-        // Credit Card Number
-        // Fills the card number field with the parameter
-        creditCardNumber.val(number);
-        // Name
-        // Fills the card holder field with the parameter
-        creditCardName.val(name);
-        // Expiration
-        // Chooses the expiration month matching the parameter
-        expirationMonth.selectOption(month);
-        // Chooses the expiration year matching the parameter
-        expirationYear.selectOption(year);
-        // Opens the order overview page
-        // Clicks the Continue button
-        addPaymentButton.scrollTo().click();
-
-        return new PlaceOrderPage();
+        paymentForm.sendPaymentForm(card);
+        return new PlaceOrderPage().isExpectedPage();
     }
 }
