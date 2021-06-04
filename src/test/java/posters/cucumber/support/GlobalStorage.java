@@ -35,7 +35,6 @@ public class GlobalStorage
         // increase amount of product if already there or add the whole product
         if (products.contains(product))
         {
-
             return updateCountOfProduct(product.getName(), product.getSize(), product.getStyle(), product.getAmount() + 1);
         }
         else
