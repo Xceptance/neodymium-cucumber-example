@@ -51,10 +51,7 @@ public class RegisterSupport
 
         // goto account page
         var accountOverviewPage = new AccountOverviewPage();
-        if (!accountOverviewPage.isPage())
-        {
-            accountOverviewPage = homePage.userMenu.openAccountOverview();
-        }
+        accountOverviewPage = homePage.userMenu.openAccountOverview();
         accountOverviewPage.validateStructure();
 
         // goto personal data page

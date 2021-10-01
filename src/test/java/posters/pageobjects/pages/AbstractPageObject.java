@@ -4,11 +4,9 @@ import static com.codeborne.selenide.Selenide.$;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.codeborne.selenide.ex.UIAssertionError;
 import com.xceptance.neodymium.util.Neodymium;
 import com.xceptance.neodymium.visual.ai.AI;
 
-import io.qameta.allure.Step;
 import posters.pageobjects.components.Title;
 
 /**
@@ -21,20 +19,6 @@ public abstract class AbstractPageObject
     public AbstractPageObject isExpectedPage()
     {
         return this;
-    }
-
-    @Step("ensure the correct page was loaded")
-    public boolean isPage()
-    {
-        try
-        {
-            isExpectedPage();
-            return true;
-        }
-        catch (UIAssertionError e)
-        {
-            return false;
-        }
     }
 
     abstract public void validateStructure();
