@@ -23,7 +23,7 @@ public abstract class AbstractBrowsingPage extends AbstractPageObject
     public TopNavigation topNav = new TopNavigation();
 
     public UserMenu userMenu = new UserMenu();
-
+    
     public SuccessMessage successMessage = new SuccessMessage();
 
     public ErrorMessage errorMessage = new ErrorMessage();

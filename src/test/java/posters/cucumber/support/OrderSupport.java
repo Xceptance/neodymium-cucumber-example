@@ -3,21 +3,15 @@ package posters.cucumber.support;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import io.qameta.allure.Step;
 import posters.dataobjects.Address;
 import posters.dataobjects.CreditCard;
 import posters.dataobjects.Product;
 import posters.dataobjects.User;
 import posters.pageobjects.pages.browsing.HomePage;
-import posters.pageobjects.pages.browsing.ProductdetailPage;
-import posters.pageobjects.pages.checkout.CartPage;
+import posters.pageobjects.pages.browsing.ProductDetailPage;
+import posters.pageobjects.pages.checkout.ShippingAddressPage;
 import posters.pageobjects.pages.checkout.PaymentPage;
 import posters.pageobjects.pages.checkout.PlaceOrderPage;
-import posters.pageobjects.pages.checkout.ShippingAddressPage;
-import posters.pageobjects.pages.user.AccountOverviewPage;
-import posters.pageobjects.pages.user.LoginPage;
-import posters.pageobjects.pages.user.OrderHistoryPage;
-import posters.pageobjects.pages.user.RegisterPage;
 import posters.pageobjects.utility.PriceHelper;
 
 public class OrderSupport
@@ -33,97 +27,102 @@ public class OrderSupport
     @Given("^new user with \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\" is registered and logged in$")
     public void registerAndLogIn(String firstName, String lastName, String email, String password)
     {
-        RegisterPage registerPage = OpenPageFlows.registerPage();
-        registerPage.isExpectedPage();
+        // the user is saved for later reuse
         storage.user = new User(firstName, lastName, email, password);
-        registerPage.sendRegisterForm(firstName, lastName, email, password, password);
-        LoginPage loginPage = registerPage.userMenu.openLogin();
-        loginPage.isExpectedPage();
+        
+        var registerPage = OpenPageFlows.registerPage();
+        registerPage.sendRegisterForm(storage.user);
+        var loginPage = registerPage.userMenu.openLogin();;
         loginPage.sendLoginform(email, password);
-    }
-
-    @Then("^all the products are to find in order history$")
-    public void validateOrderInOrderHistory()
-    {
-        AccountOverviewPage accountOverview = new HomePage().userMenu.openAccountOverview();
-        accountOverview.isExpectedPage();
-        OrderHistoryPage orderHistory = accountOverview.openOrderHistory();
-        for (Product product : storage.products)
-        {
-            orderHistory.validateContainsProduct(product);
-        }
-    }
-
-    @When("^I add product \"([^\"]*)\" in size \"([^\"]*)\" and style \"([^\"]*)\"$")
-    @Step("open product page and add product to the cart")
-    public void openProductPageAndAddItoTheCart(String productUrl, String size, String style)
-    {
-        OpenPageFlows.openProductdetailsPage(productUrl);
-        addProductToCart(size, style);
     }
 
     @When("I add this product with size \"([^\"]*)\" and style \"([^\"]*)\" to the cart$")
     public void addProductToCart(String size, String style)
     {
-        ProductdetailPage productPage = new ProductdetailPage();
-        productPage.setSize(size);
-        productPage.setStyle(style);
+        var productDetailPage = new ProductDetailPage();
+        productDetailPage.setSize(size);
+        productDetailPage.setStyle(style);
 
-        Product product = storage.addProduct(productPage.getProduct());
+        var product = storage.addProduct(productDetailPage.getProduct());
 
-        productPage.addToCart();
-        productPage.miniCart.openMiniCart();
-        productPage.miniCart.validateMiniCartByProduct(product);
+        productDetailPage.addToCart();
+        productDetailPage.miniCart.openMiniCart();
+        productDetailPage.miniCart.validateMiniCartByProduct(product);
     }
-
-    @When("^I specify the shipping address \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\" and use it for billing$")
-    public void openFillAndSendShippingFormUseForBilling(String name, String company, String address, String city, String state, String zip, String country)
+    
+    @When("^I add product \"([^\"]*)\" in size \"([^\"]*)\" and style \"([^\"]*)\"$")
+    public void openProductPageAndAddItoTheCart(String productUrl, String size, String style)
     {
-        CartPage cartPage = new ProductdetailPage().miniCart.openCartPage();
-        cartPage.isExpectedPage();
+        OpenPageFlows.openProductDetailsPage(productUrl);
+        addProductToCart(size, style);
+    }
+    
+    @Then("^I specify the shipping address \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\" and use it for billing$")
+    public void openFillAndSendShippingFormUseForBilling(String firstName, String lastName, String name, String company, String street, String city, String state, String zip, String country, boolean sameBillingAddress)
+    {
+        // addresses are saved for later reuse
+        storage.shippingAddress = new Address(firstName, lastName, company, street, city, state, zip, country);
+        storage.billingAddress = new Address(firstName, lastName, company, street, city, state, zip, country);
+
+        var cartPage = new ProductDetailPage().miniCart.openCartPage();
         ShippingAddressPage shippingPage = cartPage.openShippingPage();
-        shippingPage.isExpectedPage();
-        shippingPage.sendShippingAddressForm(name, company, address, city, state, zip, country, true);
-        storage.shippingAddress = new Address(name, company, address, city, state, zip, country);
-        storage.billingAddress = new Address(name, company, address, city, state, zip, country);
-        new PaymentPage().isExpectedPage();
+        
+        if (sameBillingAddress)
+        {
+           shippingPage.fillShippingAddressWithSameAsBilling(storage.shippingAddress);
+        }
+        else 
+        {
+           var billingPage = shippingPage.fillShippingAddressWithDifferentBilling(storage.shippingAddress);
+           billingPage.fillBillingAddress(storage.billingAddress);
+        }
     }
 
-    @When("^I enter payment data \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"$")
+    @Then("^I enter payment data \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"$")
     public void fillAndSendPaymentForm(String name, String cardNumber, String month, String year)
     {
-        PaymentPage paymentPage = new PaymentPage();
-        paymentPage.isExpectedPage();
-        PlaceOrderPage placeOrder = paymentPage.sendPaymentForm(cardNumber, name, month, year);
+        // the creditcard is saved for later reuse
         storage.creditcard = new CreditCard(name, cardNumber, "xxxx xxxx xxxx " + cardNumber.substring(12, 16), month, year);
-        placeOrder.isExpectedPage();
+        
+        var paymentPage = new PaymentPage().isExpectedPage();
+        paymentPage.sendPaymentForm(storage.creditcard);
     }
 
     @Then("^I see all the products in order overview$")
     public void validateContainsAllProductsWithCorrectPricesAndAmount()
     {
         double subtotal = 0.0;
-        PlaceOrderPage placeOrder = new PlaceOrderPage();
+        var placeOrderPage = new PlaceOrderPage();
         for (Product product : storage.products)
         {
-            placeOrder.validateContainsProduct(product);
+            placeOrderPage.validateContainsProduct(product);
             subtotal += product.getTotalPrice();
         }
-        placeOrder.validateSubtotal(PriceHelper.format(subtotal));
+        placeOrderPage.validateSubtotal(PriceHelper.format(subtotal));
     }
 
     @Then("^my shipping and billing addresses as well as payment data are displayed correctly")
     public void validateAddressesAndPaymentData()
     {
-        PlaceOrderPage placeOrder = new PlaceOrderPage();
-        placeOrder.validateAddressesAndPayment(storage.shippingAddress, storage.billingAddress, storage.creditcard);
+        var placeOrderPage = new PlaceOrderPage();
+        placeOrderPage.validateAddressesAndPayment(storage.shippingAddress, storage.billingAddress, storage.creditcard);
     }
 
     @Then("^my order is successfully placed$")
     public void placeOrder()
     {
         HomePage succssefulOrder = new PlaceOrderPage().placeOrder();
-        succssefulOrder.isExpectedPage();
         succssefulOrder.validateSuccessfulOrder();
+    }
+
+    @Then("^all the products are to find in order history$")
+    public void validateOrderInOrderHistory()
+    {
+        var accountOverviewPage = new HomePage().userMenu.openAccountOverview();
+        var orderHistoryPage = accountOverviewPage.openOrderHistory();
+        for (Product product : storage.products)
+        {
+            orderHistoryPage.validateContainsProduct(product);
+        }
     }
 }
