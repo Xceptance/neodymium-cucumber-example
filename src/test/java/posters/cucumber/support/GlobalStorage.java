@@ -59,17 +59,17 @@ public class GlobalStorage
 
     public Product updateCountOfProduct(String name, String size, String style, int amount)
     {
-        var updateProducht = getProductFromArrayList(name, size, style);
-        String unitPrice = updateProducht.getUnitPrice();
-        products.remove(products.indexOf(updateProducht));
-        updateProducht = new Product(name, unitPrice, style, size, amount);
-        products.add(updateProducht);
-        return updateProducht;
+        var product = getProductFromArrayList(name, size, style);
+        String unitPrice = product.getUnitPrice();
+        products.remove(products.indexOf(product));
+        product = new Product(name, unitPrice, style, size, amount);
+        products.add(product);
+        return product;
     }
 
     public void removeProduct(String name, String style, String size)
     {
-        var updateProducht = getProductFromArrayList(name, size, style);
-        products.remove(products.indexOf(updateProducht));
+        var product = getProductFromArrayList(name, size, style);
+        products.remove(product);
     }
 }
