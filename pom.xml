@@ -26,12 +26,12 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.compiler.source>11</maven.compiler.source>
-		<maven.compiler.target>11</maven.compiler.target>
-		<surefire.version>2.22.2</surefire.version>
-		<aspectj.version>1.9.6</aspectj.version>
-		<allure.version>2.10.0</allure.version>
-		<neodymium.version>4.1.5</neodymium.version>
+		<maven.compiler.source>17</maven.compiler.source>
+		<maven.compiler.target>17</maven.compiler.target>
+		<surefire.version>3.2.5</surefire.version>
+		<aspectj.version>1.9.21</aspectj.version>
+		<allure.version>2.12.0</allure.version>
+		<neodymium.version>5.0.0-SNAPSHOT</neodymium.version>
 	</properties>
 
 	<build>
@@ -58,6 +58,11 @@
 						<artifactId>aspectjweaver</artifactId>
 						<version>${aspectj.version}</version>
 					</dependency>
+					<dependency>
+            <groupId>org.junit.vintage</groupId>
+            <artifactId>junit-vintage-engine</artifactId>
+            <version>5.10.2</version>
+          </dependency>
 				</dependencies>
 			</plugin>
 			<plugin>
@@ -65,7 +70,7 @@
 				<artifactId>allure-maven</artifactId>
 				<version>${allure.version}</version>
 				<configuration>
-					<reportVersion>${allure.version}</reportVersion>
+					<reportVersion>2.27.0</reportVersion>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -82,7 +87,7 @@
 					</execution>
 				</executions>
 				<configuration>
-					<source>11</source>
+					<source>17</source>
 				</configuration>
 			</plugin>
 		</plugins>

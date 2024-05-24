@@ -8,7 +8,7 @@ import com.xceptance.neodymium.util.Neodymium;
 import io.cucumber.java.en.Given;
 import io.qameta.allure.Step;
 import posters.pageobjects.pages.browsing.HomePage;
-import posters.pageobjects.pages.browsing.ProductdetailPage;
+import posters.pageobjects.pages.browsing.ProductDetailPage;
 import posters.pageobjects.pages.user.LoginPage;
 import posters.pageobjects.pages.user.RegisterPage;
 
@@ -32,7 +32,7 @@ public class OpenPageFlows
     public static LoginPage loginPage()
     {
         // open login page and check for expected page
-        LoginPage loginPage = homepage().userMenu.openLogin();
+        LoginPage loginPage = homepage().header.userMenu.openLoginPage();
         loginPage.isExpectedPage();
         return loginPage;
     };
@@ -42,24 +42,24 @@ public class OpenPageFlows
     public static RegisterPage registerPage()
     {
         // open login page and check for expected page
-        RegisterPage registerPage = homepage().userMenu.openRegister();
+        RegisterPage registerPage = homepage().header.userMenu.openRegisterPage();
         registerPage.isExpectedPage();
         return registerPage;
     };
 
     @Given("^product page \"([^\"]*)\" is open$")
     @Step("open product page with cleared cookes")
-    public static ProductdetailPage openProductdetailsPageWithClearedCookes(String url)
+    public static ProductDetailPage openProductdetailsPageWithClearedCookes(String url)
     {
         clearBrowserCookies();
         open(Neodymium.configuration().url() + url);
-        return new ProductdetailPage();
+        return new ProductDetailPage();
     }
 
     @Step("open product page without cleared cookes")
-    public static ProductdetailPage openProductdetailsPage(String url)
+    public static ProductDetailPage openProductdetailsPage(String url)
     {
         open(Neodymium.configuration().url() + url);
-        return new ProductdetailPage();
+        return new ProductDetailPage();
     }
 }

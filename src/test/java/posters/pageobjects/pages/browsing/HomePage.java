@@ -1,109 +1,121 @@
 package posters.pageobjects.pages.browsing;
 
-import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
+import static com.codeborne.selenide.CollectionCondition.size;
+import static com.codeborne.selenide.Condition.attribute;
 import static com.codeborne.selenide.Condition.exactText;
 import static com.codeborne.selenide.Condition.exist;
-import static com.codeborne.selenide.Condition.matchText;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 
+import com.codeborne.selenide.ClickOptions;
+import com.codeborne.selenide.ElementsCollection;
+import com.codeborne.selenide.SelenideElement;
 import com.xceptance.neodymium.util.Neodymium;
 
 import io.qameta.allure.Step;
-import posters.dataobjects.User;
+import posters.pageobjects.components.SaleBanner;
 
 public class HomePage extends AbstractBrowsingPage
 {
+    private ElementsCollection slideNavigation = $$("#carousel-btn");
+
+    private ElementsCollection slideHeadline = $$(".carousel-content-product h1");
+
+    private ElementsCollection slideButton = $$(".carousel-content-product .btn-primary");
+
+    private ElementsCollection featuredCategories = $$(".category-tile-title");
+
+    public SaleBanner saleBanner = new SaleBanner();
+
     @Override
     @Step("ensure this is a home page")
-    public void isExpectedPage()
+    public HomePage isExpectedPage()
     {
-        $("#titleIndex").should(exist);
+        super.isExpectedPage();
+        $("#intro-text-homepage").should(exist);
+        return this;
     }
 
-    @Step("validate home page structure")
+    /// ========== validate content homepage ========== ///
+
+    @Step("validate poster slide")
+    public void validatePosterSlide()
+    {
+        for (int i = 1; i <= 4; i++)
+        {
+            slideNavigation.findBy(attribute("aria-label", "Slide " + i)).click(ClickOptions.usingJavaScript());
+            slideHeadline.findBy(exactText(Neodymium.localizedText("homePage.slider." + i))).shouldBe(visible);
+            slideButton.findBy(exactText(Neodymium.localizedText("button.buyHere"))).shouldBe(visible);
+        }
+    }
+
+    @Step("validate featured categories")
+    public void validateFeaturedCategories()
+    {
+        $$(".category-tile-image").shouldHave(size(4));
+
+        for (int i = 1; i <= 4; i++)
+        {
+            featuredCategories.findBy(exactText(Neodymium.localizedText("header.topNavigation." + i + ".title"))).shouldBe(visible);
+        }
+    }
+
+    @Step("validate featured products")
+    public void validateFeaturedProducts()
+    {
+        $(".product-display-heading h2").shouldHave(exactText(Neodymium.localizedText("homePage.featuredProducts.headline"))).shouldBe(visible);
+        $$(".card-img-top").shouldHave(size(12));
+
+        for (int i = 1; i <= 12; i++)
+        {
+            SelenideElement productCard = $(".card.product-tile:nth-child(" + i + ")");
+
+            productCard.find(".card-title").shouldHave(exactText(Neodymium.localizedText("homePage.featuredProducts." + i + ".title"))).shouldBe(visible);
+            productCard.find(".product-tile-text").shouldHave(exactText(Neodymium.localizedText("homePage.featuredProducts." + i + ".description")))
+                       .shouldBe(visible);
+            productCard.find(".product-tile-price").shouldBe(visible);
+            productCard.find(".btn").shouldHave(exactText(Neodymium.localizedText("button.buyHere"))).shouldBe(visible);
+        }
+    }
+
+    @Override
+    @Step("validate structure home page")
     public void validateStructure()
     {
         super.validateStructure();
 
-        // Verifies the company Logo and name are visible.
-        $("#brand").shouldBe(visible);
+        // validate sale banner
+        saleBanner.validateStructure();
 
-        // Verifies the Navigation bar is visible
-        $("#categoryMenu .nav").shouldBe(visible);
-        // Asserts there's categories in the nav bar.
-        $$("#categoryMenu .header-menu-item").shouldHave(sizeGreaterThan(0));
+        // validate poster slide
+        validatePosterSlide();
 
-        // Asserts the first headline is there.
-        $("#titleIndex").shouldBe(matchText("[A-Z].{3,}"));
-        // Asserts the animated poster rotation is there.
-        $("#pShopCarousel").shouldBe(visible);
+        // validate intro
+        $("#intro-text-homepage").shouldHave(exactText(Neodymium.localizedText("homePage.intro"))).shouldBe(visible);
 
-        // Verifies the "Hot products" section is there.
-        $("#main .margin_top20 .h2").shouldBe(matchText("[A-Z].{3,}"));
-        // Asserts there's a list of items under "Hot Products".
-        $("#productList").shouldBe(visible);
-        // Asserts there's at least 1 item in the list.
-        $$("#productList .thumbnail").shouldHave(sizeGreaterThan(0));
-    }
+        // validate featured categories
+        validateFeaturedCategories();
 
-    @Step("validate home page")
-    public void validate()
-    {
-        validateStructure();
-        footer.validate();
-    }
+        // validate featured products
+        validateFeaturedProducts();
 
-    @Step("validate successful order on home page")
-    public void validateSuccessfulOrder()
-    {
-        successMessage.validateSuccessMessage(Neodymium.localizedText("HomePage.validation.successfulOrder"));
-        // Verify that the mini cart is empty again
-        miniCart.validateTotalCount(0);
-        miniCart.validateSubtotal("$0.00");
-    }
-
-    /**
-     * @param firstName
-     *            The name should be shown in the mini User Menu
-     */
-    @Step("validate successful login on home page")
-    public void validateSuccessfulLogin(String firstName)
-    {
-        // Verify that you are logged in
-        successMessage.validateSuccessMessage(Neodymium.localizedText("HomePage.validation.successfulLogin"));
-        // Verify that the user menu shows your first name
-        userMenu.validateLoggedInName(firstName);
-
-    }
-
-    /**
-     * @param user
-     */
-    @Step("validate successful user login on home page")
-    public void validateSuccessfulLogin(User user)
-    {
-        validateSuccessfulLogin(user.getFirstName());
+        // validate shop all products button
+        $(".btn-shop-all").shouldHave(exactText(Neodymium.localizedText("button.shopAllProducts"))).shouldBe(visible);
     }
 
     @Step("validate successful account deletion on home page")
     public void validateSuccessfulDeletedAccount()
     {
-        successMessage.validateSuccessMessage(Neodymium.localizedText("HomePage.validation.successfulAccountDeletion"));
+        successMessage.validateSuccessMessage(Neodymium.localizedText("successMessage.successfulAccountDeletion"));
     }
 
-    public void validateAndVisualAssert()
-    {
-        validateStructureAndVisual();
-        footer.validate();
-    }
+    /// ========== homepage navigation ========== ///
 
-    public ProductdetailPage clickOnPresentedProduct(String productName)
+    @Step("reload homepage")
+    public HomePage openHomePage()
     {
-        $$("#productList .thumbnail .pName").filter(exactText(productName)).shouldHaveSize(1).first().click();
-        ProductdetailPage productdetailPage = new ProductdetailPage();
-        productdetailPage.isExpectedPage();
-        return productdetailPage;
+        $("#header-brand").click(ClickOptions.usingJavaScript());
+        return new HomePage().isExpectedPage();
     }
 }

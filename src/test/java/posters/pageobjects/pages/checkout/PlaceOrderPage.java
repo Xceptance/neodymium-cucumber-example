@@ -1,9 +1,7 @@
-/**
- * 
- */
 package posters.pageobjects.pages.checkout;
 
 import static com.codeborne.selenide.Condition.exactText;
+import static com.codeborne.selenide.Condition.exactValue;
 import static com.codeborne.selenide.Condition.exist;
 import static com.codeborne.selenide.Condition.matchText;
 import static com.codeborne.selenide.Condition.text;
@@ -11,35 +9,75 @@ import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 
+import org.apache.commons.lang3.StringUtils;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+
+import com.codeborne.selenide.CheckResult;
+import com.codeborne.selenide.ClickOptions;
+import com.codeborne.selenide.Driver;
+import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
+import com.codeborne.selenide.WebElementCondition;
+import com.xceptance.neodymium.util.Neodymium;
 
 import io.qameta.allure.Step;
-import posters.dataobjects.Address;
-import posters.dataobjects.CreditCard;
-import posters.dataobjects.Product;
-import posters.pageobjects.pages.browsing.HomePage;
 import posters.pageobjects.utility.PriceHelper;
+import posters.testdata.dataobjects.Address;
+import posters.testdata.dataobjects.CreditCard;
+import posters.testdata.dataobjects.Product;
 
-/**
- * @author pfotenhauer
- */
 public class PlaceOrderPage extends AbstractCheckoutPage
 {
-    private SelenideElement headline = $("#titleOrderOverview");
+    private SelenideElement title = $("#title-order-overview");
 
-    private SelenideElement shippingAddressForm = $("#shippingAddr");
+    private ElementsCollection headlines = $$(".checkout-overview-position h3");
 
-    private SelenideElement billingAddressForm = $("#billingAddr");
+    private ElementsCollection tableHead = $$(".order-overview-position th");
+
+    private SelenideElement shippingAddressForm = $("#shipping-addr");
+
+    private SelenideElement billingAddressForm = $("#billing-addr");
 
     private SelenideElement paymentForm = $("#payment");
 
-    private SelenideElement orderButton = $("#btnOrder");
+    private SelenideElement subtotalContainer = $("#subtotal-value");
+
+    private SelenideElement taxContainer = $("#subtotal-tax-value");
+
+    private SelenideElement orderButton = $("#btn-order");
+
+    private SelenideElement orderTotal = $("#order-total");
 
     @Override
     @Step("ensure this is a place order page")
-    public void isExpectedPage()
+    public PlaceOrderPage isExpectedPage()
     {
-        headline.should(exist);
+        super.isExpectedPage();
+        title.should(exist);
+        return this;
+    }
+
+    /// ========== validate content place order page ========== ///
+
+    @Step("validate product table head")
+    public void validateTableHead()
+    {
+        tableHead.findBy(exactText(Neodymium.localizedText("product.title"))).shouldBe(visible);
+        tableHead.findBy(exactText(Neodymium.localizedText("product.unitPrice"))).shouldBe(visible);
+        tableHead.findBy(exactText(Neodymium.localizedText("product.quantity"))).shouldBe(visible);
+        tableHead.findBy(exactText(Neodymium.localizedText("product.totalPrice"))).shouldBe(visible);
+    }
+
+    @Step("validate process wrap")
+    public void validateProcessWrap()
+    {
+        for (int i = 1; i <= 6; i++)
+        {
+            $(".progress-step-" + i + " .progress-bubble").shouldHave(exactText(Neodymium.localizedText("checkoutHeader." + i + ".number"))).shouldBe(visible);
+            $(".progress-step-" + i + " .progress-bubble-caption").shouldHave(exactText(Neodymium.localizedText("checkoutHeader." + i + ".name")))
+                                                                  .shouldBe(visible);
+        }
     }
 
     @Override
@@ -48,135 +86,225 @@ public class PlaceOrderPage extends AbstractCheckoutPage
     {
         super.validateStructure();
 
-        // Headline
-        // Headline is there and starts with a capital letter
-        headline.should(matchText("[A-Z].{3,}"));
-        shippingAddressForm.shouldBe(visible);
-        billingAddressForm.shouldBe(visible);
-        paymentForm.shouldBe(visible);
-        orderButton.shouldBe(visible);
+        // validate process wrap
+        validateProcessWrap();
+
+        // validate product table head
+        validateTableHead();
+
+        // validate order with costs button
+        orderButton.shouldHave(exactText(Neodymium.localizedText("button.orderWithCosts"))).shouldBe(visible);
+    }
+
+    private void validateShippingAddressOverview(Address shippingAddress, String headline)
+    {
+        // validate headline
+        headlines.findBy(exactText(headline)).shouldBe(visible);
+
+        // validate name
+        String fullName = shippingAddress.getFirstName() + " " + shippingAddress.getLastName();
+        shippingAddressForm.find(".name").shouldHave(exactText(fullName)).shouldBe(visible);
+
+        // validate optional company name
+        if (!StringUtils.isBlank(shippingAddress.getCompany()))
+        {
+            shippingAddressForm.find(".company").shouldHave(exactText(shippingAddress.getCompany())).shouldBe(visible);
+        }
+
+        // validate address
+        shippingAddressForm.find(".address-line").shouldHave(exactText(shippingAddress.getStreet())).shouldBe(visible);
+
+        // validate city, state, zip
+        shippingAddressForm.find(".city").shouldHave(exactText(shippingAddress.getCity())).shouldBe(visible);
+        shippingAddressForm.find(".state").shouldHave(exactText(shippingAddress.getState())).shouldBe(visible);
+        shippingAddressForm.find(".zip").shouldHave(exactText(shippingAddress.getZip())).shouldBe(visible);
+
+        // validate country
+        shippingAddressForm.find(".country").shouldHave(exactText(shippingAddress.getCountry())).shouldBe(visible);
+    }
+
+    private void validateBillingAddressOverview(Address billingAddress, String headline)
+    {
+        // validate headline
+        headlines.findBy(exactText(headline)).shouldBe(visible);
+
+        // validate name
+        String fullName = billingAddress.getFirstName() + " " + billingAddress.getLastName();
+        billingAddressForm.find(".name").shouldHave(exactText(fullName)).shouldBe(visible);
+
+        // validate optional company name
+        if (!StringUtils.isBlank(billingAddress.getCompany()))
+        {
+            billingAddressForm.find(".company").shouldHave(exactText(billingAddress.getCompany())).shouldBe(visible);
+        }
+
+        // validate address
+        billingAddressForm.find(".address-line").shouldHave(exactText(billingAddress.getStreet())).shouldBe(visible);
+
+        // validate city, state, zip
+        billingAddressForm.find(".city").shouldHave(exactText(billingAddress.getCity())).shouldBe(visible);
+        billingAddressForm.find(".state").shouldHave(exactText(billingAddress.getState())).shouldBe(visible);
+        billingAddressForm.find(".zip").shouldHave(exactText(billingAddress.getZip())).shouldBe(visible);
+
+        // validate country
+        billingAddressForm.find(".country").shouldHave(exactText(billingAddress.getCountry())).shouldBe(visible);
+    }
+
+    private void validatePaymentOverview(CreditCard creditCard, String headline)
+    {
+        // validate headline
+        headlines.findBy(exactText(headline)).shouldBe(visible);
+
+        // validate name
+        paymentForm.find(".name").shouldHave(exactText(creditCard.getFullName())).shouldBe(visible);
+
+        // validate censored card number
+        paymentForm.find(".card-number").shouldHave(exactText(creditCard.getCrypticCardNumber())).shouldBe(visible);
+
+        // validate expiration date
+        paymentForm.find(".month").shouldHave(exactText(creditCard.getExpDateMonth())).shouldBe(visible);
+        paymentForm.find(".year").shouldHave(exactText(creditCard.getExpDateYear())).shouldBe(visible);
+    }
+
+    @Step("validate order overview")
+    public void validateOrderOverview(Address shippingAddress, Address billingAddress, CreditCard creditCard)
+    {
+        // validate title
+        title.shouldHave(exactText(Neodymium.localizedText("placeOrderPage.title"))).shouldBe(visible);
+
+        // validate shipping address
+        validateShippingAddressOverview(shippingAddress, Neodymium.localizedText("account.shippingAddress"));
+
+        // validate billing address
+        validateBillingAddressOverview(billingAddress, Neodymium.localizedText("account.billingAddress"));
+
+        // validate payment
+        validatePaymentOverview(creditCard, Neodymium.localizedText("account.paymentSettings"));
+    }
+
+    private void validateProduct(String productName, String productStyle, String productSize, int productAmount, String productPrice)
+    {
+        // selector for product
+        SelenideElement productContainer = $$("*[id*='product']").findBy(new WebElementCondition("has name " + productName + ", style " + productStyle
+                                                                                                 + " and size " + productSize)
+        {
+            @Override
+            public CheckResult check(Driver driver, WebElement element)
+            {
+                boolean matchesName = element.findElement(By.cssSelector(".product-name")).getText().equals(productName);
+                boolean matchesStyle = element.findElement(By.cssSelector(".product-style span")).getText().equals(productStyle);
+                boolean matchesSize = element.findElement(By.cssSelector(".product-size span")).getText().equals(productSize);
+                return new CheckResult(matchesName && matchesStyle && matchesSize, element);
+            }
+        });
+
+        // validate product image
+        productContainer.find(".img-thumbnail").shouldBe(visible);
+
+        // validate parameters
+        productContainer.find(".product-name").shouldHave(exactText(productName));
+        productContainer.find(".product-style span").shouldHave(exactText(productStyle));
+        productContainer.find(".product-size span").shouldHave(exactText(productSize));
+        productContainer.find(".product-unit-price").shouldHave(exactText(productPrice));
+        productContainer.find(".product-count").shouldHave(exactValue(Integer.toString(productAmount)));
+    }
+
+    @Step("validate '{product}' on the place order page")
+    public void validateProduct(Product product)
+    {
+        validateProduct(product.getName(), product.getStyle(), product.getSize(), product.getAmount(), product.getUnitPrice());
+    }
+
+    @Step("validate description strings")
+    public void validateDescriptionStrings()
+    {
+        $$(".price-summary-row .price-summary-position").findBy(matchText(Neodymium.localizedText("price.subtotal"))).shouldBe(visible);
+        $$(".price-summary-row .price-summary-position").findBy(text(Neodymium.localizedText("price.shipping"))).shouldBe(visible);
+        $$(".price-summary-row .price-summary-position").findBy(text(Neodymium.localizedText("price.tax"))).shouldBe(visible);
+        $$(".price-summary-row .price-summary-position").findBy(text(Neodymium.localizedText("price.grandTotal"))).shouldBe(visible);
+    }
+
+    @Step("validate price summary")
+    public void validatePriceSummary(String subtotal, String shippingCosts)
+    {
+        // validate title
+        $$(".price-summary-row").findBy(text(Neodymium.localizedText("price.title"))).shouldBe(visible);
+
+        // validate descriptions
+        validateDescriptionStrings();
+
+        // validate subtotal
+        validateSubtotal(subtotal);
+
+        // validate shipping costs
+        $("#shipping-costs").shouldHave(exactText(shippingCosts));
+
+        // validate tax
+        taxContainer.shouldHave(exactText(PriceHelper.calculateTax(shippingCosts, subtotal)));
+
+        // validate grand total
+        orderTotal.shouldHave(exactText(PriceHelper.calculateGrandTotal(subtotal, shippingCosts, getTax())));
+    }
+
+    @Step("validate subtotal")
+    public void validateSubtotal(String subtotal)
+    {
+        subtotalContainer.shouldHave(exactText(subtotal));
+    }
+
+    /// ========== get price summary information ========== ///
+
+    @Step("get sum of all total product prices")
+    public String getSubtotal()
+    {
+        return subtotalContainer.text();
+    }
+
+    @Step("get tax costs")
+    public String getTax()
+    {
+        return taxContainer.text();
     }
 
     /**
-     * @param product
-     *            The product
+     * Loops through all total product prices on the place order page and adds it to the "subtotal" variable.
+     * 
+     * @return subtotal The sum of all total product prices
      */
-    @Step("validate order contains product \"{product.name}\"")
-    public void validateContainsProduct(Product product)
+    @Step("calculate sum of all total product prices")
+    public String calculateSubtotal()
     {
-        SelenideElement productContainer = $$("div.hidden-xs").filter((matchText(product.getRowRegex()))).shouldHaveSize(1).first()
-                                                              .parent().parent();
+        double subtotal = 0;
+        int products = $$(".order-overview-position tbody tr").size();
 
-        productContainer.find(".pName").shouldHave(exactText(product.getName()));
-        productContainer.find(".pSize").shouldHave(exactText(product.getSize()));
-        productContainer.find(".pStyle").shouldHave(exactText(product.getStyle()));
-        productContainer.find(".pCount").shouldHave(exactText(Integer.toString(product.getAmount())));
-        productContainer.find(".pPrice").shouldHave(exactText(product.getUnitPrice()));
-        productContainer.find(".productLineItemPrice").shouldHave(exactText(PriceHelper.format(product.getTotalPrice())));
+        for (int i = 0; i < products; i++)
+        {
+            SelenideElement product = $("#product-" + i);
+
+            String productPrice = product.find(".product-unit-price").text();
+            String productAmount = product.find(".product-count").text();
+            String totalProductPrice = PriceHelper.calculateTotalProductPrice(productPrice, productAmount);
+
+            subtotal = PriceHelper.calculateSubtotalPlaceOrderPage(subtotal, totalProductPrice);
+        }
+
+        return PriceHelper.format(subtotal);
     }
 
-    @Step("validate subtotal on the place order page")
-    public void validateSubtotal(String subtotal)
+    @Step("get total order price")
+    public String getTotalOrderPrice()
     {
-        $$("#checkoutSummaryList li").findBy(text("Subtotal")).find(".text-right").shouldBe(exactText(subtotal));
+        return orderTotal.text();
     }
 
-    @Step("validate product \"{productName}\" on place order page")
-    public void validateProduct(int position, String productName, int productCount, String productStyle, String productSize)
-    {
-        final int index = position - 1;
-        // Item info evaluation
-        // The product at index @{index} exists
-        SelenideElement productContainer = $("#checkoutOverviewTable #product" + index);
-        productContainer.should(exist);
-        // Name
-        // The name equals the parameter
-        productContainer.find(".pName").shouldHave(exactText(productName));
-        // Amount
-        // The amount equals the parameter
-        productContainer.find(".pCount").shouldHave(exactText(Integer.toString(productCount)));
-        // Style
-        // The style equals the parameter
-        productContainer.find(".pStyle").shouldHave(exactText(productStyle));
-        // Size
-        // The size equals the parameter
-        productContainer.find(".pSize").shouldHave(exactText(productSize));
-    }
-
-    @Step("validate addresses and payment on place order page")
-    public void validateAddressesAndPayment(Address shippingAddress, Address billingAddress, CreditCard creditcard)
-    {
-        // Shipping address
-        // Name
-        // Makes sure the shipping address name matches the parameter
-        shippingAddressForm.find(".name").shouldHave(exactText(shippingAddress.getFullName()));
-        // Company
-        // Makes sure the shipping address company matches the parameter
-        shippingAddressForm.find(".company").shouldHave(exactText(shippingAddress.getCompany()));
-        // Address
-        // Makes sure the shipping address matches the parameter
-        shippingAddressForm.find(".addressLine").shouldHave(exactText(shippingAddress.getAddressLine()));
-        // City
-        // Makes sure the shipping address city matches the parameter
-        shippingAddressForm.find(".city").shouldHave(exactText(shippingAddress.getCity()));
-        // State
-        // Makes sure the shipping address state matches the parameter
-        shippingAddressForm.find(".state").shouldHave(exactText(shippingAddress.getState()));
-        // ZIP
-        // Makes sure the shipping address ZIP matches the parameter
-        shippingAddressForm.find(".zip").shouldHave(exactText(" " + shippingAddress.getZip()));
-        // Country
-        // Makes sure the shipping address country matches the parameter
-        shippingAddressForm.find(".country").shouldHave(exactText(shippingAddress.getCountry()));
-        // Billing address
-        // Name
-        // Makes sure the billing address name matches the parameter
-        billingAddressForm.find(".name").shouldHave(exactText(billingAddress.getFullName()));
-        // Company
-        // Makes sure the billing address company matches the parameter
-        billingAddressForm.find(".company").shouldHave(exactText(billingAddress.getCompany()));
-        // Address
-        // Makes sure the billing address matches the parameter
-        billingAddressForm.find(".addressLine").shouldHave(exactText(billingAddress.getAddressLine()));
-        // City
-        // Makes sure the billing address city matches the parameter
-        billingAddressForm.find(".city").shouldHave(exactText(billingAddress.getCity()));
-        // State
-        // Makes sure the billing address state matches the parameter
-        billingAddressForm.find(".state").shouldHave(exactText(billingAddress.getState()));
-        // ZIP
-        // Makes sure the billing address ZIP matches the parameter
-        billingAddressForm.find(".zip").shouldHave(exactText(billingAddress.getZip()));
-        // Country
-        // Makes sure the billing address country matches the parameter
-        billingAddressForm.find(".country").shouldHave(exactText(billingAddress.getCountry()));
-        // Payment
-        // Name
-        // Makes sure the credit card holder matches the parameter
-        paymentForm.find(" .name .value").shouldHave(exactText(creditcard.getFullName()));
-        // Credit Card Number
-        // Makes sure the anonymized credit card number matches the parameter
-        paymentForm.find(" .cardNumber .value").shouldHave(exactText(creditcard.getCrypticCardNumber()));
-        // Expiration
-        // Makes sure the credit card expiration month matches the parameter
-        paymentForm.find(" .exp .month").shouldHave(exactText(creditcard.getExpDateMonth()));
-        // Makes sure the credit card expiration year matches the parameter
-        paymentForm.find(" .exp .year").shouldHave(exactText(creditcard.getExpDateYear()));
-    }
-
-    @Step("get order total costs from place order page")
-    public String getTotalCosts()
-    {
-        return $("#totalCosts").text();
-    }
+    /// ========== place order page navigation ========== ///
 
     @Step("place the order")
-    public HomePage placeOrder()
+    public OrderConfirmationPage placeOrder()
     {
-        // Opens the homepage
-        // Clicks the Order button
-        orderButton.scrollTo().click();
+        // click on "Order with costs" button
+        orderButton.click(ClickOptions.usingJavaScript());
 
-        return new HomePage();
+        return new OrderConfirmationPage().isExpectedPage();
     }
 }

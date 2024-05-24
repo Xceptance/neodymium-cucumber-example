@@ -14,6 +14,6 @@ public class HomePageSupport
         homePage.isExpectedPage();
         homePage.title.validateTitle(title);
         homePage.validateStructure();
-        homePage.footer.validate();
+        homePage.footer.validateStructure();
     }
 }

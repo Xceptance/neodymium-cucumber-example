@@ -12,12 +12,12 @@ public class BrowseSupport
     @When("^I choose main category \"([^\"]*)\" and sub category \"([^\"]*)\"$")
     public void openSubcCategory(String categoryName, String subCategoryName)
     {
-        new HomePage().topNav.clickSubCategoryByNames(categoryName, subCategoryName);
+        new HomePage().header.topNav.clickSubCategory(categoryName, subCategoryName);
     }
 
-    @Then("^I see category page with \"([^\"]*)\" headline$")
-    public void validateCategoryName(String categoryName)
+    @Then("^I see category page with \"([^\"]*)\" headline and \"([^\"]*)\" results$")
+    public void validateCategoryName(String categoryName, int results)
     {
-        new CategoryPage().validateCategoryName(categoryName);
+        new CategoryPage().validateCategoryHeadline(categoryName, results);
     }
 }

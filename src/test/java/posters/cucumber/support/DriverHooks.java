@@ -5,16 +5,9 @@ import com.xceptance.neodymium.util.WebDriverUtils;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
-import io.cucumber.java.en.Given;
 
 public class DriverHooks
 {
-    @Given("^\"([^\"]*)\" is open$")
-    public static void setUp(final String browserProfileName)
-    {
-        WebDriverUtils.setUp(browserProfileName);
-    }
-
     @Before("@WebDriverSetUpViaBrowserProfileName")
     public static void setUp(Scenario scenario)
     {

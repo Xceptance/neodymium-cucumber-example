@@ -1,4 +1,4 @@
-@Smoke @Search @WebDriverSetUpViaBrowserProfileName
+@Smoke @Search @WebDriverSetUpViaBrowserProfileName @Chrome @Firefox
 Feature: Searching for products
 
   Scenario Outline: Searching for existing products
@@ -8,12 +8,12 @@ Feature: Searching for products
       And result page contains searchterm "<searchTerm>" and shows "<expectedCount>" products
       And product "<productName>" is visible
 
-    @Chrome_1024x768 
+    @Chrome_1400x1000 
     Examples: 
       | searchTerm | expectedCount | productName  |
       | bear       |             3 | Grizzly Bear |
 
-    @FF_1024x768
+    @Firefox_1400x1000
     Examples: 
       | searchTerm | expectedCount | productName                 |
       | bee        |             9 | Indian Summer: Orange Beech |
@@ -23,12 +23,12 @@ Feature: Searching for products
      When I search for "<searchTerm>"
      Then I see no hits page
 
-    @Chrome_1024x768
+    @Chrome_1400x1000
     Examples: 
       | searchTerm |
       | Foobar     |
 
-    @FF_1024x768
+    @Firefox_1400x1000
     Examples: 
       | searchTerm |
       | Manbat     |

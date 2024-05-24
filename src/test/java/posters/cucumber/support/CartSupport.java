@@ -2,10 +2,10 @@ package posters.cucumber.support;
 
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import posters.dataobjects.Product;
-import posters.pageobjects.pages.browsing.ProductdetailPage;
+import posters.pageobjects.pages.browsing.ProductDetailPage;
 import posters.pageobjects.pages.checkout.CartPage;
 import posters.pageobjects.utility.PriceHelper;
+import posters.testdata.dataobjects.Product;
 
 public class CartSupport
 {
@@ -20,7 +20,7 @@ public class CartSupport
     @When("^I open the cart$")
     public void openCart()
     {
-        CartPage cartPage = new ProductdetailPage().miniCart.openCartPage();
+        CartPage cartPage = new ProductDetailPage().header.miniCart.openCartPage();
         cartPage.isExpectedPage();
     }
 
@@ -29,20 +29,19 @@ public class CartSupport
     {
         double subtotal = 0.0;
         CartPage cartPage = new CartPage();
-
         for (Product product : storage.products)
         {
-            cartPage.validateContainsProduct(product);
+            cartPage.validateCartItem(product);
             subtotal += product.getTotalPrice();
         }
         cartPage.validateSubtotal(PriceHelper.format(subtotal));
     }
 
-    @Then("^I can change amount of the \"([^\"]*)\" with \"([^\"]*)\" and \"([^\"]*)\" to (\\d+)$")
-    public void updateCountOfProduct(String productName, String size, String style, int amount)
+    @Then("^I can change amount of the product \"([^\"]*)\" number (\\d+) with \"([^\"]*)\" and \"([^\"]*)\" to (\\d+)$")
+    public void updateCountOfProduct(String productName, String style, String size, int amount)
     {
         CartPage cartPage = new CartPage();
-        cartPage.updateProductCountByName(productName, style, size, amount);
+        cartPage.updateProductCount(productName, productName, productName, amount);
         for (Product product : storage.products)
         {
             if (product.getName().equals(productName) && product.getSize().equals(size)
@@ -50,15 +49,15 @@ public class CartSupport
             {
                 product.setAmount(amount);
             }
-            cartPage.validateContainsProduct(product);
+            cartPage.validateCartItem(product);
         }
     }
 
-    @Then("^I can remove \"([^\"]*)\" with \"([^\"]*)\" and \"([^\"]*)\"$")
-    public void removeProduct(String productName, String size, String style)
+    @Then("^I can remove product number (\\d+) \"([^\"]*)\" with \"([^\"]*)\" and \"([^\"]*)\"$")
+    public void removeProduct(int productNumber, String productName, String size, String style)
     {
         CartPage cartPage = new CartPage();
-        cartPage.removeProductByName(productName, style, size);
+        cartPage.removeProduct(productNumber);
 
         storage.removeProduct(productName, style, size);
 

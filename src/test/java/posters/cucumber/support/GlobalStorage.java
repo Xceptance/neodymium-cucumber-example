@@ -5,10 +5,10 @@ package posters.cucumber.support;
 
 import java.util.ArrayList;
 
-import posters.dataobjects.Address;
-import posters.dataobjects.CreditCard;
-import posters.dataobjects.Product;
-import posters.dataobjects.User;
+import posters.testdata.dataobjects.Address;
+import posters.testdata.dataobjects.CreditCard;
+import posters.testdata.dataobjects.Product;
+import posters.testdata.dataobjects.User;
 
 /**
  * Basic storage object that can be used with dependency injection later on
@@ -26,6 +26,8 @@ public class GlobalStorage
     public Address billingAddress;
 
     public CreditCard creditcard;
+
+    public String orderTotal;
 
     public Product addProduct(Product product)
     {

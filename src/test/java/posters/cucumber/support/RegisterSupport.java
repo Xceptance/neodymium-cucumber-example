@@ -5,7 +5,6 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.qameta.allure.Step;
-import posters.dataobjects.User;
 import posters.pageobjects.pages.browsing.HomePage;
 import posters.pageobjects.pages.checkout.CartPage;
 import posters.pageobjects.pages.user.AccountOverviewPage;
@@ -13,6 +12,7 @@ import posters.pageobjects.pages.user.DeleteAccountPage;
 import posters.pageobjects.pages.user.LoginPage;
 import posters.pageobjects.pages.user.PersonalDataPage;
 import posters.pageobjects.pages.user.RegisterPage;
+import posters.testdata.dataobjects.User;
 
 public class RegisterSupport
 {
@@ -42,27 +42,30 @@ public class RegisterSupport
     @Step("delete user flow")
     public LoginPage deleteUser()
     {
-        HomePage homePage = new HomePage();
+        HomePage homePage = new HomePage().openHomePage();
         // ensure that the user is logged in
         LoginPage loginPage;
-        if (!homePage.userMenu.isLoggedIn())
+        AccountOverviewPage accountOverviewPage;
+
+        if (!homePage.header.userMenu.validateIsLoggedIn())
         {
-            loginPage = homePage.userMenu.openLogin();
-            homePage = loginPage.sendLoginform(storage.user);
+            loginPage = homePage.header.userMenu.openLoginPage();
+            accountOverviewPage = loginPage.sendLoginForm(storage.user);
         }
 
         // needed since there is a bug in posters
-        if (homePage.miniCart.getTotalCount() > 0)
+        if (homePage.header.miniCart.getTotalCount() > 0)
         {
-            CartPage cartPage = homePage.miniCart.openCartPage();
+            CartPage cartPage = homePage.header.miniCart.openCartPage();
             while (cartPage.hasProductsInCart())
             {
                 cartPage.removeProduct(1);
             }
         }
 
+        accountOverviewPage = homePage.header.userMenu.openAccountOverviewPage();
+
         // goto account page
-        AccountOverviewPage accountOverviewPage = homePage.userMenu.openAccountOverview();
         accountOverviewPage.validateStructure();
 
         // goto personal data page
@@ -70,7 +73,7 @@ public class RegisterSupport
         personalDataPage.validateStructure();
 
         // goto account deletion page
-        DeleteAccountPage deleteAccountPage = personalDataPage.openDeleteAccount();
+        DeleteAccountPage deleteAccountPage = personalDataPage.openDeleteAccountPage();
         deleteAccountPage.validateStructure();
 
         // delete the account
@@ -78,10 +81,10 @@ public class RegisterSupport
         homePage.validateSuccessfulDeletedAccount();
 
         // verify that the account is not available anymore
-        loginPage = homePage.userMenu.openLogin();
+        loginPage = homePage.header.userMenu.openLoginPage();
         loginPage.validateStructure();
-        loginPage.sendFalseLoginform(storage.user);
-        loginPage.validateWrongEmail(storage.user.getEmail());
+        loginPage.sendFalseLoginForm(storage.user);
+        loginPage.validateFalseLogin(storage.user.getEmail());
 
         return loginPage;
     }
@@ -90,7 +93,7 @@ public class RegisterSupport
     {
         RegisterPage registerPage = OpenPageFlows.registerPage();
         registerPage.isExpectedPage();
-        LoginPage loginPage = registerPage.sendRegisterForm(user, user.getPassword());
+        LoginPage loginPage = registerPage.sendRegisterForm(user);
         loginPage.isExpectedPage();
 
         return loginPage;
@@ -103,7 +106,7 @@ public class RegisterSupport
         RegisterPage registerPage = new RegisterPage();
         registerPage.isExpectedPage();
         storage.user = new User(firstName, lastName, email, password);
-        registerPage.sendRegisterForm(firstName, lastName, email, password, password);
+        registerPage.sendRegisterForm(storage.user);
     }
 
     @Given("^new user with \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\" is registered$")
@@ -116,7 +119,7 @@ public class RegisterSupport
     @Given("^I'm not logged in$")
     public void validateNotLoggedIn()
     {
-        new HomePage().userMenu.validateNotLoggedIn();
+        new HomePage().header.userMenu.validateNotLoggedIn();
     }
 
     @Then("^register was successful$")
@@ -134,12 +137,12 @@ public class RegisterSupport
     @When("^I log in with \"([^\"]*)\" and \"([^\"]*)\"$")
     public void sendLoginform(String email, String password)
     {
-        new LoginPage().sendLoginform(email, password);
+        new LoginPage().sendLoginForm(new User(null, null, email, password));
     }
 
     @Then("^login was successful for \"([^\"]*)\"$")
     public void validateSuccessfulLogin(String firstName)
     {
-        new HomePage().validateSuccessfulLogin(firstName);
+        new HomePage().header.userMenu.validateLoggedInName(firstName);
     }
 }

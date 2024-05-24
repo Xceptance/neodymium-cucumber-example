@@ -17,13 +17,13 @@ public class SearchSupport
     @When("^I search for \"([^\"]*)\"$")
     public void search(String searchTerm)
     {
-        new HomePage().search.search(searchTerm);
+        new HomePage().header.search.search(searchTerm);
     }
 
     @Then("^result page contains searchterm \"([^\"]*)\" and shows \"([^\"]*)\" products$")
     public void validateSearchHits(String searchTerm, int searchTermExpectedCount)
     {
-        new CategoryPage().validateSearchHits(searchTerm, searchTermExpectedCount);
+        new CategoryPage().validate(searchTerm, searchTermExpectedCount);
     }
 
     @Then("^product \"([^\"]*)\" is visible$")
@@ -35,6 +35,6 @@ public class SearchSupport
     @Then("^I see no hits page$")
     public void valiadteNoHits()
     {
-        new NoHitsPage().validate();
+        new NoHitsPage().validateStructure();
     }
 }

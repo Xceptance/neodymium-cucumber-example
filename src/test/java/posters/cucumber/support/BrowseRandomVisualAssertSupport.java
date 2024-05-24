@@ -4,13 +4,15 @@ import java.util.Random;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.xceptance.neodymium.util.Neodymium;
+
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import posters.pageobjects.pages.browsing.CategoryPage;
 import posters.pageobjects.pages.browsing.HomePage;
-import posters.pageobjects.pages.browsing.ProductdetailPage;
+import posters.pageobjects.pages.browsing.ProductDetailPage;
 
 public class BrowseRandomVisualAssertSupport
 {
@@ -22,7 +24,7 @@ public class BrowseRandomVisualAssertSupport
     public void openHomePageAndValidate()
     {
         HomePage homepage = OpenPageFlows.homepage();
-        homepage.validateAndVisualAssert();
+        homepage.validateStructure();
     }
 
     @When("^I choose random sub category with seed \"([^\"]*)\"$")
@@ -36,23 +38,25 @@ public class BrowseRandomVisualAssertSupport
         {
             random = new Random(Long.valueOf(seed));
         }
-        String categoryName = new HomePage().topNav.getRandomSubcategoryName(random);
-        CategoryPage categoryPage = new HomePage().topNav.clickSubcategoryByName(categoryName);
+        String categoryName = new HomePage().header.topNav.getRandomCategoryName();
+        String subCategoryName = new HomePage().header.topNav.getRandomSubCategoryName(categoryName);
+        CategoryPage categoryPage = new HomePage().header.topNav.clickSubCategory(categoryName, subCategoryName);
         categoryPage.isExpectedPage();
-        categoryPage.validateAndVisualAssert(categoryName);
+        categoryPage.validateCategoryName(subCategoryName);
     }
 
     @And("^I choose some random product")
     public void openRandomProduct()
     {
-        productName = new CategoryPage().getRandomProductDetailName(random);
-        new CategoryPage().clickProductByName(productName);
+        int position = Neodymium.getRandom().nextInt(1, new CategoryPage().getNumberOfProductsOnPage());
+        productName = new CategoryPage().getProductNameByPosition(position);
+        new CategoryPage().clickProductByPosition(position);
     }
 
     @Then("^I see correct product")
     public void validateProduct()
     {
-        new ProductdetailPage().validateAndVisualAssert(productName);
+        new ProductDetailPage().validateProductName(productName);
     }
 
 }
