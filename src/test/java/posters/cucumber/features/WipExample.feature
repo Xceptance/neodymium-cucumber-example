@@ -1,4 +1,4 @@
-@Homepage @WebDriverSetUpViaBrowserProfileName @Chrome
+@Homepage @WebDriverSetUpViaBrowserProfileName @Chrome @Wip
 Feature: Homepage
 
   @Chrome_1400x1000

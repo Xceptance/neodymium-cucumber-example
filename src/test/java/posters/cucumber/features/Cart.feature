@@ -1,4 +1,4 @@
-@Cart @WebDriverSetUpViaBrowserProfileName @Chrome @Firefox
+@Cart @WebDriverSetUpViaBrowserProfileName
 Feature: Cart
 
   Scenario Outline: Add to cart
@@ -11,11 +11,13 @@ Feature: Cart
       And I can change amount of the product "<firstProductName>" number 1 with "<firtsProductSize>" and "<firtsProductStyle>" to 1
       And I can remove product number 1 "<firstProductName>" with "<firtsProductSize>" and "<firtsProductStyle>"
 
+    @Chrome
     @Chrome_1400x1000
     Examples: 
       | firstProductUrl                          | firstProductName | secondProductUrl                                     | firtsProductSize | secondProductSize | secondProductStyle | firtsProductStyle |
       | productDetail/Grizzly%20Bear?productId=1 | Grizzly Bear     | productDetail/Gummy%20Bears%20in%20Bowl?productId=57 | 32 x 24 in       | 16 x 12 in        | gloss              | matte             |
 
+    @Firefox
     @Firefox_1400x1000
     Examples: 
       | firstProductUrl                               | firstProductName | secondProductUrl                                     | firtsProductSize | secondProductSize | secondProductStyle | firtsProductStyle |

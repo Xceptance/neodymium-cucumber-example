@@ -1,4 +1,4 @@
-@Smoke @Register @WebDriverSetUpViaBrowserProfileName @Chrome @Firefox
+@Smoke @Register @WebDriverSetUpViaBrowserProfileName
 Feature: Register
   Description: Show case clean up steps implementation using dependency injection for passing data between steps
 
@@ -10,11 +10,13 @@ Feature: Register
      Then register was successful
       And login page is opened
 
+    @Chrome
     @Chrome_1400x1000
     Examples: 
       | firstName | lastName | email        | password  |
       | Jane      | Doe      | jane@doe.com | topsecret |
 
+    @Firefox
     @Firefox_1400x1000
     Examples: 
       | firstName | lastName | email          | password  |
@@ -28,11 +30,13 @@ Feature: Register
      When I log in with "<email>" and "<password>"
      Then login was successful for "<firstName>"
 
+    @Chrome
     @Chrome_1400x1000
     Examples: 
       | firstName | lastName | email          | password  |
       | Joseph    | Doe      | joseph@doe.com | topsecret |
 
+    @Firefox
     @Firefox_1400x1000
     Examples: 
       | firstName | lastName | email          | password  |

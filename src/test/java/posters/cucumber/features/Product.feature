@@ -1,4 +1,4 @@
-@Product @WebDriverSetUpViaBrowserProfileName @Chrome @Firefox @Wip
+@Product @WebDriverSetUpViaBrowserProfileName
 Feature: Product
 
   Scenario Outline: Opening  a product detail page from a catalog page
@@ -7,12 +7,14 @@ Feature: Product
      When product "<productName>" is opened
      Then a product detail page shows the headline "<productName>"
 
+    @Chrome
     @Chrome_1400x1000
     Examples: 
       | categoryName   | subCategoryName | productName            |
       | Transportation | Air Travel      | Air Lingus Airbus A320 |
       | Dining         | Main Dishes     | Tuna Steak             |
 
+    @Firefox
     @Firefox_1400x1000
     Examples: 
       | categoryName    | subCategoryName | productName       |
