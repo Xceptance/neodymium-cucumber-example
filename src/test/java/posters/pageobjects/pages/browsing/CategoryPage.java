@@ -1,6 +1,3 @@
-/**
- * 
- */
 package posters.pageobjects.pages.browsing;
 
 import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
@@ -32,12 +29,14 @@ public class CategoryPage extends AbstractBrowsingPage
 
     @Override
     @Step("ensure this is a category page")
-    public void isExpectedPage()
+    public CategoryPage isExpectedPage()
     {
+        super.isExpectedPage();
         productOverview.should(exist);
+        return this;
     }
 
-    @Step("validate category name \"{categoryName}\" on category page")
+    @Step("validate category name '{categoryName}' on category page")
     public void validateCategoryName(String categoryName)
     {
         // Category name
@@ -65,13 +64,13 @@ public class CategoryPage extends AbstractBrowsingPage
      * @return
      */
     @Step("click on a product by position in grid")
-    public ProductdetailPage clickProductByPosition(int row, int column)
+    public ProductDetailPage clickProductByPosition(int row, int column)
     {
         // Open the product detail page
         // Clicks a product by position. Because of the html code, this requires x and y coordinates.
         SelenideElement rowContainer = $$("#productOverview > .row").get(row - 1);
         rowContainer.find(".thumbnail", column - 1).scrollTo().click();
-        return new ProductdetailPage();
+        return new ProductDetailPage().isExpectedPage();
     }
 
     /**
@@ -91,28 +90,28 @@ public class CategoryPage extends AbstractBrowsingPage
      * @return
      */
     @Step("click on a product by position")
-    public ProductdetailPage clickProductByPosition(int position)
+    public ProductDetailPage clickProductByPosition(int position)
     {
         final int index = position - 1;
         // Open the product detail page
         // Click on the product's image and open the product overview page
         // Click the product link to open the product detail page
         $("#product" + index + " img").scrollTo().click();
-        return new ProductdetailPage();
+        return new ProductDetailPage().isExpectedPage();
     }
 
     /**
      * @param productName
      * @return
      */
-    @Step("click on a product by name \"{productName}\"")
-    public ProductdetailPage clickProductByName(String productName)
+    @Step("click on a product by name '{productName}'")
+    public ProductDetailPage clickProductByName(String productName)
     {
         // Open the product detail page
         // Click on the product's image and open the product overview page
         // Click the product link to open the product detail page
         $("#productOverview .thumbnails .thumbnail a > img.pImage[title='" + productName + "']").scrollTo().click();
-        return new ProductdetailPage();
+        return new ProductDetailPage().isExpectedPage();
     }
 
     /**
@@ -131,7 +130,7 @@ public class CategoryPage extends AbstractBrowsingPage
      * @param searchTerm
      * @param searchTermExpectedCount
      */
-    @Step("validate search results for \"{searchTerm}\" on category page")
+    @Step("validate search results for '{searchTerm}' on category page")
     public void validateSearchHits(String searchTerm, int searchTermExpectedCount)
     {
         $("#titleSearchText").should(exist);
@@ -157,7 +156,7 @@ public class CategoryPage extends AbstractBrowsingPage
     /**
      * @param productName
      */
-    @Step("validate product \"{productName}\" is visible on category page")
+    @Step("validate product '{productName}' is visible on category page")
     public void validateProductVisible(String productName)
     {
         $("#productOverview .thumbnails .thumbnail a > img.pImage[title='" + productName + "']").shouldBe(visible);
@@ -166,7 +165,7 @@ public class CategoryPage extends AbstractBrowsingPage
     /**
      * @param categoryName
      */
-    @Step("validate category page of category \"{categoryName}\"")
+    @Step("validate category page of category '{categoryName}'")
     public void validate(String categoryName)
     {
         validateStructure();
@@ -176,7 +175,7 @@ public class CategoryPage extends AbstractBrowsingPage
     /**
      * @param categoryName
      */
-    @Step("validate category page of category \"{categoryName}\" and assert visually")
+    @Step("validate category page of category '{categoryName}' and assert visually")
     public void validateAndVisualAssert(String categoryName)
     {
         validateStructureAndVisual();

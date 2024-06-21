@@ -1,6 +1,3 @@
-/**
- * 
- */
 package posters.pageobjects.pages.user;
 
 import static com.codeborne.selenide.Condition.exactText;
@@ -29,9 +26,11 @@ public class DeleteAccountPage extends AbstractBrowsingPage
 
     @Override
     @Step("ensure this is a delete account page")
-    public void isExpectedPage()
+    public DeleteAccountPage isExpectedPage()
     {
+        super.isExpectedPage();
         deleteForm.should(exist);
+        return this;
     }
 
     @Override
@@ -45,7 +44,7 @@ public class DeleteAccountPage extends AbstractBrowsingPage
         deleteForm.find(".h2").should(matchText("[A-Z].{3,}"));
         // Password field
         // Asserts the label belonging to the password field displays the correct text
-        $("label[for=\"password\"]").shouldBe(exactText(Neodymium.localizedText("AccountPages.yourPassword")));
+        $("label[for='password']").shouldBe(exactText(Neodymium.localizedText("AccountPages.yourPassword")));
         // Asserts the field to enter your password is there
         passwordField.shouldBe(visible);
         // Button
@@ -62,6 +61,6 @@ public class DeleteAccountPage extends AbstractBrowsingPage
         // Delete account and open the homepage
         // click the confirmation button
         deleteButton.scrollTo().click();
-        return new HomePage();
+        return new HomePage().isExpectedPage();
     }
 }

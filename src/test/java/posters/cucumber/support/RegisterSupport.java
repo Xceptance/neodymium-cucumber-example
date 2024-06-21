@@ -4,14 +4,10 @@ import io.cucumber.java.After;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import io.qameta.allure.Step;
 import posters.dataobjects.User;
 import posters.pageobjects.pages.browsing.HomePage;
-import posters.pageobjects.pages.checkout.CartPage;
 import posters.pageobjects.pages.user.AccountOverviewPage;
-import posters.pageobjects.pages.user.DeleteAccountPage;
 import posters.pageobjects.pages.user.LoginPage;
-import posters.pageobjects.pages.user.PersonalDataPage;
 import posters.pageobjects.pages.user.RegisterPage;
 
 public class RegisterSupport
@@ -27,24 +23,16 @@ public class RegisterSupport
     @Given("^user setup: \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"$")
     public void setUpUser(String firstName, String lastName, String eMail, String password)
     {
-        // set up user for the clean up steps
+        // create a user for later use (e.g. register or delete)
         storage.user = new User(firstName, lastName, eMail, password);
     };
 
-    @Given("^login page is opened after registration$")
-    public void registerUserSetup()
-    {
-        // use the user coming from dependency injection
-        registerUser(storage.user);
-    }
-
     @After("@DeleteUserAfterwards")
-    @Step("delete user flow")
-    public LoginPage deleteUser()
+    public void deleteUser()
     {
-        HomePage homePage = new HomePage();
+        var homePage = new HomePage();
         // ensure that the user is logged in
-        LoginPage loginPage;
+        var loginPage = new LoginPage();
         if (!homePage.userMenu.isLoggedIn())
         {
             loginPage = homePage.userMenu.openLogin();
@@ -54,7 +42,7 @@ public class RegisterSupport
         // needed since there is a bug in posters
         if (homePage.miniCart.getTotalCount() > 0)
         {
-            CartPage cartPage = homePage.miniCart.openCartPage();
+            var cartPage = homePage.miniCart.openCartPage();
             while (cartPage.hasProductsInCart())
             {
                 cartPage.removeProduct(1);
@@ -62,15 +50,16 @@ public class RegisterSupport
         }
 
         // goto account page
-        AccountOverviewPage accountOverviewPage = homePage.userMenu.openAccountOverview();
+        var accountOverviewPage = new AccountOverviewPage();
+        accountOverviewPage = homePage.userMenu.openAccountOverview();
         accountOverviewPage.validateStructure();
 
         // goto personal data page
-        PersonalDataPage personalDataPage = accountOverviewPage.openPersonalData();
+        var personalDataPage = accountOverviewPage.openPersonalData();
         personalDataPage.validateStructure();
 
         // goto account deletion page
-        DeleteAccountPage deleteAccountPage = personalDataPage.openDeleteAccount();
+        var deleteAccountPage = personalDataPage.openDeleteAccount();
         deleteAccountPage.validateStructure();
 
         // delete the account
@@ -82,28 +71,15 @@ public class RegisterSupport
         loginPage.validateStructure();
         loginPage.sendFalseLoginform(storage.user);
         loginPage.validateWrongEmail(storage.user.getEmail());
-
-        return loginPage;
-    }
-
-    public static LoginPage registerUser(User user)
-    {
-        RegisterPage registerPage = OpenPageFlows.registerPage();
-        registerPage.isExpectedPage();
-        LoginPage loginPage = registerPage.sendRegisterForm(user, user.getPassword());
-        loginPage.isExpectedPage();
-
-        return loginPage;
     }
 
     @When("^I register a new user with \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"$")
-    @Step("set up user and register him")
     public void registerUser(String firstName, String lastName, String email, String password)
     {
-        RegisterPage registerPage = new RegisterPage();
+        var registerPage = new RegisterPage();
         registerPage.isExpectedPage();
         storage.user = new User(firstName, lastName, email, password);
-        registerPage.sendRegisterForm(firstName, lastName, email, password, password);
+        registerPage.sendRegisterForm(storage.user);
     }
 
     @Given("^new user with \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\" is registered$")

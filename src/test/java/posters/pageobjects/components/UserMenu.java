@@ -1,6 +1,3 @@
-/**
- * 
- */
 package posters.pageobjects.components;
 
 import static com.codeborne.selenide.Condition.cssClass;
@@ -60,7 +57,7 @@ public class UserMenu extends AbstractComponent
     {
         openUserMenu();
         userMenu.find(".goToLogin").scrollTo().click();
-        return new LoginPage();
+        return new LoginPage().isExpectedPage();
     }
 
     @Step("open account page from user menu")
@@ -68,7 +65,7 @@ public class UserMenu extends AbstractComponent
     {
         openUserMenu();
         userMenu.find(".goToAccountOverview").scrollTo().click();
-        return new AccountOverviewPage();
+        return new AccountOverviewPage().isExpectedPage();
     }
 
     @Step("open register page from user menu")
@@ -76,13 +73,13 @@ public class UserMenu extends AbstractComponent
     {
         openUserMenu();
         userMenu.find(".goToRegistration").scrollTo().click();
-        return new RegisterPage();
+        return new RegisterPage().isExpectedPage();
     }
 
     /**
      * @param firstName
      */
-    @Step("validate that \"{firstName}\" is logged in")
+    @Step("validate that '{firstName}' is logged in")
     public void validateLoggedInName(String firstName)
     {
         // Click on the mini user menu symbol

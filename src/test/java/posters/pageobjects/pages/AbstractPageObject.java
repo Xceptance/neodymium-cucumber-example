@@ -16,8 +16,9 @@ public abstract class AbstractPageObject
 {
     public Title title = new Title();
 
-    public void isExpectedPage()
+    public AbstractPageObject isExpectedPage()
     {
+        return this;
     }
 
     abstract public void validateStructure();
