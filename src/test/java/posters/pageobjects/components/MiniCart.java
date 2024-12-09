@@ -1,30 +1,20 @@
 package posters.pageobjects.components;
 
-import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
-import static com.codeborne.selenide.Condition.exactText;
-import static com.codeborne.selenide.Condition.exist;
-import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.$$;
-
-import java.time.Duration;
-
+import com.codeborne.selenide.*;
+import com.xceptance.neodymium.util.Neodymium;
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-
-import com.codeborne.selenide.CheckResult;
-import com.codeborne.selenide.ClickOptions;
-import com.codeborne.selenide.Driver;
-import com.codeborne.selenide.ElementsCollection;
-import com.codeborne.selenide.Selenide;
-import com.codeborne.selenide.SelenideElement;
-import com.codeborne.selenide.WebElementCondition;
-import com.xceptance.neodymium.util.Neodymium;
-
-import io.qameta.allure.Step;
 import posters.pageobjects.pages.checkout.CartPage;
 import posters.pageobjects.utility.PriceHelper;
 import posters.testdata.dataobjects.Product;
+
+import java.time.Duration;
+
+import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
+import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.$$;
 
 public class MiniCart extends AbstractComponent
 {
@@ -56,6 +46,7 @@ public class MiniCart extends AbstractComponent
     @Step("open the mini cart")
     public void openMiniCart()
     {
+        headerCart.hover();
         headerCart.click();
         miniCart.shouldBe(visible, Duration.ofMillis(9000));
     }
@@ -105,7 +96,7 @@ public class MiniCart extends AbstractComponent
 
     /**
      * Loops through all total product prices in the mini cart and adds it to the "subtotal" variable.
-     * 
+     *
      * @return subtotal The sum of all total product prices
      */
     @Step("calculate sum of all total product prices")
@@ -122,9 +113,8 @@ public class MiniCart extends AbstractComponent
     }
 
     /**
-     * If there is at least 1 item in the cart, it loops through all total product counts in the mini cart and adds it
-     * to the "totalCount" variable.
-     * 
+     * If there is at least 1 item in the cart, it loops through all total product counts in the mini cart and adds it to the "totalCount" variable.
+     *
      * @return totalCount The sum of all total product counts
      */
     @Step("calculate total count via product counts")
@@ -207,28 +197,30 @@ public class MiniCart extends AbstractComponent
 
     private void validateMiniCartItem(String productName, String productStyle, String productSize, int productCount, String prodTotalPrice)
     {
-        openMiniCart();
+        while (!viewCartButton.isDisplayed())
+        {
+            openMiniCart();
+        }
 
         // selector for product
         SelenideElement miniCartItem =
-
-                                     $$("#mini-cart-menu .cart-items").shouldHave(sizeGreaterThan(0))
-                                                                      .findBy(new WebElementCondition("has name " + productName + ", style " + productStyle
-                                                                                                      + " and size " + productSize)
-                                                                      {
-                                                                          @Override
-                                                                          public CheckResult check(Driver driver, WebElement element)
-                                                                          {
-                                                                              boolean matchesName = element.findElement(By.cssSelector(".prod-name")).getText()
-                                                                                                           .equals(productName);
-                                                                              boolean matchesStyle = element.findElement(By.cssSelector(".prod-style"))
-                                                                                                            .getText()
-                                                                                                            .equals(productStyle);
-                                                                              boolean matchesSize = element.findElement(By.cssSelector(".prod-size")).getText()
-                                                                                                           .equals(productSize);
-                                                                              return new CheckResult(matchesName && matchesStyle && matchesSize, "");
-                                                                          }
-                                                                      }).shouldBe(visible, Duration.ofMillis(9000));
+            $$("#mini-cart-menu .cart-items").shouldHave(sizeGreaterThan(0))
+                                             .findBy(new WebElementCondition("has name " + productName + ", style " + productStyle
+                                                                                 + " and size " + productSize)
+                                             {
+                                                 @Override
+                                                 public CheckResult check(Driver driver, WebElement element)
+                                                 {
+                                                     boolean matchesName = element.findElement(By.cssSelector(".prod-name")).getText()
+                                                                                  .equals(productName);
+                                                     boolean matchesStyle = element.findElement(By.cssSelector(".prod-style"))
+                                                                                   .getText()
+                                                                                   .equals(productStyle);
+                                                     boolean matchesSize = element.findElement(By.cssSelector(".prod-size")).getText()
+                                                                                  .equals(productSize);
+                                                     return new CheckResult(matchesName && matchesStyle && matchesSize, "");
+                                                 }
+                                             }).shouldBe(visible, Duration.ofMillis(9000));
 
         // validate parameters
         miniCartItem.find(".prod-name").shouldHave(exactText(productName));

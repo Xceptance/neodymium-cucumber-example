@@ -17,7 +17,7 @@ Feature: Searching for products
     @Firefox
     @Firefox_1400x1000
     Examples: 
-      | searchTerm | expectedCount | productName                 |
+      | searchTerm | expectedCount | productName                |
       | bee        |             2 | Indian Summer Orange Beech |
 
   Scenario Outline: Searching for a non-existing product

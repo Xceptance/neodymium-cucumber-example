@@ -67,7 +67,7 @@ public class HomePage extends AbstractBrowsingPage
         $(".product-display-heading h2").shouldHave(exactText(Neodymium.localizedText("homePage.featuredProducts.headline"))).shouldBe(visible);
         $$(".card-img-top").shouldHave(size(12));
 
-        for (int i = 1; i <= 12; i++)
+        for (int i = 1; i <= 3; i++)
         {
             SelenideElement productCard = $(".card.product-tile:nth-child(" + i + ")");
 

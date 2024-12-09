@@ -1,34 +1,28 @@
 package posters.pageobjects.pages.checkout;
 
-import static com.codeborne.selenide.Condition.exactText;
-import static com.codeborne.selenide.Condition.exactValue;
-import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.$$;
-
-import java.time.Duration;
-
+import com.codeborne.selenide.*;
+import com.xceptance.neodymium.util.Neodymium;
+import io.qameta.allure.Step;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-
-import com.codeborne.selenide.CheckResult;
-import com.codeborne.selenide.ClickOptions;
-import com.codeborne.selenide.Driver;
-import com.codeborne.selenide.ElementsCollection;
-import com.codeborne.selenide.SelenideElement;
-import com.codeborne.selenide.WebElementCondition;
-import com.xceptance.neodymium.util.Neodymium;
-
-import io.qameta.allure.Step;
 import posters.pageobjects.pages.browsing.AbstractBrowsingPage;
 import posters.pageobjects.pages.browsing.HomePage;
 import posters.pageobjects.utility.PostersHelper;
 import posters.pageobjects.utility.PriceHelper;
 import posters.testdata.dataobjects.Product;
 
+import java.time.Duration;
+
+import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.$$;
+
 public class CartPage extends AbstractBrowsingPage
 {
+
+    private ElementsCollection cartProducts = $$(".js-cart-product");
+
     private SelenideElement title = $("#cart-title");
 
     private SelenideElement cartTable = $(".table");
@@ -130,13 +124,13 @@ public class CartPage extends AbstractBrowsingPage
 
     /**
      * It checks if the price change of subtotal is equal to the price change of the product.
-     * 
+     *
      * @param position
-     *            of specific product in cart
+     *     of specific product in cart
      * @param oldSubTotal
-     *            subtotal before adding new product to cart/ increasing product quantity
+     *     subtotal before adding new product to cart/ increasing product quantity
      * @param oldTotalProductPrice
-     *            product price before adding/ increasing product quantity
+     *     product price before adding/ increasing product quantity
      */
     @Step("validate sub total and line item total after adding on the cart page")
     public void validateTotalAfterAdd(int position, String oldSubTotal, double oldTotalProductPrice)
@@ -200,15 +194,15 @@ public class CartPage extends AbstractBrowsingPage
 
     public SelenideElement getProductItem(String productName, String productStyle, String productSize)
     {
-        return $$(".js-cart-product").findBy(new WebElementCondition("has name " + productName + ", style " + productStyle
-                                                                     + " and size " + productSize)
+        return cartProducts.findBy(new WebElementCondition("has name " + productName + ", style " + productStyle
+                                                               + " and size " + productSize)
         {
             @Override
             public CheckResult check(Driver driver, WebElement element)
             {
-                boolean matchesName = element.findElement(By.cssSelector(".product-name")).getText().equals(productName);
-                boolean matchesStyle = element.findElement(By.cssSelector(".product-style")).getText().equals(productStyle);
-                boolean matchesSize = element.findElement(By.cssSelector(".product-size")).getText().equals(productSize);
+                boolean matchesName = element.findElement(By.cssSelector(".product-name")).getText().contains(productName);
+                boolean matchesStyle = element.findElement(By.cssSelector(".product-style")).getText().contains(productStyle);
+                boolean matchesSize = element.findElement(By.cssSelector(".product-size")).getText().contains(productSize);
                 return new CheckResult(matchesName && matchesStyle && matchesSize, element);
             }
         });
@@ -267,7 +261,8 @@ public class CartPage extends AbstractBrowsingPage
     @Step("get product from line item on position '{position}' on the cart page")
     public Product getProduct(int position)
     {
-        return new Product(getProductName(position), getProductUnitPrice(position), getProductStyle(position), getProductSize(position), Integer.parseInt(getProductCount(position)));
+        return new Product(getProductName(position), getProductUnitPrice(position), getProductStyle(position), getProductSize(position),
+                           Integer.parseInt(getProductCount(position)));
     }
 
     /// ========== update product data ========== ///
@@ -284,6 +279,9 @@ public class CartPage extends AbstractBrowsingPage
         // click update button
         productContainer.find(".btn-update-product").click(ClickOptions.usingJavaScript());
 
+        // wait until the product amount is updated
+        productContainer.find(".product-count").shouldHave(exactValue(Integer.toString(amount)), Duration.ofSeconds(5));
+
         // wait for the product price to be updated
         productContainer.find(".product-total-unit-price").shouldNotHave(exactText(priceBeforeProductCountUpdate));
     }
@@ -291,11 +289,16 @@ public class CartPage extends AbstractBrowsingPage
     @Step("remove product on position '{position}' on the cart page")
     public void removeProduct(int position)
     {
+        int numberOfProducts = cartProducts.size();
+
         // click delete button
         $("#btn-remove-prod-count-" + (position - 1)).click(ClickOptions.usingJavaScript());
 
         // click delete confirmation button
         $("#button-delete").click(ClickOptions.usingJavaScript());
+
+        // wait until the product is deleted
+        PostersHelper.optionalWaitUntilConditionSizeIs(cartProducts, numberOfProducts - 1, Duration.ofMillis(3000));
     }
 
     @Step("wait for update")
@@ -331,6 +334,6 @@ public class CartPage extends AbstractBrowsingPage
     @Step("check if there are products in cart")
     public boolean hasProductsInCart()
     {
-        return !PostersHelper.optionalWaitUntilConditionSizeIs($$(".js-cart-product"), 0, Duration.ofMillis(3000));
+        return !PostersHelper.optionalWaitUntilConditionSizeIs(cartProducts, 0, Duration.ofMillis(3000));
     }
 }

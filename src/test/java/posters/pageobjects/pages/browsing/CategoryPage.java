@@ -1,18 +1,14 @@
 package posters.pageobjects.pages.browsing;
 
-import static com.codeborne.selenide.Condition.exactText;
-import static com.codeborne.selenide.Condition.exist;
-import static com.codeborne.selenide.Condition.matchText;
-import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.$$;
-
 import com.codeborne.selenide.ClickOptions;
 import com.codeborne.selenide.SelenideElement;
 import com.xceptance.neodymium.util.Neodymium;
-
 import io.qameta.allure.Step;
 import posters.pageobjects.components.Pagination;
+
+import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.$$;
 
 public class CategoryPage extends AbstractBrowsingPage
 {
@@ -49,13 +45,13 @@ public class CategoryPage extends AbstractBrowsingPage
     }
 
     /**
-     * If {categoryName} contains a ".", it's a localization string, localized by Neodymium. Else a search term was
-     * used. Both cases have a different headline to validate.
-     * 
+     * If {categoryName} contains a ".", it's a localization string, localized by Neodymium. Else a search term was used. Both cases have a different headline
+     * to validate.
+     *
      * @param categoryName
-     *            name of specific category of top navigation
+     *     name of specific category of top navigation
      * @param expectedResultCount
-     *            number of results for specific category/search
+     *     number of results for specific category/search
      */
     @Step("validate category name '{categoryName}' and amount results '{expectedResultCount}' on category page")
     public void validateCategoryHeadline(String categoryName, int expectedResultCount)
@@ -118,7 +114,7 @@ public class CategoryPage extends AbstractBrowsingPage
     @Step("click on a product by name '{productName}'")
     public ProductDetailPage clickProductByName(String productName)
     {
-        $$(".card-title").findBy(exactText(productName)).closest(".product-tile").find("picture").click();
+        $$(".card-title").findBy(exactText(productName)).closest(".product-tile").find("img").scrollTo().click();
         return new ProductDetailPage().isExpectedPage();
     }
 

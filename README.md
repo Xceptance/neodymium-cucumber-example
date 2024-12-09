@@ -11,7 +11,7 @@ This will be a short introduction how to get it running.
 You will need the following technologies available to try it out:
 * Git
 * Maven 3+
-* JDK 8
+* JDK 17
 * IDE of your choice 
 * Web browser's of your choice and their respective [WebDrivers](https://github.com/Xceptance/neodymium-library/wiki/How-to-set-up-a-WebDriver)
 

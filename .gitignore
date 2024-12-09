@@ -1,4 +1,7 @@
- # Compiled class file
+# IntelliJ project folder
+.idea
+
+# Compiled class file
 *.class
 
 # Log file

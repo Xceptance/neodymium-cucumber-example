@@ -38,10 +38,10 @@ public class CartSupport
     }
 
     @Then("^I can change amount of the product \"([^\"]*)\" number (\\d+) with \"([^\"]*)\" and \"([^\"]*)\" to (\\d+)$")
-    public void updateCountOfProduct(String productName, String style, String size, int amount)
+    public void updateCountOfProduct(String productName, int initialAmount, String size, String style, int amount)
     {
         CartPage cartPage = new CartPage();
-        cartPage.updateProductCount(productName, productName, productName, amount);
+        cartPage.updateProductCount(productName, style, size, amount);
         for (Product product : storage.products)
         {
             if (product.getName().equals(productName) && product.getSize().equals(size)

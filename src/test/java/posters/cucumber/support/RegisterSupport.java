@@ -7,11 +7,7 @@ import io.cucumber.java.en.When;
 import io.qameta.allure.Step;
 import posters.pageobjects.pages.browsing.HomePage;
 import posters.pageobjects.pages.checkout.CartPage;
-import posters.pageobjects.pages.user.AccountOverviewPage;
-import posters.pageobjects.pages.user.DeleteAccountPage;
-import posters.pageobjects.pages.user.LoginPage;
-import posters.pageobjects.pages.user.PersonalDataPage;
-import posters.pageobjects.pages.user.RegisterPage;
+import posters.pageobjects.pages.user.*;
 import posters.testdata.dataobjects.User;
 
 public class RegisterSupport
@@ -29,7 +25,7 @@ public class RegisterSupport
     {
         // set up user for the clean up steps
         storage.user = new User(firstName, lastName, eMail, password);
-    };
+    }
 
     @Given("^login page is opened after registration$")
     public void registerUserSetup()
@@ -40,7 +36,7 @@ public class RegisterSupport
 
     @After("@DeleteUserAfterwards")
     @Step("delete user flow")
-    public LoginPage deleteUser()
+    public void deleteUser()
     {
         HomePage homePage = new HomePage().openHomePage();
         // ensure that the user is logged in
@@ -85,8 +81,6 @@ public class RegisterSupport
         loginPage.validateStructure();
         loginPage.sendFalseLoginForm(storage.user);
         loginPage.validateFalseLogin(storage.user.getEmail());
-
-        return loginPage;
     }
 
     public static LoginPage registerUser(User user)

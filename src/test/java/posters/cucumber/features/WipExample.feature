@@ -2,7 +2,7 @@
 Feature: Homepage
 
   @Chrome_1400x1000
-  Scenario Outline: Visting the homepage
+  Scenario Outline: Visiting the homepage
     Given homepage is loaded
      Then I see homepage with logo, carousel, hot products and footer and it's title is "<pageTitle>"
     
