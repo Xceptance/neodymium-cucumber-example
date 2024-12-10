@@ -197,10 +197,7 @@ public class MiniCart extends AbstractComponent
 
     private void validateMiniCartItem(String productName, String productStyle, String productSize, int productCount, String prodTotalPrice)
     {
-        while (!viewCartButton.isDisplayed())
-        {
-            openMiniCart();
-        }
+        openMiniCart();
 
         // selector for product
         SelenideElement miniCartItem =
