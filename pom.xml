@@ -31,7 +31,7 @@
         <surefire.version>3.2.5</surefire.version>
         <aspectj.version>1.9.21</aspectj.version>
         <allure.version>2.12.0</allure.version>
-        <neodymium.version>5.1.2-TESTVERSION</neodymium.version>
+        <neodymium.version>5.2.0</neodymium.version>
     </properties>
 
     <build>

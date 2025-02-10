@@ -1,5 +1,12 @@
 package posters.pageobjects.pages.browsing;
 
+import com.codeborne.selenide.ClickOptions;
+import com.codeborne.selenide.ElementsCollection;
+import com.codeborne.selenide.SelenideElement;
+import com.xceptance.neodymium.util.Neodymium;
+import io.qameta.allure.Step;
+import posters.testdata.dataobjects.Product;
+
 import static com.codeborne.selenide.Condition.attribute;
 import static com.codeborne.selenide.Condition.exactText;
 import static com.codeborne.selenide.Condition.exist;
@@ -7,14 +14,6 @@ import static com.codeborne.selenide.Condition.matchText;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
-
-import com.codeborne.selenide.ClickOptions;
-import com.codeborne.selenide.ElementsCollection;
-import com.codeborne.selenide.SelenideElement;
-import com.xceptance.neodymium.util.Neodymium;
-
-import io.qameta.allure.Step;
-import posters.testdata.dataobjects.Product;
 
 public class ProductDetailPage extends AbstractBrowsingPage
 {
@@ -141,6 +140,9 @@ public class ProductDetailPage extends AbstractBrowsingPage
         setSize(size);
         setStyle(style);
         clickAddToCartButton();
+
+        // wait until the cart is closed to reduce flakiness
+        header.miniCart.waitUntilMiniCartIsClosed();
     }
 
     /// ========== get product details ========== ///

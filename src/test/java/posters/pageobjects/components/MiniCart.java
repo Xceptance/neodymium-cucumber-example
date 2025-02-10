@@ -1,7 +1,14 @@
 package posters.pageobjects.components;
 
-import com.codeborne.selenide.*;
+import com.codeborne.selenide.CheckResult;
+import com.codeborne.selenide.ClickOptions;
+import com.codeborne.selenide.Driver;
+import com.codeborne.selenide.ElementsCollection;
+import com.codeborne.selenide.Selenide;
+import com.codeborne.selenide.SelenideElement;
+import com.codeborne.selenide.WebElementCondition;
 import com.xceptance.neodymium.util.Neodymium;
+import com.xceptance.neodymium.util.SelenideAddons;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -12,7 +19,10 @@ import posters.testdata.dataobjects.Product;
 import java.time.Duration;
 
 import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
-import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.Condition.exactText;
+import static com.codeborne.selenide.Condition.exist;
+import static com.codeborne.selenide.Condition.not;
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 
@@ -41,12 +51,19 @@ public class MiniCart extends AbstractComponent
         miniCart.should(exist);
     }
 
+    @Step("wait until the automatically opened mini cart is closed again")
+    public void waitUntilMiniCartIsClosed()
+    {
+        SelenideAddons.optionalWaitUntilCondition(viewCartButton, visible);
+        SelenideAddons.optionalWaitUntilCondition(viewCartButton, not(visible));
+    }
+
     /// ========== mini cart navigation ==========- ///
 
     @Step("open the mini cart")
     public void openMiniCart()
     {
-        headerCart.hover();
+        // headerCart.hover();
         headerCart.click();
         miniCart.shouldBe(visible, Duration.ofMillis(9000));
     }
@@ -197,8 +214,6 @@ public class MiniCart extends AbstractComponent
 
     private void validateMiniCartItem(String productName, String productStyle, String productSize, int productCount, String prodTotalPrice)
     {
-        openMiniCart();
-
         // selector for product
         SelenideElement miniCartItem =
             $$("#mini-cart-menu .cart-items").shouldHave(sizeGreaterThan(0))
