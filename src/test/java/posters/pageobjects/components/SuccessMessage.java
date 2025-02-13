@@ -11,8 +11,9 @@ import io.qameta.allure.Step;
 
 public class SuccessMessage extends AbstractComponent
 {
-    private SelenideElement successMessage = $("#successMessage");
+    private SelenideElement successMessage = $(".alert-success");
 
+    @Override
     public void isComponentAvailable()
     {
         successMessage.should(exist);
@@ -25,6 +26,6 @@ public class SuccessMessage extends AbstractComponent
         // Waits until javascript makes the success message visible.
         successMessage.shouldBe(visible);
         // Makes sure the correct text is displayed.
-        successMessage.shouldHave(exactText("× " + message));
+        successMessage.shouldHave(exactText(message));
     }
 }

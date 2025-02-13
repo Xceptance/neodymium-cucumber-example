@@ -1,44 +1,45 @@
-/**
- * 
- */
 package posters.pageobjects.pages.user;
 
+import static com.codeborne.selenide.Condition.attribute;
 import static com.codeborne.selenide.Condition.exactText;
-import static com.codeborne.selenide.Condition.exactValue;
 import static com.codeborne.selenide.Condition.exist;
-import static com.codeborne.selenide.Condition.matchText;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.$$;
 
+import org.junit.Assert;
+
+import com.codeborne.selenide.ClickOptions;
 import com.codeborne.selenide.SelenideElement;
 import com.xceptance.neodymium.util.Neodymium;
 
 import io.qameta.allure.Step;
-import posters.dataobjects.User;
 import posters.pageobjects.pages.browsing.AbstractBrowsingPage;
 import posters.pageobjects.pages.browsing.HomePage;
+import posters.testdata.dataobjects.User;
 
-/**
- * @author pfotenhauer
- */
 public class LoginPage extends AbstractBrowsingPage
 {
-    private SelenideElement loginForm = $("#formLogin");
+    private SelenideElement loginForm = $("#form-login");
 
     private SelenideElement emailField = $("#email");
 
     private SelenideElement passwordField = $("#password");
 
-    private SelenideElement signInButton = $("#btnSignIn");
+    private SelenideElement signInButton = $("#btn-sign-in");
 
-    private SelenideElement registerLink = $("#linkRegister");
+    private SelenideElement registerLink = $("#link-register");
 
     @Override
     @Step("ensure this is a login page")
-    public void isExpectedPage()
+    public LoginPage isExpectedPage()
     {
+        super.isExpectedPage();
         loginForm.should(exist);
+        return this;
     }
+
+    /// ========== validate content login page ========== ///
 
     @Override
     @Step("validate login page structure")
@@ -46,110 +47,80 @@ public class LoginPage extends AbstractBrowsingPage
     {
         super.validateStructure();
 
-        // Login headline
-        // Make sure the Headline is there and starts with a capital letter followed by at least 3 more symbols.
-        loginForm.find("h2").should(matchText("[A-Z].{3,}"));
-        // Email field
-        // Asserts the Email field has a label displaying the value.
-        loginForm.find("label.control-label[for=email]").shouldHave(exactText(Neodymium.localizedText("AccountPages.yourEmail")));
-        // Asserts the email field is present.
-        emailField.shouldBe(visible);
-        // Password field
-        // Verifies the password field has a label displaying the value.
-        loginForm.find("label.control-label[for=password]").shouldHave(exactText(Neodymium.localizedText("AccountPages.yourPassword")));
-        // Asserts the password field is there.
-        passwordField.shouldBe(visible);
-        // Login button
-        // asserts the login button displays the value.
-        signInButton.shouldHave(exactText(Neodymium.localizedText("AccountPages.signIn")));
-        // Register headline
-        // Asserts the Headline for the Registration is there.
-        $("#main .h3").shouldHave(exactText(Neodymium.localizedText("AccountPages.newCustomer")));
-        // Registration page link
-        // Asserts the Register link is there and shows the correct text.
-        registerLink.shouldHave(exactText(Neodymium.localizedText("AccountPages.createNewAccount")));
-    }
+        // validate title
+        loginForm.find("legend").shouldHave(exactText(Neodymium.localizedText("loginPage.title"))).shouldBe(visible);
 
-    @Step("send login form")
-    public void sendFormWithData(String email, String password)
-    {
-        // Input email
-        // Fill the email field with the parameter.
-        emailField.val(email);
-        // Input password
-        // Fill the password field with the parameter.
-        passwordField.val(password);
-        // Log in and open the homepage
-        // Click on the Sign In button.
-        signInButton.scrollTo().click();
-    }
+        // validate fill in headlines
+        // $$("#formLogin .form-group
+        // label").findBy(exactText(Neodymium.localizedText("fillIn.inputDescription.email"))).shouldBe(visible);
+        $$("#form-login .form-group label").findBy(exactText(Neodymium.localizedText("fillIn.inputDescription.password"))).shouldBe(visible);
 
-    /**
-     * @param email
-     *            The email of the account you want to log into
-     * @param password
-     *            The password of the account you want to log into
-     */
-    @Step("send login form with valid data")
-    public HomePage sendLoginform(String email, String password)
-    {
-        sendFormWithData(email, password);
-        return new HomePage();
-    }
+        // validate fill in placeholder
+        emailField.shouldHave(attribute("placeholder", (Neodymium.localizedText("fillIn.placeholder.email")))).shouldBe(visible);
+        passwordField.shouldHave(attribute("placeholder", (Neodymium.localizedText("fillIn.placeholder.password")))).shouldBe(visible);
 
-    /**
-     * @param user
-     * @return
-     */
-    @Step("send login form with valid user data")
-    public HomePage sendLoginform(User user)
-    {
-        return sendLoginform(user.getEmail(), user.getPassword());
-    }
+        // validate "required fields" string
+        $(".req-field").shouldHave(exactText(Neodymium.localizedText("fillIn.inputDescription.requiredFields"))).shouldBe(visible);
 
-    /**
-     * @param user
-     */
-    @Step("send login form with erroneous user data")
-    public LoginPage sendFalseLoginform(User user)
-    {
-        sendFormWithData(user.getEmail(), user.getPassword());
-        return new LoginPage();
-    }
+        // validate sign in button
+        signInButton.shouldHave(exactText(Neodymium.localizedText("button.signIn")));
 
-    /**
-     * @return
-     */
-    @Step("open register page from login page")
-    public RegisterPage openRegister()
-    {
-        registerLink.scrollTo().click();
-        return new RegisterPage();
+        // validate new account creation
+        $(".header-container").shouldHave(exactText(Neodymium.localizedText("loginPage.newCustomer")));
+        registerLink.shouldHave(exactText(Neodymium.localizedText("loginPage.createNewAccount")));
     }
 
     @Step("validate successful registration message")
     public void validateSuccessfulRegistration()
     {
-        successMessage.validateSuccessMessage(Neodymium.localizedText("AccountPages.validation.successfulAccountCreation"));
+        successMessage.validateSuccessMessage(Neodymium.localizedText("successMessage.successfulRegistration"));
     }
 
-    /**
-     * @param eMail
-     */
-    @Step("validate invalid email for login error message")
-    public void validateWrongEmail(String eMail)
+    @Step("validate invalid email or password for login error message")
+    public void validateFalseLogin(String email)
     {
-        errorMessage.validateErrorMessage(Neodymium.localizedText("AccountPages.validation.emailDoesNotExistError"));
-        emailField.shouldHave(exactValue(eMail));
+        errorMessage.validateErrorMessage(Neodymium.localizedText("errorMessage.errorFalseLogin"));
+        Assert.assertEquals(emailField.val(), email);
     }
 
-    /**
-     * @param eMail
-     */
-    @Step("validate invalid password for login error message")
-    public void validateWrongPassword(String eMail)
+    /// ========== login page navigation ========== ///
+
+    @Step("open register page from login page")
+    public RegisterPage openRegister()
     {
-        errorMessage.validateErrorMessage(Neodymium.localizedText("AccountPages.validation.incorrectPasswordError"));
-        emailField.shouldHave(exactValue(eMail));
+        registerLink.click(ClickOptions.usingJavaScript());
+        return new RegisterPage().isExpectedPage();
+    }
+
+    @Step("open homepage from login page")
+    public HomePage openHomePage()
+    {
+        $("#header-brand").click(ClickOptions.usingJavaScript());
+        return new HomePage().isExpectedPage();
+    }
+
+    @Step("send login form")
+    public void sendFormWithData(String email, String password)
+    {
+        // fill out the login form
+        emailField.val(email);
+        passwordField.val(password);
+
+        // click on the Sign In button.
+        signInButton.click(ClickOptions.usingJavaScript());
+    }
+
+    @Step("fill and send login form with valid user '{user}'")
+    public AccountOverviewPage sendLoginForm(User user)
+    {
+        sendFormWithData(user.getEmail(), user.getPassword());
+        return new AccountOverviewPage().isExpectedPage();
+    }
+
+    @Step("fill and send login form with invalid user '{user}'")
+    public LoginPage sendFalseLoginForm(User user)
+    {
+        sendFormWithData(user.getEmail(), user.getPassword());
+        return new LoginPage().isExpectedPage();
     }
 }

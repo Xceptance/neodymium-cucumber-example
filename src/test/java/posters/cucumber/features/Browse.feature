@@ -1,20 +1,21 @@
-@Browse
+@Browse @WebDriverSetUpViaBrowserProfileName @Wip
 Feature: Browse
 
   Scenario Outline: Browsing the catalog
-    Given "<browser>" is open
-      And homepage is loaded
+    Given homepage is loaded
      When I choose main category "<categoryName>" and sub category "<subCategoryName>"
-     Then I see category page with "<subCategoryName>" headline
+     Then I see category page with "<subCategoryName>" headline and "<expectedResultCount>" results
 
     @Chrome
+    @Chrome_1400x1000
     Examples: 
-      | browser         | categoryName    | subCategoryName |
-      | Chrome_1024x768 | Transportation  | Air Travel      |
-      | Chrome_1024x768 | World of Nature | Animals         |
+      | categoryName    | subCategoryName | expectedResultCount |
+      | Transportation  | Air Travel      | 10                  |
+      | World of Nature | Animals         | 10                  |
 
     @Firefox
+    @Firefox_1400x1000
     Examples: 
-      | browser          | categoryName | subCategoryName |
-      | Firefox_1024x768 | Dining       | Main Dishes     |
-      | Firefox_1024x768 | Dining       | Sweets          |
+      | categoryName | subCategoryName | expectedResultCount |
+      | Dining       | Main Dishes     | 10                  |
+      | Dining       | Sweets          | 10                  |

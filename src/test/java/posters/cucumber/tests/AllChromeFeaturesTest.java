@@ -2,7 +2,7 @@ package posters.cucumber.tests;
 
 import org.junit.runner.RunWith;
 
-import com.xceptance.neodymium.NeodymiumCucumberRunner;
+import com.xceptance.neodymium.junit4.NeodymiumCucumberRunner;
 
 import io.cucumber.junit.CucumberOptions;
 
