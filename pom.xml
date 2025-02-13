@@ -6,7 +6,7 @@
 
     <groupId>com.xceptance.neodymium.project</groupId>
     <artifactId>neodymium-cucumber-example</artifactId>
-    <version>4.1.0-SNAPSHOT</version>
+    <version>5.2.0</version>
     <packaging>jar</packaging>
 
     <name>neodymium-cucumber-example</name>
