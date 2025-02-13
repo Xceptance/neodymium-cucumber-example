@@ -34,3 +34,4 @@ allure-report
 /bin/
 data/ai/training
 dev-*.properties
+/allure-results/
